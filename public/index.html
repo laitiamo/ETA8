@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="">
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ae3f424ec06a02cc6c57d7ced2f6d2f7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,user-scalable=no"
+    />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title>奖项成果智能管理系统</title>
+    <style>
+      #loader {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+      }
+
+      @-webkit-keyframes ball-spin-fade-loader {
+        50% {
+          opacity: 0.3;
+          -webkit-transform: scale(0.4);
+          transform: scale(0.4);
+        }
+        100% {
+          opacity: 1;
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+
+      @keyframes ball-spin-fade-loader {
+        50% {
+          opacity: 0.3;
+          -webkit-transform: scale(0.4);
+          transform: scale(0.4);
+        }
+        100% {
+          opacity: 1;
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+
+      .ball-spin-fade-loader {
+        position: relative;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(1) {
+        top: 25px;
+        left: 0;
+        -webkit-animation: ball-spin-fade-loader 1s 0s infinite linear;
+        animation: ball-spin-fade-loader 1s 0s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(2) {
+        top: 17.04545px;
+        left: 17.04545px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.12s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.12s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(3) {
+        top: 0;
+        left: 25px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.24s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.24s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(4) {
+        top: -17.04545px;
+        left: 17.04545px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.36s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.36s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(5) {
+        top: -25px;
+        left: 0;
+        -webkit-animation: ball-spin-fade-loader 1s 0.48s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.48s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(6) {
+        top: -17.04545px;
+        left: -17.04545px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.6s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.6s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(7) {
+        top: 0;
+        left: -25px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.72s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.72s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div:nth-child(8) {
+        top: 17.04545px;
+        left: -17.04545px;
+        -webkit-animation: ball-spin-fade-loader 1s 0.84s infinite linear;
+        animation: ball-spin-fade-loader 1s 0.84s infinite linear;
+      }
+
+      .ball-spin-fade-loader > div {
+        background-color: #00abff;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 2px;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >很抱歉，奖项成果智能管理系统在 JavaScript
+        关闭的情况下无法正常工作，请打开 JavaScript 以获得最佳体验</strong
+      >
+    </noscript>
+    <div id="app">
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
