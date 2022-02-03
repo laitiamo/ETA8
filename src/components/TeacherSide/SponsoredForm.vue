@@ -48,23 +48,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目来源" prop="sourceId">
-            <el-select
-              v-model="FormData.sourceId"
-              placeholder="请选择项目来源"
-              style="display: block"
-            >
-              <template v-for="rankEach in SourceList">
-                <el-option
-                  :label="rankEach.SourceName"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-divider></el-divider>
       <h3>负责人信息</h3>
@@ -108,6 +91,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-divider></el-divider>
       <h3>项目经费</h3>
       <el-row :gutter="20">
@@ -123,6 +107,14 @@
           <el-form-item label="硬件经费（元）" prop="hardwareFund">
             <el-input
               v-model="FormData.hardwareFund"
+              placeholder="请输入项目硬件经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="软件经费（元）" prop="softwareFund">
+            <el-input
+              v-model="FormData.softwareFund"
               placeholder="请输入项目硬件经费"
             ></el-input>
           </el-form-item>
@@ -144,6 +136,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-divider></el-divider>
       <h3>项目描述</h3>
       <el-row :gutter="20">
@@ -153,6 +146,23 @@
               v-model="FormData.subjectPlace"
               placeholder="请输入项目所属单位"
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目来源" prop="sourceId">
+            <el-select
+              v-model="FormData.sourceId"
+              placeholder="请选择项目来源"
+              style="display: block"
+            >
+              <template v-for="rankEach in SourceList">
+                <el-option
+                  :label="rankEach.SourceName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
@@ -167,21 +177,27 @@
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="是否保密" prop="isSecrecy">
-            <el-radio v-model="isSecrecy" label="1">是</el-radio>
-            <el-radio v-model="isSecrecy" label="2">否</el-radio>
+            <el-radio-group v-model="FormData.isSecrecy">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="是否开发票或收据" prop="isVoucher">
-            <el-radio v-model="isVoucher" label="1">开行政事业收据</el-radio>
-            <el-radio v-model="isVoucher" label="2">开发票</el-radio>
-            <el-radio v-model="isVoucher" label="3">不开发票</el-radio>
+            <el-radio-group v-model="FormData.isVoucher">
+              <el-radio label="1">开行政事业收据</el-radio>
+              <el-radio label="2">开发票</el-radio>
+              <el-radio label="3">不开发票</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="是否交科技处存档" prop="isSubmitFill">
-            <el-radio v-model="isSubmitFill" label="1">是</el-radio>
-            <el-radio v-model="isSubmitFill" label="2">否</el-radio>
+            <el-radio-group v-model="FormData.isSubmitFill">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
 
@@ -190,8 +206,10 @@
             label="此合同是否可以进行技术认证并免税"
             prop="isDutyFree"
           >
-            <el-radio v-model="isDutyFree" label="1">是</el-radio>
-            <el-radio v-model="isDutyFree" label="2">否</el-radio>
+            <el-radio-group v-model="FormData.isDutyFree">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
@@ -444,7 +462,7 @@
 <script>
 import {
   getRankList,
-  getSponsorRankList,
+  getSponsorList,
   uploadSchool,
   getSourceList,
   getFirstSubjectList,
@@ -459,10 +477,6 @@ export default {
   },
   data() {
     return {
-      isSecrecy: "1",
-      isVoucher: "1",
-      isSubmitFill: "1",
-      isDutyFree: "1",
       submitButton: false,
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
@@ -484,16 +498,21 @@ export default {
         subjectNum: "",
         levelId: "",
         sourceId: "",
+
+        //项目经费
         subjectFund: "",
         hardwareFund: "",
+        softwareFund:"",
         staySchoolFund: "",
         outboundFund: "",
+
         subjectPlace: "",
         researchField: "",
         isSecrecy: "",
         isVoucher: "",
         isSubmitFill: "",
         isDutyFree: "",
+
         entrustPlace: "",
         applicationCode: "",
         introduction: "",
@@ -529,8 +548,13 @@ export default {
           { required: true, message: "请输入项目所属单位", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
+        //项目经费
         subjectFund: [
-          { required: false, message: "请输入项目申请经费", trigger: "blur" },
+          { required: true, message: "请输入项目申请经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        softwareFund: [
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
         hardwareFund: [
@@ -545,6 +569,7 @@ export default {
           { required: false, message: "请输入外拨经费", trigger: "blur" },
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
+
         entrustPlace: [
           { required: true, message: "请输入委托单位", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },

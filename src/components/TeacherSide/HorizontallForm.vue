@@ -92,8 +92,53 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-divider></el-divider>
 
+      <el-divider></el-divider>
+      <h3>项目经费</h3>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="批准经费（元）" prop="subjectFund">
+            <el-input
+              v-model="FormData.subjectFund"
+              placeholder="请输入项目批准经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="硬件经费（元）" prop="hardwareFund">
+            <el-input
+              v-model="FormData.hardwareFund"
+              placeholder="请输入项目硬件经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="软件经费（元）" prop="softwareFund">
+            <el-input
+              v-model="FormData.softwareFund"
+              placeholder="请输入项目硬件经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="留校经费（元）" prop="staySchoolFund">
+            <el-input
+              v-model="FormData.staySchoolFund"
+              placeholder="请输入项目留校经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="外拨经费（元）" prop="outboundFund">
+            <el-input
+              v-model="FormData.outboundFund"
+              placeholder="请输入项目外拨经费"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-divider></el-divider>
       <h3>项目描述</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
@@ -199,38 +244,6 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="软件经费（元）" prop="subjectFund">
-            <el-input
-              v-model="FormData.subjectFund"
-              placeholder="请输入项目总经费"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="软件经费（元）" prop="softwareFund">
-            <el-input
-              v-model="FormData.softwareFund"
-              placeholder="请输入项目软件经费"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="设备经费（元）" prop="hardwareFund">
-            <el-input
-              v-model="FormData.hardwareFund"
-              placeholder="请输入项目硬件经费"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="外协经费（元）" prop="outsourceFund">
-            <el-input
-              v-model="FormData.outsourceFund"
-              placeholder="请输入项目外拨经费"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="填报时间" prop="subjectTime">
             <el-date-picker
               v-model="FormData.subjectTime"
@@ -315,6 +328,7 @@
             <el-select
               v-model="FormData.EcoFirstId"
               placeholder="请选择国民经济行业一级目录"
+              @change="QuerySecondEco"
               style="display: block"
             >
               <template v-for="rankEach in EcoFirstList">
@@ -330,15 +344,16 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item prop="EcoSecondId">
+          <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
             <el-select
               v-model="FormData.EcoSecondId"
               placeholder="请选择国民经济行业二级目录"
+              @change="QueryEconomic"
               style="display: block"
             >
               <template v-for="rankEach in EcoSecondList">
                 <el-option
-                  :label="rankEach.EconomicName"
+                  :label="rankEach.TypeName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
@@ -349,7 +364,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item prop="EconomicId">
+          <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
             <el-select
               v-model="FormData.EconomicId"
               placeholder="请选择国民经济行业三级目录"
@@ -357,7 +372,7 @@
             >
               <template v-for="rankEach in EconomicList">
                 <el-option
-                  :label="rankEach.EconomicName"
+                  :label="rankEach.TypeName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
@@ -368,15 +383,35 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="社会经济服务目标" prop="SocietyId">
+          <el-form-item label="社会经济服务目标" prop="SocFirstId">
+            <el-select
+              v-model="FormData.SocFirstId"
+              placeholder="请选择社会经济服务目标一级目录"
+              @change="QuerySociety"
+              style="display: block"
+            >
+              <template v-for="rankEach in SocFirstList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
             <el-select
               v-model="FormData.SocietyId"
-              placeholder="请选择社会经济服务目标"
+              placeholder="请选择社会经济服务目标二级目录"
               style="display: block"
             >
               <template v-for="rankEach in SocietyList">
                 <el-option
-                  :label="rankEach.SocietyName"
+                  :label="rankEach.TypeName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
@@ -387,15 +422,15 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="计划来源一级" prop="planSourceId">
+          <el-form-item label="计划来源一级" prop="SourceId">
             <el-select
-              v-model="FormData.planSourceId"
+              v-model="FormData.SourceId"
               placeholder="请选择计划来源一级"
               style="display: block"
             >
-              <template v-for="rankEach in planSourceList">
+              <template v-for="rankEach in SourceList">
                 <el-option
-                  :label="rankEach.TypeName"
+                  :label="rankEach.SourceName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
@@ -410,7 +445,7 @@
               placeholder="请选择技术邻域分类一级"
               style="display: block"
             >
-              <template v-for="rankEach in technicalList">
+              <template v-for="rankEach in TechnicalList">
                 <el-option
                   :label="rankEach.TypeName"
                   :value="rankEach.id"
@@ -421,13 +456,13 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="知识产权类别一级" prop="intellectualPropertyId">
+          <el-form-item label="知识产权类别一级" prop="PropertyId">
             <el-select
-              v-model="FormData.intellectualPropertyId"
+              v-model="FormData.PropertyId"
               placeholder="请选择技术邻域分类一级"
               style="display: block"
             >
-              <template v-for="rankEach in intellectualPropertyList">
+              <template v-for="rankEach in PropertyList">
                 <el-option
                   :label="rankEach.TypeName"
                   :value="rankEach.id"
@@ -490,6 +525,9 @@ import {
   uploadHorizon,
   getSourceList,
   getFirstSubjectList,
+  getSubject,
+  QuerySecondList,
+  QueryEconomicList,
   getHorizonList,
 } from "../../api";
 export default {
@@ -510,14 +548,16 @@ export default {
       contractList: [], //合同列表「从后端取得」
       entrustList: [], //委托单位列表「从后端取得」
 
-      EcofirstList: [], //国民经济一级目录
+      EcoFirstList: [], //国民经济一级目录
       EcoSecondList: [], //国民经济二级目录
       EconomicList: [], //国民经济行业列表「从后端取得」
 
+      SocFirstList: [], //社会经济一级目录
       SocietyList: [], //社会经济服务目标列表「从后端取得」
-      planSourceList: [], //计划来源列表「从后端取得」
-      technicalList: [], //技术邻域分类一级「从后端取得」
-      intellectualPropertyList: [], //知识产权类别一级「从后端取得」
+
+      SourceList: [], //计划来源列表「从后端取得」
+      TechnicalList: [], //技术邻域分类一级「从后端取得」
+      PropertyList: [], //知识产权类别一级「从后端取得」
       //基础信息表单数据
       FormData: {
         //基础信息
@@ -533,19 +573,20 @@ export default {
         //项目描述
         subjectPlace: "",
         contractId: "",
-        fundId: "",
         contractName: "",
         contractType: "",
+        fundId: "",
         DutyFreeId: "",
         dutyBreachContract: "",
         introduction: "",
 
-        //经费
+        //项目经费
         subjectFund: "",
-        softwareFund: "",
         hardwareFund: "",
-        outsourceFund: "",
-        signTime: "",
+        softwareFund: "",
+        staySchoolFund: "",
+        outboundFund: "",
+
         subjectTime: "",
         startTime: "",
         finishTime: "",
@@ -556,10 +597,12 @@ export default {
         isDutyFree: "",
         isPromote: "",
         payId: "",
+        SocFirstId: "",
         SocietyId: "",
-        EcoFirstId:"",
-        EcoSecondId:"",
-        planSourceId: "",
+        EcoFirstId: "",
+        EcoSecondId: "",
+        EconomicId: "",
+        SourceId: "",
         technicalTypeId: "",
         nationalEconomyId: "",
         intellectualPropertyId: "",
@@ -649,42 +692,29 @@ export default {
             trigger: "blur",
           },
         ],
+
+        //经费
         subjectFund: [
-          { required: true, message: "请输入项目经费", trigger: "blur" },
-          {
-            min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
-            trigger: "blur",
-          },
+          { required: true, message: "请输入项目申请经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
         softwareFund: [
-          { required: true, message: "请输入软件经费", trigger: "blur" },
-          {
-            min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
-            trigger: "blur",
-          },
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
         hardwareFund: [
-          { required: true, message: "请输入硬件经费", trigger: "blur" },
-          {
-            min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
-            trigger: "blur",
-          },
+          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
-        outsourceFund: [
-          { required: true, message: "请输入外协经费", trigger: "blur" },
-          {
-            min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
-            trigger: "blur",
-          },
+        staySchoolFund: [
+          { required: false, message: "请输入留校经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
+        outboundFund: [
+          { required: false, message: "请输入外拨经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+
         subjectTime: [
           { required: true, message: "请选择项目填报时间", trigger: "blur" },
         ],
@@ -718,13 +748,28 @@ export default {
         ],
         payId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
         EcoFirstId: [
-          { required: true, message: "请选择国民经济行业一级目录", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择国民经济行业一级目录",
+            trigger: "blur",
+          },
         ],
         EcoSecondId: [
-          { required: true, message: "请选择国民经济行业二级目录", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择国民经济行业二级目录",
+            trigger: "blur",
+          },
         ],
         EconomicId: [
           { required: true, message: "请选择国民经济行业", trigger: "change" },
+        ],
+        SocFirstId: [
+          {
+            required: true,
+            message: "请选择社会经济行业一级目录",
+            trigger: "blur",
+          },
         ],
         SocietyId: [
           {
@@ -733,13 +778,13 @@ export default {
             trigger: "change",
           },
         ],
-        planSourceId: [
+        SourceId: [
           { required: true, message: "请选择计划来源", trigger: "blur" },
         ],
         technicalTypeId: [
           { required: true, message: "请选择技术邻域分类", trigger: "blur" },
         ],
-        intellectualPropertyId: [
+        PropertyId: [
           { required: true, message: "请选择知识产权分类", trigger: "blur" },
         ],
       },
@@ -749,6 +794,7 @@ export default {
   },
   mounted() {
     this.initRankList();
+    this.initRankList2();
   },
   methods: {
     //初始化奖项等级列表
@@ -762,14 +808,23 @@ export default {
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
-      getHorizonList()
+      getSubject()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.contractList = obj2.contract;
           this.teacherList = obj2.teacher;
-          this.entrustList = obj2.entrust;
           this.EcoFirstList = obj2.ecofirst;
+          this.SocFirstList = obj2.socfirst;
+        })
+        .catch((failResponse) => {});
+      getHorizonList()
+        .then((res) => {
+          let obj3 = JSON.parse(res.msg);
+          //closeDebug console.log("teacherList初始化", obj);
+          this.contractList = obj3.contract;
+          this.entrustList = obj3.entrust;
+          this.TechnicalList = obj3.technical;
+          this.PropertyList = obj3.property;
         })
         .catch((failResponse) => {});
     },
@@ -785,21 +840,46 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    QueryFirstEco(){
+    //更新可供筛选的国民经济二级目录列表
+    QuerySecondEco() {
       let _this = this;
-      _this.FormData.EcoFirstId = "";
+      _this.FormData.EcoSecondId = "";
       let params = new URLSearchParams();
-      params.append("BelongId", this.FormData.EcoFirstId);
-      getFirstEcoList(params)
+      params.append("FirstId", this.FormData.EcoFirstId);
+      QuerySecondList(params)
         .then((res) => {
-          _this.EcoFirstList = res;
+          _this.EcoSecondList = res;
         })
         .catch((failResponse) => {});
     },
-    initRankList2() {
-      //初始化校级项目来源
+    //更新可供筛选的社会经济二级目录列表
+    QuerySociety() {
+      let _this = this;
+      _this.FormData.SocietyId = "";
       let params = new URLSearchParams();
-      params.append("rankId", 3);
+      params.append("FirstId", this.FormData.SocFirstId);
+      QuerySecondList(params)
+        .then((res) => {
+          _this.SocietyList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新可供筛选的国民经济三级列表
+    QueryEconomic() {
+      let _this = this;
+      _this.FormData.EconomicId = "";
+      let params = new URLSearchParams();
+      params.append("SecondId", this.FormData.EcoSecondId);
+      QueryEconomicList(params)
+        .then((res) => {
+          _this.EconomicList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //初始化横向来源
+    initRankList2() {
+      let params = new URLSearchParams();
+      params.append("rankId", 2);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
@@ -825,13 +905,10 @@ export default {
           let data2upload = new FormData();
           //获取实际input组件的文件
           let filesList = this.FormData.subjectPicList;
+
+          //上传项目基础信息
           data2upload.append("subjectId", 13);
           data2upload.append("subjectNum", this.FormData.subjectNum);
-          data2upload.append("FirstWriterTel", this.FormData.FirstWriterTel);
-          data2upload.append(
-            "FirstWriterEmail",
-            this.FormData.FirstWriterEmail
-          );
           data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectTime", this.FormData.subjectTime);
@@ -844,12 +921,12 @@ export default {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
-          //校级项目表单
-          // data2upload.append("subject3Society", this.FormData.subject3Society);
-          // data2upload.append("sourceId", this.FormData.sourceId);
-          // data2upload.append("belongId", this.FormData.BelongId);
-          // data2upload.append("typeId", this.FormData.TypeId);
-          // data2upload.append("cooperateId", this.FormData.cooperateId);
+          //横向项目表单
+          data2upload.append("contractId", this.FormData.contractId);
+          data2upload.append("contractName", this.FormData.contractName);
+          data2upload.append("contractType", this.FormData.contractType);
+
+
 
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {

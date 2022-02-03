@@ -6,10 +6,10 @@
         <el-form-item>
           <el-select
             v-model="form2Query.rankId"
-            placeholder="全部等级"
+            placeholder="全部类型"
             style="width: 140px"
           >
-            <el-option label="全部等级" value=""></el-option>
+            <el-option label="全部类型" value=""></el-option>
             <el-option
               v-for="opt in rankList1"
               :key="opt.id"
@@ -246,7 +246,6 @@ export default {
       //下拉栏内容列表
       rankList1: [],
       rankList2: [],
-      rankList3: [],
     };
   },
   watch: {

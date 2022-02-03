@@ -7,11 +7,26 @@
           <el-select
             v-model="form2Query.rankId"
             placeholder="全部等级"
-            style="width:140px"
+            style="width: 140px"
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
-              v-for="opt in rankList"
+              v-for="opt in rankList1"
+              :key="opt.id"
+              :label="opt.rankName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.levelId"
+            placeholder="全部等级"
+            style="width: 140px"
+          >
+            <el-option label="全部等级" value=""></el-option>
+            <el-option
+              v-for="opt in rankList2"
               :key="opt.id"
               :label="opt.rankName"
               :value="opt.id"
@@ -20,8 +35,20 @@
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyAwardName"
-            placeholder="搜索奖项名称"
+            v-model="form2Query.keySubjectNum"
+            placeholder="搜索项目编号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keySubjectName"
+            placeholder="搜索项目名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keySubjectPlace"
+            placeholder="搜索所属单位"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -80,8 +107,12 @@
       >
       </el-pagination>
     </div>
-    <StuDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
-    </StuDetail>
+    <SubjectDetail
+      :detailData="detailData"
+      :goback="goBack"
+      v-show="ifShowDetail"
+    >
+    </SubjectDetail>
     <el-row type="flex" justify="center">
       <el-button
         v-show="ifShowDetail"
@@ -103,17 +134,17 @@
 
 <script>
 import {
-  getReviewAwardList,
-  getStuDetail,
-  initReview,
-  passAward,
-  notPassAward,
+  getSubjectDetail,
+  getReviewSubjectList,
+  initReviewSubject,
+  passSubject,
+  notPassSubject,
 } from "../../api";
-import StuDetail from "../../components/StuDetail.vue";
+import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Review",
-  components: { StuDetail },
+  components: { SubjectDetail },
   computed: {},
   data() {
     return {
@@ -124,14 +155,33 @@ export default {
       ifShowDetail: false,
       // 数据列
       Columns: [
-        { name: "学号", value: "username", width: "120", ifShow: false },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "", ifShow: true },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: true },
+        {
+          name: "项目编号",
+          value: "subjectNum",
+          width: "180",
+          ifShow: true,
+        },
+        { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
+        {
+          name: "所属单位",
+          value: "subjectPlace",
+          width: "240",
+          ifShow: true,
+        },
+        { name: "项目类别", value: "rankName", width: "160", ifShow: true },
+        { name: "项目级别", value: "levelName", width: "160", ifShow: true },
+        {
+          name: "记录上传时间",
+          value: "createAt",
+          width: "240",
+          ifShow: true,
+        },
+        {
+          name: "项目发表时间",
+          value: "subjectTime",
+          width: "240",
+          ifShow: true,
+        },
       ],
       detailData: {},
       currentPage: 1,
@@ -142,19 +192,15 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
-        gradeId: "", //年级
-        majorId: "", //专业
-        classId: "", //班级
-        keyUsername: "", //用户id
-        keyName: "", //姓名
-        rankId: "", //获奖等级
-        keyAwardName: "", //奖项名
+        rankId: "", //项目记录等级
+        levelId: "", //项目记录级别
+        keySubjectNum: "", //项目编号
+        keySubjectName: "", //项目名称
+        keySubjectPlace: "", //项目所属单位
       },
       //下拉栏内容列表
-      gradeList: [],
-      majorList: [],
-      classList: [],
-      rankList: [],
+      rankList1: [],
+      rankList2: [],
     };
   },
   mounted() {
@@ -165,28 +211,41 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
       this.Columns = [
-        { name: "学号", value: "username", width: "120", ifShow: false },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
+        { name: "项目编号", value: "subjectNum", width: "120", ifShow: false },
+        { name: "项目名称", value: "subjectName", width: "180", ifShow: true },
+        {
+          name: "所属单位",
+          value: "subjectPlace",
+          width: "120",
+          ifShow: false,
+        },
+        { name: "项目类别", value: "rankName", width: "120", ifShow: false },
+        { name: "项目级别", value: "levelName", width: "120", ifShow: false },
+        {
+          name: "记录上传时间",
+          value: "createAt",
+          width: "200",
+          ifShow: false,
+        },
+        {
+          name: "项目发表时间",
+          value: "subjectTime",
+          width: "200",
+          ifShow: false,
+        },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initReview()
+      initQuerySubject()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.gradeList = obj.grade;
-          this.majorList = obj.major;
-          this.rankList = obj.rank;
+          this.rankList1 = obj.rank1;
+          this.rankList2 = obj.rank2;
         })
         .catch((failResponse) => {});
       this.ifButtonTrue = false;
