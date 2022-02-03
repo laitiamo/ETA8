@@ -477,7 +477,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="项目图片" required prop="subjectPicList">
+      <el-form-item label="项目附件" required prop="subjectFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -487,15 +487,15 @@
           :on-remove="handleRemove"
           :on-exceed="handleExceed"
           :on-change="handleChange"
-          :file-list="picList"
+          :file-list="fileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
+          accept=".PDF"
           :limit="5"
-          accept="image/jpeg,image/png"
         >
-          <el-button size="small">上传图片</el-button>
+          <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
+            只支持上传PDF文件，总大小不超过10MB，最多上传5份附件
           </div>
         </el-upload>
       </el-form-item>
@@ -606,7 +606,7 @@ export default {
         technicalTypeId: "",
         nationalEconomyId: "",
         intellectualPropertyId: "",
-        subjectPicList: [],
+        subjectFileList: [],
         subjectType: 3,
       },
       //<el-form-item>标签的prop值的校验规则
@@ -904,7 +904,7 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.subjectPicList;
+          let filesList = this.FormData.subjectFileList;
 
           //上传项目基础信息
           data2upload.append("subjectId", 13);
@@ -925,8 +925,6 @@ export default {
           data2upload.append("contractId", this.FormData.contractId);
           data2upload.append("contractName", this.FormData.contractName);
           data2upload.append("contractType", this.FormData.contractType);
-
-
 
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {
@@ -1012,7 +1010,7 @@ export default {
     //处理已上传图片与表单内容的同步
     handleChange(file, picList) {
       //closeDebug console.log("添加图片后", file, picList);
-      this.FormData.subjectPicList = picList;
+      this.FormData.subjectFileList = picList;
     },
     //处理已上传的图片的删除
     handleRemove(file, picList) {
