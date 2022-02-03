@@ -186,7 +186,13 @@ export const getTypeList = (params) => get(`eta6/query-paper/listType`, params);
  * 获取项目类别列表
  * @returns
  */
-export const getSubjectRankList = () => get(`eta6/subject`);
+export const getSchoolList = () => get(`eta6/subject`);
+
+/**
+ * 获取项目类别列表
+ * @returns
+ */
+export const getHorizonList = () => get(`eta6/subject/listHorizon`);
 
 /**
  * 获取班级列表（GET）
@@ -218,14 +224,7 @@ export const getPaperList = (params) => get(`eta6/record/listType`, params);
 export const getTeacherList = () => get(`eta6/record/listTeacher`);
 
 /**
- * 上传论文（POST）
- * 需传入的参数
- * awardId: 奖项ID
- * awardName: 奖项名
- * rankId: 奖项等级ID
- * awardTime: 2021-02-04 时间
- * awardPlace: 获奖级别
- * file: (二进制)
+ * 上传成果（POST）
  * @param {FormData} data
  * @returns
  */
@@ -264,6 +263,14 @@ export const getTeacherSubjectList = (params) =>
 get(`eta6/subject/listSubject`, params);
 
 /**
+ * 上传校级项目（POST）
+ * @param {FormData} data
+ * @returns
+ */
+export const uploadSchool = (data) =>
+  postFile(`eta6/subject/uploadSchool`, data);
+
+  /**
  * 上传项目与（POST）
  * 需传入的参数
  * awardId: 奖项ID
@@ -275,8 +282,8 @@ get(`eta6/subject/listSubject`, params);
  * @param {FormData} data
  * @returns
  */
-export const uploadSchool = (data) =>
-  postFile(`eta6/subject/uploadSchool`, data);
+export const uploadHorizon = (data) =>
+postFile(`eta6/subject/uploadHorizon`, data);
 
 /**
  * 上传奖项（POST）

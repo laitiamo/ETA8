@@ -1,5 +1,5 @@
 <template>
-  <div class="SubjectUpload">
+  <div class="SchoolForm">
     <h3>项目申报</h3>
     <el-form
       :model="FormData"
@@ -27,7 +27,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="levelName">
+          <el-form-item label="项目类别" prop="RankName">
             <el-input v-model="RankName" readonly></el-input>
           </el-form-item>
         </el-col>
@@ -53,7 +53,7 @@
       <h3>参与者选择</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目参与者（可输入名字搜索）" prop="FirstWriter">
+          <el-form-item label="项目负责人" prop="FirstWriter">
             <el-input
               v-model="FirstWriterName"
               style="width:140px"
@@ -92,10 +92,11 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
+
       <h3>项目描述</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="所属单位" prop="subjectPlace">
+          <el-form-item label="项目所属单位" prop="subjectPlace">
             <el-input
               v-model="FormData.subjectPlace"
               placeholder="请输入项目所属单位"
@@ -114,6 +115,19 @@
           <el-form-item label="立项时间" prop="subjectTime">
             <el-date-picker
               v-model="FormData.subjectTime"
+              type="date"
+              placeholder="选择日期"
+              range-separator="至"
+              style="width: 100%"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="开始时间" prop="startTime">
+            <el-date-picker
+              v-model="FormData.startTime"
               type="date"
               placeholder="选择日期"
               range-separator="至"
@@ -176,21 +190,62 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="国民经济行业" prop="subject3Economic">
-            <el-input
-              v-model="FormData.subject3Economic"
-              placeholder="请输入国民经济行业"
-            ></el-input>
+          <el-form-item label="研究类别" prop="ResearchId">
+            <el-select
+              v-model="FormData.ResearchId"
+              placeholder="请选择项目来源"
+              style="display: block"
+            >
+              <template v-for="rankEach in ResearchList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="社会经济服务目标" prop="subject3Society">
-            <el-input
-              v-model="FormData.subject3Society"
-              placeholder="请输入社会经济服务目标"
-            ></el-input>
+          <el-form-item label="国民经济行业" prop="EconomicId">
+            <el-select
+              v-model="FormData.EconomicId"
+              placeholder="请选择国民经济行业"
+              style="display: block"
+            >
+              <template v-for="rankEach in EconomicList">
+                <el-option
+                  :label="rankEach.EconomicName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="社会经济服务目标" prop="SocietyId">
+            <el-select
+              v-model="FormData.SocietyId"
+              placeholder="请选择社会经济服务目标"
+              style="display: block"
+            >
+              <template v-for="rankEach in SocietyList">
+                <el-option
+                  :label="rankEach.SocietyName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="项目来源" prop="sourceId">
             <el-select
@@ -273,13 +328,13 @@
 <script>
 import {
   getRankList,
-  getSubjectRankList,
+  getSchoolList,
   uploadSchool,
   getSourceList,
   getFirstSubjectList,
 } from "../../api";
 export default {
-  name: "SubjectForm",
+  name: "SchoolForm",
   props: {
     FirstWriterName: String,
     RankId: Number,
@@ -295,30 +350,39 @@ export default {
       SourceList: [], //项目来源列表「从后端取得」
       CooperateList: [], //合作单位列表「从后端取得」
       BelongList: [], //统计归属列表「从后端取得」
+      ResearchList: [], //研究方向列表「从后端取得」
       TypeList: [], //一级学科列表「从后端取得」
+      EconomicList: [], //国民经济行业列表「从后端取得」
+      SocietyList: [], //社会经济服务目标列表「从后端取得」
       //基础信息表单数据
       FormData: {
+        //基础信息
         domains: [
           {
             value: "",
           },
         ],
-        teacherId: "",
         subjectName: "",
         subjectNum: "",
-        subjectTime: "",
-        FinishTime: "",
+        levelId: "",
+
+        //项目描述
         subjectPlace: "",
         subjectFund: "",
+        subjectTime: "",
+        startTime: "",
+        FinishTime: "",
+
+        //教育部统计信息
+        BelongId: "",
+        TypeId: "",
+        ResearchId: "",
+        EconomicId: "",
+        SocietyId: "",
+        sourceId: "",
+        cooperateId: "",
         subjectPicList: [],
         subjectType: 3,
-        levelId: "",
-        subject3Economic: "",
-        subject3Society: "",
-        TypeId: "",
-        sourceId: "",
-        BelongId: "",
-        cooperateId: "",
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
@@ -344,17 +408,27 @@ export default {
         subjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
+        startTime: [
+          { required: true, message: "请选择日期", trigger: "change" },
+        ],
         FinishTime: [
           { required: true, message: "请选择日期", trigger: "change" },
+        ],
+        ResearchId: [
+          { required: true, message: "请选择研究方向", trigger: "change" },
         ],
         subjectPicList: [
           { required: true, message: "请选择图片", trigger: "blur" },
         ],
-        subject3Economic: [
-          { required: true, message: "要求：国家标准", trigger: "blur" },
+        EconomicId: [
+          { required: true, message: "请选择国民经济行业", trigger: "change" },
         ],
-        subject3Society: [
-          { required: true, message: "要求：国家标准", trigger: "blur" },
+        SocietyId: [
+          {
+            required: true,
+            message: "请选择社会经济服务目标",
+            trigger: "change",
+          },
         ],
         sourceId: [
           { required: true, message: "请选择项目等级", trigger: "blur" },
@@ -374,12 +448,11 @@ export default {
     };
   },
   mounted() {
-    this.initRankList1();
-    this.initRankList2();
+    this.initRankList();
   },
   methods: {
     //初始化奖项等级列表
-    initRankList1() {
+    initRankList() {
       let _this = this;
       //初始化项目类别列表
       getRankList()
@@ -389,13 +462,14 @@ export default {
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
-      getSubjectRankList()
+      getSchoolList()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
+          this.teacherList = obj2.teacher;
           this.BelongList = obj2.belong;
           this.CooperateList = obj2.cooperate;
-          this.teacherList = obj2.teacher;
+          this.ResearchList = obj2.research;
         })
         .catch((failResponse) => {});
     },
@@ -445,21 +519,20 @@ export default {
           data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectTime", this.FormData.subjectTime);
+          data2upload.append("startTime", this.FormData.startTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
           data2upload.append("subjectPlace", this.FormData.subjectPlace);
           data2upload.append("rankId", this.RankId);
           data2upload.append("levelId", this.FormData.levelId);
+          data2upload.append("researchId", this.FormData.ResearchId);
           data2upload.append("subjectFund", this.FormData.subjectFund);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
           //校级项目表单
-          data2upload.append(
-            "subject3Economic",
-            this.FormData.subject3Economic
-          );
-          data2upload.append("subject3Society", this.FormData.subject3Society);
+          data2upload.append("EconomicId", this.FormData.EconomicId);
+          data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("sourceId", this.FormData.sourceId);
           data2upload.append("belongId", this.FormData.BelongId);
           data2upload.append("typeId", this.FormData.TypeId);

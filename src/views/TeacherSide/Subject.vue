@@ -36,6 +36,23 @@
     </div>
 
     <!---提交表单部分，选中奖项后显示--->
+    <SponsoredForm
+      :FirstWriterName="name"
+      :RankName="rankSelected"
+      :RankId="rankIdSelected"
+      :goback="goBack"
+      v-show="ifSelected1"
+    >
+    </SponsoredForm>
+
+    <HorizontallForm
+      :FirstWriterName="name"
+      :RankName="rankSelected"
+      :RankId="rankIdSelected"
+      :goback="goBack"
+      v-show="ifSelected2"
+    >
+    </HorizontallForm>
 
     <SchoolForm
       :FirstWriterName="name"
@@ -51,11 +68,15 @@
 <script>
 import { mapGetters } from "vuex";
 import { getTeacherSubjectList } from "../../api";
-import SchoolForm from "../../components/TeacherSide/SubjectForm.vue";
+
+import SponsoredForm from "../../components/TeacherSide/SponsoredForm.vue";
+import HorizontallForm from "../../components/TeacherSide/HorizontallForm.vue";
+import SchoolForm from "../../components/TeacherSide/SchoolForm.vue";
 
 export default {
   name: "Subject",
-  components: { SchoolForm },
+
+  components: { SponsoredForm, HorizontallForm, SchoolForm },
   data() {
     return {
       ifSmall: false,

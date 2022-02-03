@@ -27,6 +27,9 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >性别：{{ detailData.gender }}</el-col
         >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >单位：{{ detailData.place }}</el-col
+        >
       </el-row>
       <el-divider content-position="left"
         ><span class="div-font">项目基础信息</span></el-divider
