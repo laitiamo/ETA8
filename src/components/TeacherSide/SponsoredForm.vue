@@ -453,10 +453,10 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同金额（万元）" prop="contractFund">
+          <el-form-item label="合同金额（元）" prop="contractFund">
             <el-input
               v-model="FormData.contractFund"
-              placeholder="请输入合同金额（万元）"
+              placeholder="请输入合同金额（元）"
             ></el-input>
           </el-form-item>
         </el-col>
