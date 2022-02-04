@@ -221,7 +221,7 @@
               placeholder="请选择委托单位性质"
               style="display: block"
             >
-              <template v-for="rankEach in entrustList">
+              <template v-for="rankEach in EntrustList">
                 <el-option
                   :key="rankEach.id"
                   :label="rankEach.entrustName"
@@ -284,7 +284,7 @@
               placeholder="请选择合同类别"
               style="display: block"
             >
-              <template v-for="rankEach in contractList">
+              <template v-for="rankEach in ContractList">
                 <el-option
                   :label="rankEach.typename"
                   :value="rankEach.id"
@@ -600,8 +600,8 @@ export default {
       rankList: [], //项目类别的列表「从后端取得」
       TopicList: [], //课题的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
-      contractList: [], //合同列表「从后端取得」
-      entrustList: [], //委托单位列表「从后端取得」
+      ContractList: [], //合同列表「从后端取得」
+      EntrustList: [], //委托单位列表「从后端取得」
 
       EcoFirstList: [], //国民经济一级目录
       EcoSecondList: [], //国民经济二级目录
@@ -666,6 +666,7 @@ export default {
         SourceId: "",
         TechnicalTypeId: "",
         PropertyId: "",
+
         subjectFileList: [],
         subjectType: 3,
       },
@@ -925,8 +926,8 @@ export default {
         .then((res) => {
           let obj3 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.contractList = obj3.contract;
-          this.entrustList = obj3.entrust;
+          this.ContractList = obj3.contract;
+          this.EntrustList = obj3.entrust;
           this.CooperateList = obj3.cooperate;
           this.TechnicalList = obj3.technical;
           this.PropertyList = obj3.property;

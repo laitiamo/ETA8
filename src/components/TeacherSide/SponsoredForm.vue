@@ -27,7 +27,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="RankName">
+          <el-form-item label="项目类别" prop="levelName">
             <el-input v-model="RankName" readonly></el-input>
           </el-form-item>
         </el-col>
@@ -49,6 +49,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-divider></el-divider>
       <h3>参与者选择</h3>
       <el-row :gutter="20">
@@ -56,13 +57,13 @@
           <el-form-item label="项目负责人">
             <el-input
               v-model="username"
-              style="width:140px"
+              style="width: 140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
             <el-input
               v-model="name"
-              style="width:140px"
+              style="width: 140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
@@ -86,7 +87,7 @@
               v-model="domain.value"
               placeholder="请选择教师"
               filterable
-              style="width:140px"
+              style="width: 140px"
             >
               <el-option label="全部教师" value=""></el-option>
               <el-option
@@ -200,7 +201,16 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="是否希望科技处推广" prop="isPromote">
+            <el-radio-group v-model="FormData.isPromote">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item
             label="此合同是否可以进行技术认证并免税"
@@ -212,6 +222,20 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item
+            label="减免税号"
+            prop="DutyFreeId"
+            v-if="FormData.isDutyFree == 1"
+          >
+            <el-input
+              v-model="FormData.DutyFreeId"
+              placeholder="请输入减免税号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="立项时间" prop="subjectTime">
             <el-date-picker
@@ -252,6 +276,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-divider></el-divider>
       <h3>教育部统计信息</h3>
       <el-row :gutter="20">
@@ -274,7 +299,11 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="一级学科" prop="TypeId">
+          <el-form-item
+            label="一级学科"
+            prop="TypeId"
+            v-if="FormData.BelongId !== ''"
+          >
             <el-select
               v-model="FormData.TypeId"
               placeholder="请选择一级学科"
@@ -290,6 +319,8 @@
             </el-select>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="委托单位性质" prop="entrustPlaceId">
             <el-select
@@ -297,7 +328,7 @@
               placeholder="请选择委托单位性质"
               style="display: block"
             >
-              <template v-for="rankEach in entrustList">
+              <template v-for="rankEach in EntrustList">
                 <el-option
                   :key="rankEach.id"
                   :label="rankEach.entrustName"
@@ -325,23 +356,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目来源" prop="sourceId">
-            <el-select
-              v-model="FormData.sourceId"
-              placeholder="请选择项目来源"
-              style="display: block"
-            >
-              <template v-for="rankEach in SourceList">
-                <el-option
-                  :label="rankEach.SourceName"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="课题类型" prop="topicId">
             <el-select
@@ -428,26 +442,9 @@
               placeholder="请选择合同类别"
               style="display: block"
             >
-              <template v-for="rankEach in contractList">
+              <template v-for="rankEach in ContractList">
                 <el-option
                   :label="rankEach.typename"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合作单位" prop="cooperateId">
-            <el-select
-              v-model="FormData.cooperateId"
-              placeholder="请选择合作单位"
-              style="display: block"
-            >
-              <template v-for="rankEach in CooperateList">
-                <el-option
-                  :label="rankEach.CooperateName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
@@ -485,38 +482,6 @@
               v-model="FormData.bankAccount"
               placeholder="请输入银行账号"
             ></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="是否办理减免税" prop="isDutyFree">
-            <el-radio-group v-model="FormData.isDutyFree">
-              <el-radio label="1">是</el-radio>
-              <el-radio label="2">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item
-            label="减免税号"
-            prop="DutyFreeId"
-            v-if="FormData.isDutyFree == 1"
-          >
-            <el-input
-              v-model="FormData.DutyFreeId"
-              placeholder="请输入减免税号"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="是否希望科技处推广" prop="isPromote">
-            <el-radio-group v-model="FormData.isPromote">
-              <el-radio label="1">是</el-radio>
-              <el-radio label="2">否</el-radio>
-            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -661,7 +626,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="技术邻域分类一级" prop="technicalTypeId">
+          <el-form-item label="技术邻域分类一级" prop="TechnicalTypeId">
             <el-select
               v-model="FormData.technicalTypeId"
               placeholder="请选择技术邻域分类一级"
@@ -769,7 +734,7 @@ export default {
       BelongList: [], //统计归属列表「从后端取得」
       ResearchList: [], //研究方向列表「从后端取得」
       TypeList: [], //一级学科列表「从后端取得」
-      entrustList: [], //委托单位列表「从后端取得」
+      EntrustList: [], //委托单位列表「从后端取得」
 
       EcoFirstList: [], //国民经济一级目录
       EcoSecondList: [], //国民经济二级目录
@@ -777,7 +742,9 @@ export default {
 
       SocFirstList: [], //社会经济一级目录
       SocietyList: [], //社会经济服务目标列表「从后端取得」
-
+      PropertyList: [], //知识产权类别一级「从后端取得」
+      TopicList: [], //课题类型
+      ContractList: [], //合同列表「从后端取得」
       //基础信息表单数据
       FormData: {
         //基础信息
@@ -800,36 +767,49 @@ export default {
         //项目描述
         subjectPlace: "",
         ResearchId: "",
+        isSecrecy: "",
+        isVoucher: "",
+        isSubmitFill: "",
+        isPromote: "",
+        isDutyFree: "",
+        DutyFreeId: "",
         subjectTime: "",
         startTime: "",
         FinishTime: "",
 
-        isSecrecy: "",
-        isVoucher: "",
-        isSubmitFill: "",
-        isDutyFree: "",
-
-        SocFirstId: "",
-        SocietyId: "",
-        EcoFirstId: "",
-        EcoSecondId: "",
-        EconomicId: "",
-
+        //教育部统计信息
+        BelongId: "",
+        TypeId: "",
         entrustPlaceId: "",
         applicationCode: "",
         introduction: "",
-
-        TypeId: "",
-        researchType: "",
         topicId: "",
         mainProjectName: "",
         remarks: "",
+
+        //合作单位
         cooperateId: "",
+        contractId: "",
+        fundId: "",
+        contractName: "",
+        contractType: "",
         contractFund: "",
         cooperatePrincipal: "",
-        sourceId: "",
         bankName: "",
         bankAccount: "",
+        dutyBreachContract: "",
+
+        //技术市场信息
+        payId: "",
+        EcoFirstId: "",
+        EcoSecondId: "",
+        EconomicId: "",
+        SocFirstId: "",
+        SocietyId: "",
+        SourceId: "",
+        TechnicalTypeId: "",
+        PropertyId: "",
+
         subjectFileList: [],
         subjectType: 1,
       },
@@ -838,15 +818,24 @@ export default {
         //基础信息
         subjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
-          { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
         ],
         subjectNum: [
           { required: true, message: "请输入项目编号", trigger: "blur" },
-          { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
         ],
-        subjectPlace: [
-          { required: true, message: "请输入项目所属单位", trigger: "blur" },
-          { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
+        levelId: [
+          { required: true, message: "请选择项目级别", trigger: "blur" },
         ],
 
         //项目经费
@@ -871,24 +860,48 @@ export default {
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
 
-        entrustPlaceId: [
-          { required: true, message: "请选择委托单位", trigger: "blur" },
+        //项目描述
+        subjectPlace: [
+          { required: true, message: "请输入所属单位", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
         ],
-        applicationCode: [
-          { required: false, message: "请输入申请代码", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
+        ResearchId: [
+          { required: true, message: "请选择研究方向", trigger: "blur" },
         ],
-        introduction: [
-          { required: true, message: "请输入项目简介", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        isSecrecy: [
+          { required: true, message: "请选择是否保密", trigger: "blur" },
         ],
-        mainProjectName: [
-          { required: false, message: "请输入主项目名称", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        isVoucher: [
+          {
+            required: true,
+            message: "请选择是否开发票或收据",
+            trigger: "blur",
+          },
         ],
-        remarks: [
-          { required: false, message: "请输入备注", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        isSubmitFill: [
+          {
+            required: true,
+            message: "请选择是否交科技处存档",
+            trigger: "blur",
+          },
+        ],
+        isPromote: [
+          {
+            required: true,
+            message: "请选择是否希望科技处推广",
+            trigger: "blur",
+          },
+        ],
+        isDutyFree: [
+          { required: true, message: "请选择是否减免税", trigger: "blur" },
+        ],
+        DutyFreeId: [
+          { required: false, message: "请输入减免税号", trigger: "blur" },
         ],
         cooperatePrincipal: [
           { required: true, message: "请输入负责人", trigger: "blur" },
@@ -902,10 +915,6 @@ export default {
           { required: true, message: "请输入银行账号", trigger: "blur" },
           { min: 3, message: "长度大于等于3", trigger: "blur" },
         ],
-
-        levelId: [
-          { required: true, message: "请选择项目等级", trigger: "change" },
-        ],
         subjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
@@ -916,9 +925,113 @@ export default {
           { required: true, message: "请选择日期", trigger: "change" },
         ],
 
-        subjectFileList: [
-          { required: true, message: "请选择图片", trigger: "blur" },
+        //教育部统计信息
+        BelongId: [
+          { required: true, message: "请选择统计归属", trigger: "blur" },
         ],
+        TypeId: [
+          { required: true, message: "请选择一级学科", trigger: "blur" },
+        ],
+        entrustPlaceId: [
+          { required: true, message: "请选择委托单位", trigger: "blur" },
+        ],
+        applicationCode: [
+          { required: false, message: "请输入申请代码", trigger: "blur" },
+          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
+        ],
+        introduction: [
+          { required: true, message: "请输入项目简介", trigger: "blur" },
+          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        ],
+        topicId: [
+          { required: true, message: "请选择课题类型", trigger: "blur" },
+        ],
+        mainProjectName: [
+          { required: false, message: "请输入主项目名称", trigger: "blur" },
+          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        ],
+        remarks: [
+          { required: false, message: "请输入备注", trigger: "blur" },
+          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        ],
+
+        //合作单位
+        cooperateId: [
+          { required: true, message: "请选择合作单位", trigger: "blur" },
+        ],
+        contractId: [
+          { required: true, message: "请输入合同编号", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        fundId: [
+          { required: true, message: "请输入经费编号", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        contractName: [
+          { required: true, message: "请输入合同名称", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        contractType: [
+          { required: true, message: "请选择合同类型", trigger: "blur" },
+        ],
+        contractFund: [
+          { required: true, message: "请输入合同经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        cooperatePrincipal: [
+          { required: true, message: "请输入合作单位负责人", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        bankName: [
+          { required: true, message: "请输入开户银行", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        bankAccount: [
+          { required: true, message: "请输入银行账号", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        dutyBreachContract: [
+          { required: true, message: "请输入违约金", trigger: "blur" },
+          {
+            min: 2,
+            max: 6,
+            message: "金额在 2 到 6 位数",
+            trigger: "blur",
+          },
+        ],
+
+        //技术市场信息
+        payId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
         EcoFirstId: [
           {
             required: true,
@@ -950,23 +1063,11 @@ export default {
             trigger: "change",
           },
         ],
-        sourceId: [
+        SourceId: [
           { required: true, message: "请选择项目来源", trigger: "blur" },
         ],
-        TypeId: [
-          { required: true, message: "请选择一级学科", trigger: "blur" },
-        ],
-        cooperateId: [
-          { required: true, message: "请选择合作单位", trigger: "blur" },
-        ],
-        ResearchId: [
-          { required: true, message: "请选择研究方向", trigger: "blur" },
-        ],
-        BelongId: [
-          { required: true, message: "请选择统计归属", trigger: "blur" },
-        ],
-        topicId: [
-          { required: true, message: "请选择课题类型", trigger: "blur" },
+        subjectFileList: [
+          { required: true, message: "请选择图片", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
@@ -1008,7 +1109,10 @@ export default {
           //closeDebug console.log("teacherList初始化", obj);
           this.BelongList = obj3.belong;
           this.CooperateList = obj3.cooperate;
+          this.ContractList = obj3.contract;
+          this.EntrustList = obj3.entrust;
           this.ResearchList = obj3.research;
+          this.PropertyList = obj3.property;
         })
         .catch((failResponse) => {});
     },
@@ -1089,25 +1193,28 @@ export default {
           let filesList = this.FormData.subjectFileList;
           data2upload.append("subjectId", 13);
           data2upload.append("subjectNum", this.FormData.subjectNum);
-          data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectTime", this.FormData.subjectTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
           data2upload.append("subjectPlace", this.FormData.subjectPlace);
           data2upload.append("rankId", this.RankId);
           data2upload.append("levelId", this.FormData.levelId);
+          data2upload.append("typeId", this.FormData.typeId);
           data2upload.append("subjectFund", this.FormData.subjectFund);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
+          // 联系方式
+          data2upload.append("tel", this.tel);
+          data2upload.append("email", this.email);
           //校级项目表单
           data2upload.append(
             "subject3Economic",
             this.FormData.subject3Economic
           );
           data2upload.append("subject3Society", this.FormData.subject3Society);
-          data2upload.append("sourceId", this.FormData.sourceId);
+          data2upload.append("SourceId", this.FormData.SourceId);
           data2upload.append("typeId", this.FormData.TypeId);
           data2upload.append("cooperateId", this.FormData.cooperateId);
 

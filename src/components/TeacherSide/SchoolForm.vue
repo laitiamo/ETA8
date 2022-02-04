@@ -220,7 +220,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="一级学科" prop="TypeId">
+          <el-form-item label="一级学科" prop="TypeId" v-if="FormData.BelongId !== ''">
             <el-select
               v-model="FormData.TypeId"
               placeholder="请选择一级学科"
