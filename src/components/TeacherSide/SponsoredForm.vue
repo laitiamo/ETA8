@@ -339,24 +339,6 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="申请代码" prop="applicationCode">
-            <el-input
-              v-model="FormData.applicationCode"
-              placeholder="请输入项目申请代码"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目简介" prop="introduction">
-            <el-input
-              v-model="FormData.introduction"
-              placeholder="请输入项目简介"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="课题类型" prop="topicId">
             <el-select
               v-model="FormData.topicId"
@@ -378,6 +360,22 @@
             <el-input
               v-model="FormData.mainProjectName"
               placeholder="请输入主项目名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="申请代码" prop="applicationCode">
+            <el-input
+              v-model="FormData.applicationCode"
+              placeholder="请输入项目申请代码"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目简介" prop="introduction">
+            <el-input
+              v-model="FormData.introduction"
+              placeholder="请输入项目简介"
             ></el-input>
           </el-form-item>
         </el-col>

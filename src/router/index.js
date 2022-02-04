@@ -5,8 +5,6 @@ import MainScreen from "../screens/MainScreen.vue";
 import { checkState } from "../api/index";
 import { Message } from "element-ui";
 
-
-
 Vue.use(VueRouter);
 
 // TODO 正式部署时全部改为懒加载模式可以加快加载速度
@@ -45,19 +43,19 @@ const routes = [
         component: () => import("../views/TeacherSide/Subject"),
       },
       {
-        path:"sponsored",
-        name:"纵向项目",
-        component:()=>import("../components/TeacherSide/SponsoredForm")
+        path: "sponsored",
+        name: "纵向项目",
+        component: () => import("../components/TeacherSide/SponsoredForm"),
       },
       {
-        path:"horizon",
-        name:"横向项目",
-        component:()=>import("../components/TeacherSide/HorizontallForm")
+        path: "horizon",
+        name: "横向项目",
+        component: () => import("../components/TeacherSide/HorizontallForm"),
       },
       {
-        path:"school",
-        name:"校级项目",
-        component:()=>import("../components/TeacherSide/SchoolForm")
+        path: "school",
+        name: "校级项目",
+        component: () => import("../components/TeacherSide/SchoolForm"),
       },
       {
         path: "mine",
@@ -102,9 +100,19 @@ const routes = [
         component: () => import("../views/TeacherSide/QuerySubject"),
       },
       {
-        path: "review",
+        path: "award-review",
         name: "奖项审核",
         component: () => import("../views/Review"),
+      },
+      {
+        path: "record-review",
+        name: "成果审核",
+        component: () => import("../views/TeacherSide/Review-Record"),
+      },
+      {
+        path: "subject-review",
+        name: "项目审核",
+        component: () => import("../views/TeacherSide/Review-Subject"),
       },
       {
         path: "log",
@@ -147,18 +155,18 @@ const routes = [
         component: () => import("../views/ImportTea"),
       },
       {
-        path: '/403',
-        component: () => import ("../views/403.vue"),
+        path: "/403",
+        component: () => import("../views/403.vue"),
       },
     ],
   },
   {
-    path: '/404',
-    component: () => import ("../views/404.vue"),
+    path: "/404",
+    component: () => import("../views/404.vue"),
   },
   {
-    path: '*',
-    redirect: '/404'
+    path: "*",
+    redirect: "/404",
   },
 ];
 
@@ -173,7 +181,7 @@ router.beforeEach((to, from, next) => {
   if (to.path !== "/") {
     // //closeDebug console.log("登陆状态",store.state.ifLogin)
     // next();
-    let ifLogin = false
+    let ifLogin = false;
     checkState()
       .then((res) => {
         //closeDebug console.log("登陆状态检测请求成功", res);
@@ -188,14 +196,13 @@ router.beforeEach((to, from, next) => {
           Message.error({
             message: "未登陆或登陆信息已过期，请重新登陆",
           });
-        }else{
-          next()
+        } else {
+          next();
         }
       });
-  }else{
-  next();
+  } else {
+    next();
   }
 });
-
 
 export default router;

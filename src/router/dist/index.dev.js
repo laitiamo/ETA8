@@ -161,11 +161,27 @@ var routes = [{
       });
     }
   }, {
-    path: "review",
+    path: "award-review",
     name: "奖项审核",
     component: function component() {
       return Promise.resolve().then(function () {
         return _interopRequireWildcard(require("../views/Review"));
+      });
+    }
+  }, {
+    path: "record-review",
+    name: "成果审核",
+    component: function component() {
+      return Promise.resolve().then(function () {
+        return _interopRequireWildcard(require("../views/TeacherSide/Review-Record"));
+      });
+    }
+  }, {
+    path: "subject-review",
+    name: "项目审核",
+    component: function component() {
+      return Promise.resolve().then(function () {
+        return _interopRequireWildcard(require("../views/TeacherSide/Review-Subject"));
       });
     }
   }, {
@@ -233,7 +249,7 @@ var routes = [{
       });
     }
   }, {
-    path: '/403',
+    path: "/403",
     component: function component() {
       return Promise.resolve().then(function () {
         return _interopRequireWildcard(require("../views/403.vue"));
@@ -241,15 +257,15 @@ var routes = [{
     }
   }]
 }, {
-  path: '/404',
+  path: "/404",
   component: function component() {
     return Promise.resolve().then(function () {
       return _interopRequireWildcard(require("../views/404.vue"));
     });
   }
 }, {
-  path: '*',
-  redirect: '/404'
+  path: "*",
+  redirect: "/404"
 }];
 var router = new _vueRouter["default"]({
   mode: "history",
