@@ -8,7 +8,7 @@
       justify="center"
     >
       <el-col :md="24" :lg="7">
-        <WelComeUser
+        <WelCome
           :name="name"
           :username="username"
           :role="role"
@@ -103,7 +103,7 @@ import PersonalCounter from "../components/PersonalCounter.vue";
 import CounterDetail from "../components/CounterDetail.vue";
 import TeacherCounter from "../components/TeacherCounter.vue";
 import AwardShow from "../components/AwardShow.vue";
-import WelComeUser from "../components/WelComeUser.vue";
+import WelCome from "../components/WelCome.vue";
 export default {
   name: "Home",
   data() {
@@ -137,7 +137,7 @@ export default {
   components: {
     NumberCounter,
     AwardShow,
-    WelComeUser,
+    WelCome,
     Inform,
     CounterDetail,
     PersonalCounter,
@@ -175,14 +175,7 @@ export default {
             this.l_number = obj.l_number; //个人奖状数
             this.l_instructor = obj.l_instructor; //辅导员所管辖班级奖项数
             this.l_unmanage = obj.l_unmanage; //未审核奖项数
-          } else {
-            _this.$notify({
-              title: "未能读取到个人信息",
-              message: "请重新登陆",
-              type: "warning",
-            });
-            _this.$router.push({ path: "/" });
-          }
+          } 
         })
         .catch((failResponse) => {});
     },

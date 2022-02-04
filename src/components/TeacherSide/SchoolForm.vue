@@ -53,15 +53,24 @@
       <h3>参与者选择</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目负责人" prop="FirstWriter">
+          <el-form-item label="项目负责人">
             <el-input
-              v-model="FirstWriterName"
+              v-model="username"
               style="width:140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
-            <el-button @click="addDomain">新增参与者</el-button>
+            <el-input
+              v-model="name"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
           </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item
             v-for="(domain, index) in FormData.domains"
             :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
@@ -87,6 +96,7 @@
                 :value="opt.userId"
               ></el-option>
             </el-select>
+            <el-button @click="addDomain">新增</el-button>
             <el-button @click.prevent="removeDomain(domain)">删除</el-button>
           </el-form-item>
         </el-col>
@@ -393,12 +403,13 @@
           :on-change="handleChange"
           :file-list="fileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
+          accept=".PDF"
           :limit="5"
         >
           <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            总大小不超过10MB，最多上传5份附件
+            只支持上传PDF文件，总大小不超过10MB，最多上传5份附件
           </div>
         </el-upload>
       </el-form-item>
@@ -409,40 +420,31 @@
           :loading="submitButton"
           >立即提交</el-button
         >
-        <el-button
-          @click="
-            cancelUpload('FormData');
-            goback();
-          "
-          >重置</el-button
-        >
+        <el-button @click="cancelUpload('FormData')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {
   getRankList,
-  getSchoolList,
+  initSubject,
+  initSchool,
   uploadSchool,
   getSourceList,
   getFirstSubjectList,
-  getSubject,
   QuerySecondList,
   QueryEconomicList,
 } from "../../api";
 export default {
   name: "SchoolForm",
-  props: {
-    FirstWriterName: String,
-    RankId: Number,
-    RankName: String,
-    goback: { type: Function },
-  },
   data() {
     return {
       submitButton: false,
+      RankId: 3,
+      RankName: "校级项目",
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
       teacherList: [], //教师列表「从后端取得」
@@ -502,6 +504,7 @@ export default {
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
+        //基础信息
         subjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
@@ -514,6 +517,7 @@ export default {
           { required: true, message: "请输入项目所属单位", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
+
         //项目经费
         subjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
@@ -602,13 +606,16 @@ export default {
       dialogVisible: false, //是否显示预览
     };
   },
+  computed: {
+    ...mapGetters(["name", "username"]),
+  },
   mounted() {
-    this.initRankList();
-    this.initRankList2();
+    this.initSchool();
+    this.initSchool2();
   },
   methods: {
     //初始化奖项等级列表
-    initRankList() {
+    initSchool() {
       let _this = this;
       //初始化项目类别列表
       getRankList()
@@ -618,7 +625,7 @@ export default {
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
-      getSubject()
+      initSubject()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
@@ -627,7 +634,7 @@ export default {
           this.SocFirstList = obj2.socfirst;
         })
         .catch((failResponse) => {});
-      getSchoolList()
+      initSchool()
         .then((res) => {
           let obj3 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
@@ -684,10 +691,10 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    initRankList2() {
+    initSchool2() {
       //初始化校级项目来源
       let params = new URLSearchParams();
-      params.append("rankId", 3);
+      params.append("rankId", this.RankId);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
@@ -754,7 +761,7 @@ export default {
                   type: "success",
                 });
                 _this.cancelUpload("FormData");
-                _this.goback();
+                // _this.goback();
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;

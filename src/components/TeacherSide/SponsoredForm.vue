@@ -50,18 +50,27 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
-      <h3>负责人信息</h3>
+      <h3>参与者选择</h3>
       <el-row :gutter="20">
-        <el-col class="subject-info" :span="24" :xs="24">
-          <el-form-item label="项目参与者（可输入名字搜索）" prop="FirstWriter">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目负责人">
             <el-input
-              v-model="FirstWriterName"
-              style="width: 140px"
+              v-model="username"
+              style="width:140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
-            <el-button @click="option">新增参与者</el-button>
+            <el-input
+              v-model="name"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
           </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item
             v-for="(domain, index) in FormData.domains"
             :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
@@ -77,16 +86,17 @@
               v-model="domain.value"
               placeholder="请选择教师"
               filterable
-              style="width: 140px"
+              style="width:140px"
             >
               <el-option label="全部教师" value=""></el-option>
               <el-option
-                v-for="opt in teacherList"
+                v-for="opt in TeacherList"
                 :key="opt.id"
                 :label="opt.teaName"
                 :value="opt.userId"
               ></el-option>
             </el-select>
+            <el-button @click="addDomain">新增</el-button>
             <el-button @click.prevent="removeDomain(domain)">删除</el-button>
           </el-form-item>
         </el-col>
@@ -149,29 +159,19 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目来源" prop="sourceId">
+          <el-form-item label="研究类别" prop="ResearchId">
             <el-select
-              v-model="FormData.sourceId"
+              v-model="FormData.ResearchId"
               placeholder="请选择项目来源"
               style="display: block"
             >
-              <template v-for="rankEach in SourceList">
+              <template v-for="rankEach in ResearchList">
                 <el-option
-                  :label="rankEach.SourceName"
+                  :label="rankEach.TypeName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
               </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="研究领域" prop="researchField">
-            <el-select
-              v-model="FormData.researchField"
-              placeholder="请选择研究领域"
-              style="display: block"
-            >
             </el-select>
           </el-form-item>
         </el-col>
@@ -213,27 +213,16 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="委托单位" prop="entrustPlace">
-            <el-input
-              v-model="FormData.entrustPlace"
-              placeholder="请输入项目委托单位"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="申请代码" prop="applicationCode">
-            <el-input
-              v-model="FormData.applicationCode"
-              placeholder="请输入项目申请代码"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目简介" prop="introduction">
-            <el-input
-              v-model="FormData.introduction"
-              placeholder="请输入项目简介"
-            ></el-input>
+          <el-form-item label="立项时间" prop="subjectTime">
+            <el-date-picker
+              v-model="FormData.subjectTime"
+              type="date"
+              placeholder="选择日期"
+              range-separator="至"
+              style="width: 100%"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
@@ -264,8 +253,26 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
-      <h4>教育部统计信息</h4>
+      <h3>教育部统计信息</h3>
       <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="统计归属" prop="BelongId">
+            <el-select
+              v-model="FormData.BelongId"
+              placeholder="请选择统计归属"
+              @change="QuerySubject"
+              style="display: block"
+            >
+              <template v-for="rankEach in BelongList">
+                <el-option
+                  :label="rankEach.BelongName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="一级学科" prop="TypeId">
             <el-select
@@ -284,63 +291,71 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="国民经济行业" prop="EconomicId">
+          <el-form-item label="委托单位性质" prop="entrustPlaceId">
             <el-select
-              v-model="FormData.EconomicId"
-              placeholder="请选择国民经济行业"
+              v-model="FormData.entrustPlaceId"
+              placeholder="请选择委托单位性质"
               style="display: block"
             >
-              <template v-for="rankEach in EconomicList">
+              <template v-for="rankEach in entrustList">
                 <el-option
-                  :label="rankEach.EconomicName"
-                  :value="rankEach.id"
                   :key="rankEach.id"
+                  :label="rankEach.entrustName"
+                  :value="rankEach.id"
                 ></el-option>
               </template>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="社会经济服务目标" prop="SocietyId">
-            <el-select
-              v-model="FormData.SocietyId"
-              placeholder="请选择社会经济服务目标"
-              style="display: block"
-            >
-              <template v-for="rankEach in SocietyList">
-                <el-option
-                  :label="rankEach.SocietyName"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
+          <el-form-item label="申请代码" prop="applicationCode">
+            <el-input
+              v-model="FormData.applicationCode"
+              placeholder="请输入项目申请代码"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="研究类别" prop="ResearchId">
+          <el-form-item label="项目简介" prop="introduction">
+            <el-input
+              v-model="FormData.introduction"
+              placeholder="请输入项目简介"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目来源" prop="sourceId">
             <el-select
-              v-model="FormData.researchType"
+              v-model="FormData.sourceId"
               placeholder="请选择项目来源"
               style="display: block"
             >
-              <template v-for="rankEach in ResearchList">
+              <template v-for="rankEach in SourceList">
+                <el-option
+                  :label="rankEach.SourceName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="课题类型" prop="topicId">
+            <el-select
+              v-model="FormData.topicId"
+              placeholder="请选择课题类型"
+              style="display: block"
+            >
+              <template v-for="rankEach in TopicList">
                 <el-option
                   :label="rankEach.TypeName"
                   :value="rankEach.id"
                   :key="rankEach.id"
                 ></el-option>
               </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="课题类型" prop="topicType">
-            <el-select
-              v-model="FormData.topicType"
-              placeholder="请选择课题类型"
-              style="display: block"
-            >
             </el-select>
           </el-form-item>
         </el-col>
@@ -361,8 +376,68 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <h4>合作单位</h4>
+
+      <el-divider></el-divider>
+      <h3>合作单位</h3>
       <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合作单位" prop="cooperateId">
+            <el-select
+              v-model="FormData.cooperateId"
+              placeholder="请选择合作单位"
+              style="display: block"
+            >
+              <template v-for="rankEach in CooperateList">
+                <el-option
+                  :label="rankEach.CooperateName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同编号" prop="contractId">
+            <el-input
+              v-model="FormData.contractId"
+              placeholder="请输入合同编号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="经费号" prop="fundId">
+            <el-input
+              v-model="FormData.fundId"
+              placeholder="请输入经费号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同名称" prop="contractName">
+            <el-input
+              v-model="FormData.contractName"
+              placeholder="请输入合同名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同类别" prop="contractType">
+            <el-select
+              v-model="FormData.contractType"
+              placeholder="请选择合同类别"
+              style="display: block"
+            >
+              <template v-for="rankEach in contractList">
+                <el-option
+                  :label="rankEach.typename"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="合作单位" prop="cooperateId">
             <el-select
@@ -413,11 +488,218 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="是否办理减免税" prop="isDutyFree">
+            <el-radio-group v-model="FormData.isDutyFree">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item
+            label="减免税号"
+            prop="DutyFreeId"
+            v-if="FormData.isDutyFree == 1"
+          >
+            <el-input
+              v-model="FormData.DutyFreeId"
+              placeholder="请输入减免税号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="是否希望科技处推广" prop="isPromote">
+            <el-radio-group v-model="FormData.isPromote">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="双方违约责任" prop="dutyBreachContract">
+            <el-input
+              v-model="FormData.dutyBreachContract"
+              placeholder="请输入双方违约责任"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-divider></el-divider>
+      <h4>技术市场信息</h4>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="请选择支付方式" prop="payId">
+            <el-radio-group v-model="FormData.payId">
+              <el-radio label="1">一次支付</el-radio>
+              <el-radio label="2">提成支付</el-radio>
+              <el-radio label="3">分期支付</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="国民经济行业" prop="EcoFirstId">
+            <el-select
+              v-model="FormData.EcoFirstId"
+              placeholder="请选择国民经济行业一级目录"
+              @change="QuerySecondEco"
+              style="display: block"
+            >
+              <template v-for="rankEach in EcoFirstList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
+            <el-select
+              v-model="FormData.EcoSecondId"
+              placeholder="请选择国民经济行业二级目录"
+              @change="QueryEconomic"
+              style="display: block"
+            >
+              <template v-for="rankEach in EcoSecondList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
+            <el-select
+              v-model="FormData.EconomicId"
+              placeholder="请选择国民经济行业三级目录"
+              style="display: block"
+            >
+              <template v-for="rankEach in EconomicList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="社会经济服务目标" prop="SocFirstId">
+            <el-select
+              v-model="FormData.SocFirstId"
+              placeholder="请选择社会经济服务目标一级目录"
+              @change="QuerySociety"
+              style="display: block"
+            >
+              <template v-for="rankEach in SocFirstList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
+            <el-select
+              v-model="FormData.SocietyId"
+              placeholder="请选择社会经济服务目标二级目录"
+              style="display: block"
+            >
+              <template v-for="rankEach in SocietyList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="计划来源一级" prop="SourceId">
+            <el-select
+              v-model="FormData.SourceId"
+              placeholder="请选择计划来源一级"
+              style="display: block"
+            >
+              <template v-for="rankEach in SourceList">
+                <el-option
+                  :label="rankEach.SourceName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="技术邻域分类一级" prop="technicalTypeId">
+            <el-select
+              v-model="FormData.technicalTypeId"
+              placeholder="请选择技术邻域分类一级"
+              style="display: block"
+            >
+              <template v-for="rankEach in TechnicalList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="知识产权类别一级" prop="PropertyId">
+            <el-select
+              v-model="FormData.PropertyId"
+              placeholder="请选择技术邻域分类一级"
+              style="display: block"
+            >
+              <template v-for="rankEach in PropertyList">
+                <el-option
+                  :label="rankEach.TypeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="项目图片" required prop="subjectPicList">
+      <el-form-item label="项目附件" required prop="subjectFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -429,13 +711,13 @@
           :on-change="handleChange"
           :file-list="fileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
+          accept=".PDF"
           :limit="5"
-          accept="image/jpeg,image/png"
         >
-          <el-button size="small">上传图片</el-button>
+          <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
+            只支持上传PDF文件，总大小不超过10MB，最多上传5份附件
           </div>
         </el-upload>
       </el-form-item>
@@ -460,35 +742,45 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {
   getRankList,
   getSponsorList,
   uploadSchool,
   getSourceList,
+  initSubject,
+  initSponsored,
   getFirstSubjectList,
+  QuerySecondList,
+  QueryEconomicList,
 } from "../../api";
 export default {
   name: "SponsoredForm",
-  props: {
-    FirstWriterName: String,
-    RankId: Number,
-    RankName: String,
-    goback: { type: Function },
-  },
   data() {
     return {
       submitButton: false,
+      RankId: 1,
+      RankName: "纵向项目",
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
-      teacherList: [], //教师列表「从后端取得」
+      TeacherList: [], //教师列表「从后端取得」
       SourceList: [], //项目来源列表「从后端取得」
-      SocietyList: [], //社会组织列表「从后端取得」
-      ResearchList: [], //科研项目列表「从后端取得」
       CooperateList: [], //合作单位列表「从后端取得」
-      EconomicList: [], //经济类型列表「从后端取得」
+      BelongList: [], //统计归属列表「从后端取得」
+      ResearchList: [], //研究方向列表「从后端取得」
       TypeList: [], //一级学科列表「从后端取得」
+      entrustList: [], //委托单位列表「从后端取得」
+
+      EcoFirstList: [], //国民经济一级目录
+      EcoSecondList: [], //国民经济二级目录
+      EconomicList: [], //国民经济行业列表「从后端取得」
+
+      SocFirstList: [], //社会经济一级目录
+      SocietyList: [], //社会经济服务目标列表「从后端取得」
+
       //基础信息表单数据
       FormData: {
+        //基础信息
         domains: [
           {
             value: "",
@@ -497,45 +789,53 @@ export default {
         subjectName: "",
         subjectNum: "",
         levelId: "",
-        sourceId: "",
 
         //项目经费
         subjectFund: "",
         hardwareFund: "",
-        softwareFund:"",
+        softwareFund: "",
         staySchoolFund: "",
         outboundFund: "",
 
+        //项目描述
         subjectPlace: "",
-        researchField: "",
+        ResearchId: "",
+        subjectTime: "",
+        startTime: "",
+        FinishTime: "",
+
         isSecrecy: "",
         isVoucher: "",
         isSubmitFill: "",
         isDutyFree: "",
 
-        entrustPlace: "",
+        SocFirstId: "",
+        SocietyId: "",
+        EcoFirstId: "",
+        EcoSecondId: "",
+        EconomicId: "",
+
+        entrustPlaceId: "",
         applicationCode: "",
         introduction: "",
-        subjectTime: "",
-        startTime: "",
-        FinishTime: "",
+
         TypeId: "",
-        EconomicId: "",
-        SocietyId: "",
         researchType: "",
-        topicType: "",
+        topicId: "",
         mainProjectName: "",
         remarks: "",
         cooperateId: "",
         contractFund: "",
         cooperatePrincipal: "",
+        sourceId: "",
         bankName: "",
         bankAccount: "",
-        subjectPicList: [],
+        subjectFileList: [],
         subjectType: 1,
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
+        //基础信息
         subjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
@@ -548,6 +848,7 @@ export default {
           { required: true, message: "请输入项目所属单位", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
+
         //项目经费
         subjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
@@ -570,9 +871,8 @@ export default {
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
 
-        entrustPlace: [
-          { required: true, message: "请输入委托单位", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
+        entrustPlaceId: [
+          { required: true, message: "请选择委托单位", trigger: "blur" },
         ],
         applicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
@@ -609,21 +909,49 @@ export default {
         subjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
+        startTime: [
+          { required: true, message: "请选择日期", trigger: "change" },
+        ],
         FinishTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
 
-        subjectPicList: [
+        subjectFileList: [
           { required: true, message: "请选择图片", trigger: "blur" },
         ],
+        EcoFirstId: [
+          {
+            required: true,
+            message: "请选择国民经济行业一级目录",
+            trigger: "blur",
+          },
+        ],
+        EcoSecondId: [
+          {
+            required: true,
+            message: "请选择国民经济行业二级目录",
+            trigger: "blur",
+          },
+        ],
         EconomicId: [
-          { required: true, message: "要求：国家标准", trigger: "blur" },
+          { required: true, message: "请选择国民经济行业", trigger: "change" },
+        ],
+        SocFirstId: [
+          {
+            required: true,
+            message: "请选择社会经济行业一级目录",
+            trigger: "blur",
+          },
         ],
         SocietyId: [
-          { required: true, message: "要求：国家标准", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择社会经济服务目标",
+            trigger: "change",
+          },
         ],
         sourceId: [
-          { required: true, message: "请选择项目等级", trigger: "blur" },
+          { required: true, message: "请选择项目来源", trigger: "blur" },
         ],
         TypeId: [
           { required: true, message: "请选择一级学科", trigger: "blur" },
@@ -631,30 +959,30 @@ export default {
         cooperateId: [
           { required: true, message: "请选择合作单位", trigger: "blur" },
         ],
-        researchField: [
-          { required: true, message: "请选择项目等级", trigger: "blur" },
+        ResearchId: [
+          { required: true, message: "请选择研究方向", trigger: "blur" },
         ],
-        researchType: [
-          { required: true, message: "请选择研究领域", trigger: "blur" },
+        BelongId: [
+          { required: true, message: "请选择统计归属", trigger: "blur" },
         ],
-        topicType: [
+        topicId: [
           { required: true, message: "请选择课题类型", trigger: "blur" },
-        ],
-        cooperateType: [
-          { required: true, message: "请选择单位类型", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
       dialogVisible: false, //是否显示预览
     };
   },
+  computed: {
+    ...mapGetters(["name", "username"]),
+  },
   mounted() {
-    this.initRankList1();
-    this.initRankList2();
+    this.initSponsored();
+    this.initSponsored2();
   },
   methods: {
     //初始化奖项等级列表
-    initRankList1() {
+    initSponsored() {
       let _this = this;
       //初始化项目类别列表
       getRankList()
@@ -664,12 +992,23 @@ export default {
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
-      getSubjectRankList()
+      initSubject()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.CooperateList = obj2.cooperate;
-          this.teacherList = obj2.teacher;
+          this.TopicList = obj2.topic;
+          this.TeacherList = obj2.teacher;
+          this.EcoFirstList = obj2.ecofirst;
+          this.SocFirstList = obj2.socfirst;
+        })
+        .catch((failResponse) => {});
+      initSponsored()
+        .then((res) => {
+          let obj3 = JSON.parse(res.msg);
+          //closeDebug console.log("teacherList初始化", obj);
+          this.BelongList = obj3.belong;
+          this.CooperateList = obj3.cooperate;
+          this.ResearchList = obj3.research;
         })
         .catch((failResponse) => {});
     },
@@ -683,14 +1022,50 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    initRankList2() {
+    QuerySecondEco() {
+      let _this = this;
+      _this.FormData.EcoSecondId = "";
+      let params = new URLSearchParams();
+      params.append("FirstId", this.FormData.EcoFirstId);
+      QuerySecondList(params)
+        .then((res) => {
+          _this.EcoSecondList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新可供筛选的社会经济二级目录列表
+    QuerySociety() {
+      let _this = this;
+      _this.FormData.SocSecondId = "";
+      let params = new URLSearchParams();
+      params.append("FirstId", this.FormData.SocFirstId);
+      QuerySecondList(params)
+        .then((res) => {
+          _this.SocietyList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新可供筛选的国民经济三级列表
+    QueryEconomic() {
+      let _this = this;
+      _this.FormData.EconomicId = "";
+      let params = new URLSearchParams();
+      params.append("SecondId", this.FormData.EcoSecondId);
+      QueryEconomicList(params)
+        .then((res) => {
+          _this.EconomicList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    initSponsored2() {
+      let _this = this;
       //初始化校级项目来源
       let params = new URLSearchParams();
-      params.append("rankId", 3);
+      params.append("rankId", this.RankId);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
-          this.SourceList = res;
+          _this.SourceList = res;
         })
         .catch((failResponse) => {});
     },
@@ -711,7 +1086,7 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.subjectPicList;
+          let filesList = this.FormData.subjectFileList;
           data2upload.append("subjectId", 13);
           data2upload.append("subjectNum", this.FormData.subjectNum);
           data2upload.append("subjectType", this.RankName);
@@ -820,7 +1195,7 @@ export default {
     //处理已上传图片与表单内容的同步
     handleChange(file, fileList) {
       //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.subjectPicList = fileList;
+      this.FormData.subjectFileList = fileList;
     },
     //处理已上传的图片的删除
     handleRemove(file, fileList) {

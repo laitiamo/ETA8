@@ -1,90 +1,49 @@
 <template>
   <div class="Subject">
     <!---奖项列表部分，选中奖项后隐藏--->
-    <div v-show="!ifSelected">
-      <h3>项目申报</h3>
-      <el-table
-        :data="tableData"
-        border
-        style="width: 100%"
-        :default-sort="{ prop: 'rankName', order: 'descending' }"
-      >
-        <el-table-column prop="rankName" label="项目类型"> </el-table-column>
-        <el-table-column label="操作" width="80" fixed="right" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-              >上传</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <div slot="tip" class="el-upload__tip">
-        如果没有找到你想要新增的记录类型，请与系统管理员联系。
-      </div>
-      <el-pagination
-        class="pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40, 50, 100]"
-        :page-size="pageSize"
-        :layout="paginationLayout"
-        :small="ifSmall"
-        :total="dataCount"
-      >
-      </el-pagination>
+    <h3>项目申报</h3>
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%"
+      :default-sort="{ prop: 'rankName', order: 'descending' }"
+    >
+      <el-table-column prop="rankName" label="项目类型"> </el-table-column>
+      <el-table-column label="操作" width="80" fixed="right" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            >上传</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <div slot="tip" class="el-upload__tip">
+      如果没有找到你想要新增的记录类型，请与系统管理员联系。
     </div>
-
-    <!---提交表单部分，选中奖项后显示--->
-    <SponsoredForm
-      :FirstWriterName="name"
-      :RankName="rankSelected"
-      :RankId="rankIdSelected"
-      :goback="goBack"
-      v-show="ifSelected1"
+    <el-pagination
+      class="pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 40, 50, 100]"
+      :page-size="pageSize"
+      :layout="paginationLayout"
+      :small="ifSmall"
+      :total="dataCount"
     >
-    </SponsoredForm>
-
-    <HorizontallForm
-      :FirstWriterName="name"
-      :RankName="rankSelected"
-      :RankId="rankIdSelected"
-      :goback="goBack"
-      v-show="ifSelected2"
-    >
-    </HorizontallForm>
-
-    <SchoolForm
-      :FirstWriterName="name"
-      :RankName="rankSelected"
-      :RankId="rankIdSelected"
-      :goback="goBack"
-      v-show="ifSelected3"
-    >
-    </SchoolForm>
+    </el-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { getTeacherSubjectList } from "../../api";
-
-import SponsoredForm from "../../components/TeacherSide/SponsoredForm.vue";
-import HorizontallForm from "../../components/TeacherSide/HorizontallForm.vue";
-import SchoolForm from "../../components/TeacherSide/SchoolForm.vue";
-
+import { SubjectSelect } from "../../api";
 export default {
   name: "Subject",
-
-  components: { SponsoredForm, HorizontallForm, SchoolForm },
   data() {
     return {
       ifSmall: false,
       paginationLayout: "prev, pager,next,  ->, total",
-      ifSelected: false,
-      ifSelected1: false,
-      ifSelected2: false,
-      ifSelected3: false,
       rankSelected: "",
       rankIdSelected: 0,
       currentPage: 1,
@@ -107,7 +66,7 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      getTeacherSubjectList(params)
+      SubjectSelect(params)
         .then((res) => {
           //closeDebug console.log("-----------获取表格数据---------------");
           //closeDebug console.log(res.data);
@@ -138,25 +97,15 @@ export default {
       this.rankIdSelected = row.id;
       switch (this.rankIdSelected) {
         case 1:
-          this.ifSelected = true;
-          this.ifSelected1 = true;
+          this.$router.push({ path: "/eta/sponsored" });
           break;
         case 2:
-          this.ifSelected = true;
-          this.ifSelected2 = true;
+          this.$router.push({ path: "/eta/horizon" });
           break;
         case 3:
-          this.ifSelected = true;
-          this.ifSelected3 = true;
+          this.$router.push({ path: "/eta/school" });
           break;
       }
-    },
-    //返回重选奖项
-    goBack() {
-      this.ifSelected = false;
-      this.ifSelected1 = false;
-      this.ifSelected2 = false;
-      this.ifSelected3 = false;
     },
   },
   computed: {

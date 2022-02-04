@@ -54,15 +54,24 @@
       <h3>参与者选择</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目负责人" prop="FirstWriter">
+          <el-form-item label="项目负责人">
             <el-input
-              v-model="FirstWriterName"
+              v-model="username"
               style="width:140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
-            <el-button @click="addDomain">新增参与者</el-button>
+            <el-input
+              v-model="name"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
           </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item
             v-for="(domain, index) in FormData.domains"
             :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
@@ -82,12 +91,13 @@
             >
               <el-option label="全部教师" value=""></el-option>
               <el-option
-                v-for="opt in teacherList"
+                v-for="opt in TeacherList"
                 :key="opt.id"
                 :label="opt.teaName"
                 :value="opt.userId"
               ></el-option>
             </el-select>
+            <el-button @click="addDomain">新增</el-button>
             <el-button @click.prevent="removeDomain(domain)">删除</el-button>
           </el-form-item>
         </el-col>
@@ -146,92 +156,6 @@
             <el-input
               v-model="FormData.subjectPlace"
               placeholder="请输入项目所属单位"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同编号" prop="contractId">
-            <el-input
-              v-model="FormData.contractId"
-              :disabled="true"
-              readonly
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="经费号" prop="fundId">
-            <el-input
-              v-model="FormData.fundId"
-              :disabled="true"
-              readonly
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同名称" prop="contractName">
-            <el-input
-              v-model="FormData.contractName"
-              :disabled="true"
-              readonly
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同类别" prop="contractType">
-            <el-select
-              v-model="FormData.contractType"
-              placeholder="请选择合同类别"
-              style="display: block"
-            >
-              <template v-for="rankEach in contractList">
-                <el-option
-                  :label="rankEach.typename"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="是否办理减免税" prop="isDutyFree">
-            <el-radio-group v-model="FormData.isDutyFree">
-              <el-radio label="1">是</el-radio>
-              <el-radio label="2">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item
-            label="减免税号"
-            prop="DutyFreeId"
-            v-if="FormData.isDutyFree == 1"
-          >
-            <el-input
-              v-model="FormData.DutyFreeId"
-              placeholder="请输入减免税号"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="是否希望科技处推广" prop="isPromote">
-            <el-radio-group v-model="FormData.isPromote">
-              <el-radio label="1">是</el-radio>
-              <el-radio label="2">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="双方违约责任" prop="dutyBreachContract">
-            <el-input
-              v-model="FormData.dutyBreachContract"
-              placeholder="请输入双方违约责任"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -305,6 +229,146 @@
                 ></el-option>
               </template>
             </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-divider></el-divider>
+      <h3>合作单位</h3>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合作单位" prop="cooperateId">
+            <el-select
+              v-model="FormData.cooperateId"
+              placeholder="请选择合作单位"
+              style="display: block"
+            >
+              <template v-for="rankEach in CooperateList">
+                <el-option
+                  :label="rankEach.CooperateName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同编号" prop="contractId">
+            <el-input
+              v-model="FormData.contractId"
+              placeholder="请输入合同编号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="经费号" prop="fundId">
+            <el-input
+              v-model="FormData.fundId"
+              placeholder="请输入经费号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同名称" prop="contractName">
+            <el-input
+              v-model="FormData.contractName"
+              placeholder="请输入合同名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同类别" prop="contractType">
+            <el-select
+              v-model="FormData.contractType"
+              placeholder="请选择合同类别"
+              style="display: block"
+            >
+              <template v-for="rankEach in contractList">
+                <el-option
+                  :label="rankEach.typename"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同金额（万元）" prop="contractFund">
+            <el-input
+              v-model="FormData.contractFund"
+              placeholder="请输入合同金额（万元）"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="负责人" prop="cooperatePrincipal">
+            <el-input
+              v-model="FormData.cooperatePrincipal"
+              placeholder="请输入负责人"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="银行名称" prop="bankName">
+            <el-input
+              v-model="FormData.bankName"
+              placeholder="请输入银行名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="银行账号" prop="bankAccount">
+            <el-input
+              v-model="FormData.bankAccount"
+              placeholder="请输入银行账号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item
+            label="此合同是否可以进行技术认证并免税"
+            prop="isDutyFree"
+          >
+            <el-radio-group v-model="FormData.isDutyFree">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item
+            label="减免税号"
+            prop="DutyFreeId"
+            v-if="FormData.isDutyFree == 1"
+          >
+            <el-input
+              v-model="FormData.DutyFreeId"
+              placeholder="请输入减免税号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="是否希望科技处推广" prop="isPromote">
+            <el-radio-group v-model="FormData.isPromote">
+              <el-radio label="1">是</el-radio>
+              <el-radio label="2">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="双方违约责任" prop="dutyBreachContract">
+            <el-input
+              v-model="FormData.dutyBreachContract"
+              placeholder="请输入双方违约责任"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -439,7 +503,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="技术邻域分类一级" prop="technicalTypeId">
+          <el-form-item label="技术邻域分类一级" prop="TechnicalTypeId">
             <el-select
               v-model="FormData.technicalTypeId"
               placeholder="请选择技术邻域分类一级"
@@ -507,44 +571,35 @@
           :disabled="true"
           >立即提交</el-button
         >
-        <el-button
-          @click="
-            cancelUpload('FormData');
-            goback();
-          "
-          >重置</el-button
-        >
+        <el-button @click="cancelUpload('FormData')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {
   getRankList,
+  initSubject,
+  initHorizon,
   uploadHorizon,
   getSourceList,
-  getFirstSubjectList,
-  getSubject,
   QuerySecondList,
   QueryEconomicList,
-  getHorizonList,
 } from "../../api";
 export default {
   name: "HorizontallForm",
-  props: {
-    FirstWriterName: String,
-    RankId: Number,
-    RankName: String,
-    goback: { type: Function },
-  },
   data() {
     return {
       submitButton: false,
+      RankId: 2,
+      RankName: "横向项目",
       picList: [], //已上传的文件列表
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
-      teacherList: [], //教师列表「从后端取得」
+      TopicList: [], //课题的列表「从后端取得」
+      TeacherList: [], //教师列表「从后端取得」
       contractList: [], //合同列表「从后端取得」
       entrustList: [], //委托单位列表「从后端取得」
 
@@ -570,16 +625,6 @@ export default {
         subjectNum: "",
         levelId: "",
 
-        //项目描述
-        subjectPlace: "",
-        contractId: "",
-        contractName: "",
-        contractType: "",
-        fundId: "",
-        DutyFreeId: "",
-        dutyBreachContract: "",
-        introduction: "",
-
         //项目经费
         subjectFund: "",
         hardwareFund: "",
@@ -587,30 +632,46 @@ export default {
         staySchoolFund: "",
         outboundFund: "",
 
+        //项目描述
+        subjectPlace: "",
+        introduction: "",
         subjectTime: "",
         startTime: "",
         finishTime: "",
         relyCenterSubject: "",
         entrustPlaceId: "",
 
-        //技术市场信息
+        //合作单位
+        cooperateId: "",
+        contractId: "",
+        fundId: "",
+        contractName: "",
+        contractType: "",
+        contractFund: "",
+        cooperatePrincipal: "",
+        bankName: "",
+        bankAccount: "",
         isDutyFree: "",
+        DutyFreeId: "",
         isPromote: "",
+        dutyBreachContract: "",
+
+        //技术市场信息
         payId: "",
-        SocFirstId: "",
-        SocietyId: "",
         EcoFirstId: "",
         EcoSecondId: "",
         EconomicId: "",
+        SocFirstId: "",
+        SocietyId: "",
         SourceId: "",
-        technicalTypeId: "",
-        nationalEconomyId: "",
-        intellectualPropertyId: "",
+        TechnicalTypeId: "",
+        PropertyId: "",
         subjectFileList: [],
         subjectType: 3,
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
+        //基础信息
         subjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           {
@@ -632,6 +693,30 @@ export default {
         levelId: [
           { required: true, message: "请选择项目级别", trigger: "blur" },
         ],
+
+        //项目经费
+        subjectFund: [
+          { required: true, message: "请输入项目申请经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        softwareFund: [
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        hardwareFund: [
+          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        staySchoolFund: [
+          { required: false, message: "请输入留校经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        outboundFund: [
+          { required: false, message: "请输入外拨经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+
+        //项目描述
         subjectPlace: [
           { required: true, message: "请输入项目地点", trigger: "blur" },
           {
@@ -640,6 +725,41 @@ export default {
             message: "长度在 2 到 20 个字符",
             trigger: "blur",
           },
+        ],
+        introduction: [
+          { required: true, message: "请输入项目简介", trigger: "blur" },
+          {
+            min: 2,
+            max: 200,
+            message: "长度在 2 到 200 个字符",
+            trigger: "blur",
+          },
+        ],
+        subjectTime: [
+          { required: true, message: "请选择项目填报时间", trigger: "blur" },
+        ],
+        startTime: [
+          { required: true, message: "请选择开始时间", trigger: "blur" },
+        ],
+        finishTime: [
+          { required: true, message: "请选择预计结束时间", trigger: "blur" },
+        ],
+        relyCenterSubject: [
+          { required: true, message: "请输入依托项目", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        entrustPlaceId: [
+          { required: true, message: "请选择委托单位", trigger: "blur" },
+        ],
+
+        //合作单位
+        cooperateId: [
+          { required: true, message: "请选择合作单位", trigger: "blur" },
         ],
         contractId: [
           { required: true, message: "请输入合同编号", trigger: "blur" },
@@ -671,8 +791,49 @@ export default {
         contractType: [
           { required: true, message: "请选择合同类型", trigger: "blur" },
         ],
+        contractFund: [
+          { required: true, message: "请输入合同经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        cooperatePrincipal: [
+          { required: true, message: "请输入合作单位负责人", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        bankName: [
+          { required: true, message: "请输入开户银行", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        bankAccount: [
+          { required: true, message: "请输入银行账号", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        isDutyFree: [
+          { required: true, message: "请选择是否减免税", trigger: "blur" },
+        ],
         DutyFreeId: [
           { required: false, message: "请输入减免税号", trigger: "blur" },
+        ],
+        isPromote: [
+          {
+            required: true,
+            message: "请选择是否希望科技处推广",
+            trigger: "blur",
+          },
         ],
         dutyBreachContract: [
           { required: true, message: "请输入违约金", trigger: "blur" },
@@ -683,69 +844,8 @@ export default {
             trigger: "blur",
           },
         ],
-        introduction: [
-          { required: true, message: "请输入项目简介", trigger: "blur" },
-          {
-            min: 2,
-            max: 200,
-            message: "长度在 2 到 200 个字符",
-            trigger: "blur",
-          },
-        ],
 
-        //经费
-        subjectFund: [
-          { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        softwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        hardwareFund: [
-          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        staySchoolFund: [
-          { required: false, message: "请输入留校经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        outboundFund: [
-          { required: false, message: "请输入外拨经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-
-        subjectTime: [
-          { required: true, message: "请选择项目填报时间", trigger: "blur" },
-        ],
-        startTime: [
-          { required: true, message: "请选择开始时间", trigger: "blur" },
-        ],
-        finishTime: [
-          { required: true, message: "请选择预计结束时间", trigger: "blur" },
-        ],
-        relyCenterSubject: [
-          { required: true, message: "请输入依托项目", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-        entrustPlaceId: [
-          { required: true, message: "请选择委托单位", trigger: "blur" },
-        ],
-        isDutyFree: [
-          { required: true, message: "请选择是否减免税", trigger: "blur" },
-        ],
-        isPromote: [
-          {
-            required: true,
-            message: "请选择是否希望科技处推广",
-            trigger: "blur",
-          },
-        ],
+        //技术市场信息
         payId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
         EcoFirstId: [
           {
@@ -781,7 +881,7 @@ export default {
         SourceId: [
           { required: true, message: "请选择计划来源", trigger: "blur" },
         ],
-        technicalTypeId: [
+        TechnicalTypeId: [
           { required: true, message: "请选择技术邻域分类", trigger: "blur" },
         ],
         PropertyId: [
@@ -792,13 +892,16 @@ export default {
       dialogVisible: false, //是否显示预览
     };
   },
+  computed: {
+    ...mapGetters(["name", "username"]),
+  },
   mounted() {
-    this.initRankList();
-    this.initRankList2();
+    this.initHorizon();
+    this.initHorizon2();
   },
   methods: {
     //初始化奖项等级列表
-    initRankList() {
+    initHorizon() {
       let _this = this;
       //初始化项目类别列表
       getRankList()
@@ -808,35 +911,25 @@ export default {
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
-      getSubject()
+      initSubject()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.teacherList = obj2.teacher;
+          this.TopicList = obj2.tpoic;
+          this.TeacherList = obj2.teacher;
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;
         })
         .catch((failResponse) => {});
-      getHorizonList()
+      initHorizon()
         .then((res) => {
           let obj3 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
           this.contractList = obj3.contract;
           this.entrustList = obj3.entrust;
+          this.CooperateList = obj3.cooperate;
           this.TechnicalList = obj3.technical;
           this.PropertyList = obj3.property;
-        })
-        .catch((failResponse) => {});
-    },
-    //更新可供筛选的一级学科列表
-    QuerySubject() {
-      let _this = this;
-      _this.FormData.TypeId = "";
-      let params = new URLSearchParams();
-      params.append("BelongId", this.FormData.BelongId);
-      getFirstSubjectList(params)
-        .then((res) => {
-          _this.TypeList = res;
         })
         .catch((failResponse) => {});
     },
@@ -877,7 +970,7 @@ export default {
         .catch((failResponse) => {});
     },
     //初始化横向来源
-    initRankList2() {
+    initHorizon2() {
       let params = new URLSearchParams();
       params.append("rankId", 2);
       getSourceList(params)
@@ -943,7 +1036,6 @@ export default {
                   type: "success",
                 });
                 _this.cancelUpload("FormData");
-                _this.goback();
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;

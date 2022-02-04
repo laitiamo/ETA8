@@ -35,14 +35,29 @@ const routes = [
         component: () => import("../views/Upload"),
       },
       {
-        path: "subject",
+        path: "record",
         name: "上传成果",
+        component: () => import("../views/TeacherSide/Record"),
+      },
+      {
+        path: "subject",
+        name: "项目申报",
         component: () => import("../views/TeacherSide/Subject"),
       },
       {
-        path: "record",
-        name: "新建记录",
-        component: () => import("../views/TeacherSide/Record"),
+        path:"sponsored",
+        name:"纵向项目",
+        component:()=>import("../components/TeacherSide/SponsoredForm")
+      },
+      {
+        path:"horizon",
+        name:"横向项目",
+        component:()=>import("../components/TeacherSide/HorizontallForm")
+      },
+      {
+        path:"school",
+        name:"校级项目",
+        component:()=>import("../components/TeacherSide/SchoolForm")
       },
       {
         path: "mine",

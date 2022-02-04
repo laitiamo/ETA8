@@ -1,6 +1,6 @@
 {
-  "name": "eta_vue",
-  "version": "0.1.0",
+  "name": "ETA8",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,10 +8,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "echarts": "^4.9.0",
     "element-ui": "^2.4.5",
-    "v-charts": "^1.19.0",
-    "v-charts-v2": "^2.0.9",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
