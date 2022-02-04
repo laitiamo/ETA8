@@ -31,8 +31,7 @@ yarn build
  - 页面局部刷新，提高性能的同时可以带来更良好的用户体验
  - 组件化页面，元素可复用
 #### 改进
- - 适配新角色-学生助理
- - 修复了不能添加大容量图片的BUG
+ - 新增教师端
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
