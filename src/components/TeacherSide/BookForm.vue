@@ -11,13 +11,13 @@
       <el-form-item label="记录类型" class="no-padding">
         <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
-      <el-form-item label="著作名称" prop="awardName">
+      <el-form-item label="著作名称" prop="paperName">
         <el-input
-          v-model="FormData.awardName"
-          placeholder="请输入论文名称"
+          v-model="FormData.paperName"
+          placeholder="请输入著作名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="论文作者（按作者排序）" prop="FirstWriter">
+      <el-form-item label="著作作者（按作者排序）" prop="FirstWriter">
         <el-input
           v-model="FirstWriter"
           style="width:140px"
@@ -53,19 +53,19 @@
         </el-select>
         <el-button @click.prevent="removeDomain(domain)">删除</el-button>
       </el-form-item>
-      <el-form-item label="发表时间" prop="awardTime">
+      <el-form-item label="发表时间" prop="paperTime">
         <el-date-picker
           type="date"
           placeholder="选择日期"
-          v-model="FormData.awardTime"
+          v-model="FormData.paperTime"
           style="width: 100%"
           format="yyyy-MM-dd"
           value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="出版社名称" prop="awardPlace">
+      <el-form-item label="出版社名称" prop="paperPlace">
         <el-input
-          v-model="FormData.awardPlace"
+          v-model="FormData.paperPlace"
           placeholder="请输入出版社名称"
         ></el-input>
       </el-form-item>
@@ -87,7 +87,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="出版社图片" required prop="awardPicList">
+      <el-form-item label="出版社图片" required prop="paperPicList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -136,7 +136,7 @@ export default {
   props: {
     FirstWriter: String,
     paperType: String,
-    awardId: Number,
+    paperId: Number,
     typeId: Number,
     goback: { type: Function },
   },
@@ -153,27 +153,27 @@ export default {
             value: "",
           },
         ],
-        awardName: "",
+        paperName: "",
         rankId: "",
-        awardTime: "",
-        awardPlace: "",
-        awardPicList: [],
+        paperTime: "",
+        paperPlace: "",
+        paperPicList: [],
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
-        awardName: [
+        paperName: [
           { required: true, message: "请输入著作名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
         rankId: [{ required: true, message: "请选择书类", trigger: "change" }],
-        awardTime: [
+        paperTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
-        awardPlace: [
+        paperPlace: [
           { required: true, message: "请输入出版社名称", trigger: "blur" },
           { min: 2, message: "长度需大于两个字符", trigger: "blur" },
         ],
-        awardPicList: [
+        paperPicList: [
           { required: true, message: "请选择著作图片", trigger: "blur" },
         ],
       },
@@ -222,12 +222,12 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.awardPicList;
-          data2upload.append("awardId", this.awardId);
+          let filesList = this.FormData.paperPicList;
+          data2upload.append("awardId", this.paperId);
           data2upload.append("typeId", this.typeId);
-          data2upload.append("paperName", this.FormData.awardName);
-          data2upload.append("paperTime", this.FormData.awardTime);
-          data2upload.append("paperPlace", this.FormData.awardPlace);
+          data2upload.append("paperName", this.FormData.paperName);
+          data2upload.append("paperTime", this.FormData.paperTime);
+          data2upload.append("paperPlace", this.FormData.paperPlace);
           data2upload.append("rankId", this.FormData.rankId);
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {
@@ -305,7 +305,7 @@ export default {
     //处理已上传图片与表单内容的同步
     handleChange(file, fileList) {
       //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.awardPicList = fileList;
+      this.FormData.paperPicList = fileList;
     },
     //处理已上传的图片的删除
     handleRemove(file, fileList) {

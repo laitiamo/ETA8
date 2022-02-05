@@ -5,15 +5,15 @@
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-select
-            v-model="form2Query.rankId"
+            v-model="form2Query.typeId"
             placeholder="全部等级"
             style="width:140px"
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
-              v-for="opt in rankList"
+              v-for="opt in TypeList"
               :key="opt.id"
-              :label="opt.rankName"
+              :label="opt.typeName"
               :value="opt.id"
             ></el-option>
           </el-select>
@@ -80,8 +80,8 @@
       >
       </el-pagination>
     </div>
-    <StuDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
-    </StuDetail>
+    <PaperDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
+    </PaperDetail>
     <el-row type="flex" justify="center">
       <el-button
         v-show="ifShowDetail"
@@ -103,17 +103,18 @@
 
 <script>
 import {
-  getReviewAwardList,
-  getStuDetail,
-  initReview,
-  passAward,
-  notPassAward,
+  getReviewRecordList,
+  getTypeList,
+  getPaperDetail,
+  initQueryPaper,
+  passRecord,
+  notPassRecord,
 } from "../../api";
-import StuDetail from "../../components/StuDetail.vue";
+import PaperDetail from "../../components/TeacherSide/PaperDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review",
-  components: { StuDetail },
+  name: "Review-Record",
+  components: { PaperDetail },
   computed: {},
   data() {
     return {
@@ -124,14 +125,22 @@ export default {
       ifShowDetail: false,
       // 数据列
       Columns: [
-        { name: "学号", value: "username", width: "120", ifShow: false },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "", ifShow: true },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: true },
+        { name: "成果名称", value: "paperName", width: "200", ifShow: true },
+        { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
+        { name: "成果等级", value: "rankName", width: "120", ifShow: true },
+        { name: "审核状态", value: "reviewName", width: "120", ifShow: true },
+        {
+          name: "成果上传时间",
+          value: "createAt",
+          width: "200",
+          ifShow: false,
+        },
+        {
+          name: "成果记录时间",
+          value: "paperTime",
+          width: "200",
+          ifShow: true,
+        },
       ],
       detailData: {},
       currentPage: 1,
@@ -142,19 +151,16 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
-        gradeId: "", //年级
-        majorId: "", //专业
-        classId: "", //班级
         keyUsername: "", //用户id
         keyName: "", //姓名
-        rankId: "", //获奖等级
-        keyAwardName: "", //奖项名
+        typeId: "", //成果类型
+        rankId: "", //成果记录等级
+        keyPaperName: "", //成果名
+        keyPaperPlace: "", //成果单位
       },
       //下拉栏内容列表
-      gradeList: [],
-      majorList: [],
-      classList: [],
-      rankList: [],
+      rankList1: [],
+      rankList2: [],
     };
   },
   mounted() {
@@ -165,44 +171,43 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
       this.Columns = [
-        { name: "学号", value: "username", width: "120", ifShow: false },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
+        { name: "成果名称", value: "paperName", width: "200", ifShow: true },
+        { name: "所属单位", value: "paperPlace", width: "auto", ifShow: false },
+        { name: "成果等级", value: "rankName", width: "120", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
+        { name: "审核状态", value: "reviewName", width: "120", ifShow: false },
+        {
+          name: "成果记录时间",
+          value: "paperTime",
+          width: "200",
+          ifShow: true,
+        },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initReview()
+      initQueryPaper()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.gradeList = obj.grade;
-          this.majorList = obj.major;
-          this.rankList = obj.rank;
+          this.rankList1 = obj.rank;
         })
         .catch((failResponse) => {});
-      this.ifButtonTrue = false;
     },
-    //更新可供筛选的班级列表
-    QueryClass() {
+    //更新可供筛选的成果列表
+    QueryPaper() {
       let _this = this;
-      //closeDebug console.log("选中的筛选值","年级：",this.form2Query.gradeId,"专业",this.form2Query.majorId,"班级",this.form2Query.classId);
+      _this.form2Query.rankId = "";
       let params = new URLSearchParams();
-      params.append("gradeId", this.form2Query.gradeId);
-      params.append("majorId", this.form2Query.majorId);
-      getClassList(params)
+      params.append("typeId", this.form2Query.typeId);
+      getTypeList(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取班级列表---------------");
+          //closeDebug console.log("-----------获取类型列表---------------");
           //closeDebug console.log(res);
-          _this.classList = res;
+          _this.rankList2 = res;
         })
         .catch((failResponse) => {});
     },
@@ -229,7 +234,7 @@ export default {
       params.append("id", row.id);
       this.reviewId = row.id;
       //console.log(this.reviewId, this.reviewer);
-      getStuDetail(params)
+      getPaperDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人奖项详情---------------");
           let obj = JSON.parse(res.msg);
@@ -246,9 +251,9 @@ export default {
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "1");
+      params.append("reviewType", "3");
       let _this = this;
-      passAward(params)
+      passRecord(params)
         .then((res) => {
           //closeDebug console.log("-----------通过奖项---------------");
           if (res.code === 0) {
@@ -273,9 +278,9 @@ export default {
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "2");
+      params.append("reviewType", "4");
       let _this = this;
-      notPassAward(params)
+      notPassRecord(params)
         .then((res) => {
           //closeDebug console.log("-----------驳回奖项---------------");
           if (res.code === 0) {
@@ -307,16 +312,13 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("gradeId", this.form2Query.gradeId); //年级
-      params.append("majorId", this.form2Query.majorId); //专业
-      params.append("classId", this.form2Query.classId); //班级
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
       params.append("order", this.orderMode); //奖项名
       params.append("field", this.orderField); //奖项名
-      getReviewAwardList(params)
+      getReviewRecordList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

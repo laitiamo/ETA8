@@ -5,7 +5,7 @@
       <el-form-item>
         <el-input v-model="form2Query.key" placeholder="搜索奖项"></el-input>
       </el-form-item>
-      <template v-if="roleId !== 3">
+      <template v-if="roleId !== 3 && roleId !== 7">
         <el-form-item>
           <el-select
             v-model="form2Query.type"

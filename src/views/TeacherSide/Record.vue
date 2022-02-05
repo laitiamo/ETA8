@@ -40,7 +40,7 @@
     <PaperForm
       :FirstWriter="name"
       :paperType="awardSelected"
-      :awardId="awardIdSelected"
+      :paperId="awardIdSelected"
       :typeId="1"
       :goback="goBack"
       v-show="ifSelected1"
@@ -57,7 +57,7 @@
     <BookForm
       :FirstWriter="name"
       :paperType="awardSelected"
-      :awardId="awardIdSelected"
+      :paperId="awardIdSelected"
       :typeId="2"
       :goback="goBack"
       v-show="ifSelected3"

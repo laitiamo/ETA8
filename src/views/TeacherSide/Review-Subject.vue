@@ -136,14 +136,14 @@
 import {
   getSubjectDetail,
   getReviewSubjectList,
-  initReviewSubject,
+  initQuerySubject,
   passSubject,
   notPassSubject,
 } from "../../api";
 import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review",
+  name: "Review-Subject",
   components: { SubjectDetail },
   computed: {},
   data() {
@@ -244,26 +244,11 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.rank1;
-          this.rankList2 = obj.rank2;
+          this.rankList1 = obj.s_rank;
+          this.rankList2 = obj.rank;
         })
         .catch((failResponse) => {});
       this.ifButtonTrue = false;
-    },
-    //更新可供筛选的班级列表
-    QueryClass() {
-      let _this = this;
-      //closeDebug console.log("选中的筛选值","年级：",this.form2Query.gradeId,"专业",this.form2Query.majorId,"班级",this.form2Query.classId);
-      let params = new URLSearchParams();
-      params.append("gradeId", this.form2Query.gradeId);
-      params.append("majorId", this.form2Query.majorId);
-      getClassList(params)
-        .then((res) => {
-          //closeDebug console.log("-----------获取班级列表---------------");
-          //closeDebug console.log(res);
-          _this.classList = res;
-        })
-        .catch((failResponse) => {});
     },
     //数据格式化(还没用到)
     formatter(row, column) {
@@ -288,7 +273,7 @@ export default {
       params.append("id", row.id);
       this.reviewId = row.id;
       //console.log(this.reviewId, this.reviewer);
-      getStuDetail(params)
+      getSubjectDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人奖项详情---------------");
           let obj = JSON.parse(res.msg);
@@ -307,7 +292,7 @@ export default {
       params.append("reviewer", this.reviewer);
       params.append("reviewType", "1");
       let _this = this;
-      passAward(params)
+      passSubject(params)
         .then((res) => {
           //closeDebug console.log("-----------通过奖项---------------");
           if (res.code === 0) {
@@ -334,7 +319,7 @@ export default {
       params.append("reviewer", this.reviewer);
       params.append("reviewType", "2");
       let _this = this;
-      notPassAward(params)
+      notPassSubject(params)
         .then((res) => {
           //closeDebug console.log("-----------驳回奖项---------------");
           if (res.code === 0) {
@@ -366,16 +351,14 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("gradeId", this.form2Query.gradeId); //年级
-      params.append("majorId", this.form2Query.majorId); //专业
-      params.append("classId", this.form2Query.classId); //班级
-      params.append("keyUsername", this.form2Query.keyUsername); //用户id
-      params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //获奖等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
-      params.append("order", this.orderMode); //奖项名
-      params.append("field", this.orderField); //奖项名
-      getReviewAwardList(params)
+      params.append("rankId", this.form2Query.rankId); //项目记录等级
+      params.append("levelId", this.form2Query.levelId); //项目记录等级
+      params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+      params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+      params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+      params.append("order", this.orderMode);
+      params.append("field", this.orderField);
+      getReviewSubjectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

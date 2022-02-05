@@ -30,11 +30,6 @@
           <el-menu-item index="/eta/subject" v-if="roleId !== 5 && roleId !== 6"
             >项目申报</el-menu-item
           >
-          <el-menu-item
-            v-if="roleId === 1 || roleId === 3 || roleId === 6 || roleId === 7"
-            index="/eta/review"
-            >奖项审核</el-menu-item
-          >
         </el-submenu>
         <template
           v-if="roleId === 1 || roleId === 3 || roleId === 6 || roleId === 7"
@@ -93,13 +88,13 @@
               index="/eta/manage-stu"
               >学生管理</el-menu-item
             >
-            <el-menu-item v-if="roleId == 1" index="/eta/manage-tea"
+            <el-menu-item v-if="roleId == 1 || roleId === 7" index="/eta/manage-tea"
               >教师管理</el-menu-item
             >
             <el-menu-item v-if="roleId == 1" index="/eta/manage-class"
               >班级管理</el-menu-item
             >
-            <el-menu-item v-if="roleId !== 2 && roleId !== 7" index="/eta/award"
+            <el-menu-item v-if="roleId !== 2" index="/eta/award"
               >奖项管理</el-menu-item
             >
           </el-submenu>
@@ -221,13 +216,6 @@
                 index="/eta/subject"
                 v-if="roleId !== 5 && roleId !== 6"
                 >项目申报</el-menu-item
-              >
-              <el-menu-item
-                v-if="
-                  roleId === 1 || roleId === 3 || roleId === 6 || roleId === 7
-                "
-                index="/eta/review"
-                >奖项审核</el-menu-item
               >
             </el-submenu>
             <template

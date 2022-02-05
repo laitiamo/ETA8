@@ -92,8 +92,7 @@
           :span="16"
           :xs="24"
           v-if="detailData.review == '未结项'"
-          >项目成果：{{ detailData.reviewAt
-          }}<el-button @click="UploadAwards()">成果选择</el-button></el-col
+          >项目成果：</el-col
         >
       </el-row>
     </el-card>

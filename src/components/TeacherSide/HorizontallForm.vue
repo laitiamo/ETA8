@@ -27,14 +27,14 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="levelName">
+          <el-form-item label="项目类别" prop="RankName">
             <el-input v-model="RankName" readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="levelId">
+          <el-form-item label="项目等级" prop="rankId">
             <el-select
-              v-model="FormData.levelId"
+              v-model="FormData.rankId"
               placeholder="请选择项目等级"
               style="display: block"
             >
@@ -503,7 +503,7 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="技术邻域分类一级" prop="TechnicalTypeId">
+          <el-form-item label="技术邻域分类一级" prop="TechnicalId">
             <el-select
               v-model="FormData.technicalTypeId"
               placeholder="请选择技术邻域分类一级"
@@ -593,7 +593,7 @@ export default {
   data() {
     return {
       submitButton: false,
-      RankId: 2,
+      levelId: 2,
       RankName: "横向项目",
       picList: [], //已上传的文件列表
       fileList: [], //已上传的文件列表
@@ -623,7 +623,7 @@ export default {
         ],
         subjectName: "",
         subjectNum: "",
-        levelId: "",
+        rankId: "",
 
         //项目经费
         subjectFund: "",
@@ -664,11 +664,10 @@ export default {
         SocFirstId: "",
         SocietyId: "",
         SourceId: "",
-        TechnicalTypeId: "",
+        TechnicalId: "",
         PropertyId: "",
 
         subjectFileList: [],
-        subjectType: 3,
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
@@ -691,8 +690,8 @@ export default {
             trigger: "blur",
           },
         ],
-        levelId: [
-          { required: true, message: "请选择项目级别", trigger: "blur" },
+        rankId: [
+          { required: true, message: "请选择项目等级", trigger: "change" },
         ],
 
         //项目经费
@@ -882,7 +881,7 @@ export default {
         SourceId: [
           { required: true, message: "请选择计划来源", trigger: "blur" },
         ],
-        TechnicalTypeId: [
+        TechnicalId: [
           { required: true, message: "请选择技术邻域分类", trigger: "blur" },
         ],
         PropertyId: [
@@ -973,7 +972,7 @@ export default {
     //初始化横向来源
     initHorizon2() {
       let params = new URLSearchParams();
-      params.append("rankId", 2);
+      params.append("levelId", this.levelId);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
@@ -1001,31 +1000,65 @@ export default {
           let filesList = this.FormData.subjectFileList;
 
           //上传项目基础信息
-          data2upload.append("subjectId", 13);
           data2upload.append("subjectNum", this.FormData.subjectNum);
           data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
-          data2upload.append("subjectTime", this.FormData.subjectTime);
-          data2upload.append("finishTime", this.FormData.finishTime);
-          data2upload.append("subjectPlace", this.FormData.subjectPlace);
-          data2upload.append("rankId", this.RankId);
-          data2upload.append("levelId", this.FormData.levelId);
+          data2upload.append("rankId", this.FormData.rankId);
+          data2upload.append("levelId", this.levelId);
           data2upload.append("subjectFund", this.FormData.subjectFund);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
-          //横向项目表单
+          //项目描述
+          data2upload.append("subjectPlace", this.FormData.subjectPlace);
+          data2upload.append("introduction", this.FormData.introduction);
+          data2upload.append("subjectTime", this.FormData.subjectTime);
+          data2upload.append("startTime", this.FormData.startTime);
+          data2upload.append("FinishTime", this.FormData.FinishTime);
+          data2upload.append(
+            "relyCenterSubject",
+            this.FormData.relyCenterSubject
+          );
+          data2upload.append("entrustPlaceId", this.FormData.entrustPlaceId);
+
+          //合作单位表单
+          data2upload.append("cooperateId", this.FormData.cooperateId);
           data2upload.append("contractId", this.FormData.contractId);
+          data2upload.append("fundId", this.FormData.fundId);
           data2upload.append("contractName", this.FormData.contractName);
           data2upload.append("contractType", this.FormData.contractType);
+          data2upload.append(
+            "cooperatePrincipal",
+            this.FormData.cooperatePrincipal
+          );
+          data2upload.append("bankName", this.FormData.bankName);
+          data2upload.append("bankAccount", this.FormData.bankAccount);
+          data2upload.append("isDutyFree", this.FormData.isDutyFree);
+          data2upload.append("DutyFreeId", this.FormData.DutyFreeId);
+          data2upload.append("isPromote", this.FormData.isPromote);
+          data2upload.append(
+            "dutyBreachContract",
+            this.FormData.dutyBreachContract
+          );
+
+          //技术市场信息
+          data2upload.append("payId", this.FormData.payId);
+          data2upload.append("EcoFirstId", this.FormData.EcoFirstId);
+          data2upload.append("EcoSecondId", this.FormData.EcoSecondId);
+          data2upload.append("EconomicId", this.FormData.EconomicId);
+          data2upload.append("SocFirstId", this.FormData.SocFirstId);
+          data2upload.append("SocietyId", this.FormData.SocietyId);
+          data2upload.append("SourceId", this.FormData.SourceId);
+          data2upload.append("TechnicalId", this.FormData.TechnicalId);
+          data2upload.append("PropertyId", this.FormData.PropertyId);
 
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {
             data2upload.append("file", filesList[i].raw, filesList[i].raw.name);
           }
 
-          uploadSchool(data2upload)
+          uploadHorizon(data2upload)
             .then((res) => {
               //closeDebug console.log("-----------表单提交---------------");
               //closeDebug console.log("服务器返回值：", res);

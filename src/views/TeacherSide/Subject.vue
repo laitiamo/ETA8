@@ -93,7 +93,6 @@ export default {
     //处理选中，隐藏奖项列表，显示提交表单
     handleEdit(index, row) {
       //closeDebug console.log("选中了", index, row);\
-      this.rankSelected = row.rankName;
       this.rankIdSelected = row.id;
       switch (this.rankIdSelected) {
         case 1:

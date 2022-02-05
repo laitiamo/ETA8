@@ -3,7 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.uploadStuTemplate = exports.getStuTemplate = exports.uploadTeaTemplate = exports.getTeaTemplate = exports.uploadAwardTemplate = exports.getAwardTemplate = exports.setAssistant = exports.delClass = exports.getInsClassList = exports.setRole = exports.updateTea = exports.delTea = exports.resetTeaPass = exports.getTeaList = exports.initManageClass = exports.initManageTea = exports.updateStu = exports.delStu = exports.resetStuPass = exports.getStuList = exports.initManageStu = exports.addAward = exports.delAward = exports.updateAwardName = exports.getAllAwardList = exports.getInformList = exports.delInform = exports.addInform = exports.getAwardShowList = exports.delAwardShow = exports.addAwardShow = exports.notPassAward = exports.passAward = exports.getReviewAwardList = exports.initReview = exports.delTeaSubject = exports.delTeaPaper = exports.delTeaAward = exports.exportTeaSubjectZIP = exports.exportTeaPaperZIP = exports.exportTeaAwardZIP = exports.exportTeaSubjectXLS = exports.exportTeaPaperXLS = exports.exportTeaAwardXLS = exports.getTeaSubjectList = exports.getTeaPaperList = exports.getTeaAwardList = exports.getPerSubjectList = exports.getSubjectList = exports.initQuerySubject = exports.initQueryPaper = exports.initQueryTea = exports.getNewClassList = exports.delLog = exports.getLogList = exports.initQueryLog = exports.updateAwardImg = exports.delStuAward = exports.delMineAward = exports.getClassList = exports.exportStuAwardZIP = exports.exportStuAwardXLS = exports.getStuAwardList = exports.initQueryStu = exports.updatePass = exports.uploadAward = exports.uploadHorizon = exports.uploadSchool = exports.SubjectSelect = exports.getTeacherPaperList = exports.getAwardList = exports.uploadPaper = exports.getTeacherList = exports.getPaperList = exports.initSponsored = exports.initHorizon = exports.initSchool = exports.initSubject = exports.getSourceList = exports.getFirstSubjectList = exports.getTypeList = exports.QueryEconomicList = exports.QuerySecondList = exports.getRankList = exports.getSubjectDetail = exports.getPaperDetail = exports.getTeaDetail = exports.getStuDetail = exports.getMySubjectList = exports.getMyPaperList = exports.getMyAwardList = exports.initDetail = exports.initHome = exports.getImage = exports.logout = exports.checkState = exports.getCaptcha = exports.login = void 0;
+exports.getAwardTemplate = exports.setAssistant = exports.delClass = exports.getInsClassList = exports.setRole = exports.updateTea = exports.delTea = exports.resetTeaPass = exports.getTeaList = exports.initManageClass = exports.initManageTea = exports.updateStu = exports.delStu = exports.resetStuPass = exports.getStuList = exports.initManageStu = exports.addAward = exports.delAward = exports.updateAwardName = exports.getAllAwardList = exports.getInformList = exports.delInform = exports.addInform = exports.getAwardShowList = exports.delAwardShow = exports.addAwardShow = exports.notPassSubject = exports.passSubject = exports.notPassRecord = exports.passRecord = exports.notPassAward = exports.passAward = exports.getReviewSubjectList = exports.getReviewRecordList = exports.getReviewAwardList = exports.initRecordReview = exports.initReview = exports.delTeaSubject = exports.delTeaPaper = exports.delTeaAward = exports.exportTeaSubjectZIP = exports.exportTeaPaperZIP = exports.exportTeaAwardZIP = exports.exportTeaSubjectXLS = exports.exportTeaPaperXLS = exports.exportTeaAwardXLS = exports.getTeaSubjectList = exports.getTeaPaperList = exports.getTeaAwardList = exports.getPerSubjectList = exports.getSubjectList = exports.initQuerySubject = exports.initQueryPaper = exports.initQueryTea = exports.getNewClassList = exports.delLog = exports.getLogList = exports.initQueryLog = exports.updateAwardImg = exports.delStuAward = exports.delMineAward = exports.getClassList = exports.exportStuAwardZIP = exports.exportStuAwardXLS = exports.getStuAwardList = exports.initQueryStu = exports.updatePass = exports.uploadAward = exports.uploadHorizon = exports.uploadSchool = exports.SubjectSelect = exports.getTeacherPaperList = exports.getAwardList = exports.uploadPaper = exports.getTeacherList = exports.getPaperList = exports.initSponsored = exports.initHorizon = exports.initSchool = exports.initSubject = exports.getSourceList = exports.getFirstSubjectList = exports.getTypeList = exports.QueryEconomicList = exports.QuerySecondList = exports.getRankList = exports.getSubjectDetail = exports.getPaperDetail = exports.getTeaDetail = exports.getStuDetail = exports.getMySubjectList = exports.getMyPaperList = exports.getMyAwardList = exports.initDetail = exports.initHome = exports.getImage = exports.logout = exports.checkState = exports.getCaptcha = exports.login = void 0;
+exports.uploadStuTemplate = exports.getStuTemplate = exports.uploadTeaTemplate = exports.getTeaTemplate = exports.uploadAwardTemplate = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -410,7 +411,7 @@ var getAwardList = function getAwardList(params) {
   return (0, _http.get)("eta8/upload/listAward", params);
 };
 /**
- * 获取可上传奖项列表（GET）
+ * 获取可上传成果列表（GET）
  * 需传入的参数
  * limit：每页的记录条数
  * page：当前页码
@@ -425,7 +426,7 @@ var getTeacherPaperList = function getTeacherPaperList(params) {
   return (0, _http.get)("eta8/record/listPaper", params);
 };
 /**
- * 获取可上传奖项列表（GET）
+ * 获取可上传项目列表（GET）
  * 需传入的参数
  * limit：每页的记录条数
  * page：当前页码
@@ -452,14 +453,7 @@ var uploadSchool = function uploadSchool(data) {
   return (0, _http.postFile)("eta8/subject/uploadSchool", data);
 };
 /**
- * 上传项目与（POST）
- * 需传入的参数
- * awardId: 奖项ID
- * awardName: 奖项名
- * rankId: 奖项等级ID
- * awardTime: 2021-02-04 时间
- * awardPlace: 获奖级别
- * file: (二进制)
+ * 上传横向项目（POST）
  * @param {FormData} data
  * @returns
  */
@@ -996,6 +990,18 @@ var initReview = function initReview() {
   return (0, _http.get)("eta8/review");
 };
 /**
+ * 初始化查询参数（GET）
+ * 返回的参数有
+ * @returns
+ */
+
+
+exports.initReview = initReview;
+
+var initRecordReview = function initRecordReview() {
+  return (0, _http.get)("eta8/record-review");
+};
+/**
  * 获取未审核的奖项列表（GET）
  * 需传入的参数
  * limit: 每页的记录条数
@@ -1012,10 +1018,48 @@ var initReview = function initReview() {
  */
 
 
-exports.initReview = initReview;
+exports.initRecordReview = initRecordReview;
 
 var getReviewAwardList = function getReviewAwardList(params) {
   return (0, _http.get)("eta8/review/list", params);
+};
+/**
+ * 获取未审核的成果列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 学号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+
+
+exports.getReviewAwardList = getReviewAwardList;
+
+var getReviewRecordList = function getReviewRecordList(params) {
+  return (0, _http.get)("eta8/record-review/listPaper", params);
+};
+/**
+* 获取未审核的项目列表（GET）
+* 需传入的参数
+* limit: 每页的记录条数
+* page: 当前页码
+* rankId: 获奖等级id（可选）
+* keyUsername: 学号（可选）
+* keyName: 姓名（可选）
+* keyAwardName: 奖项名（可选）
+* @param {URLSearchParams} params
+* @returns
+*/
+
+
+exports.getReviewRecordList = getReviewRecordList;
+
+var getReviewSubjectList = function getReviewSubjectList(params) {
+  return (0, _http.get)("eta8/record-review/listSubject", params);
 };
 /**
  * 审核通过学生奖项（GET）
@@ -1026,7 +1070,7 @@ var getReviewAwardList = function getReviewAwardList(params) {
  */
 
 
-exports.getReviewAwardList = getReviewAwardList;
+exports.getReviewSubjectList = getReviewSubjectList;
 
 var passAward = function passAward(params) {
   return (0, _http.get)("eta8/review/pass", params);
@@ -1044,6 +1088,62 @@ exports.passAward = passAward;
 
 var notPassAward = function notPassAward(params) {
   return (0, _http.get)("eta8/review/notPass", params);
+};
+/**
+ * 审核通过教师成果（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+
+
+exports.notPassAward = notPassAward;
+
+var passRecord = function passRecord(params) {
+  return (0, _http.get)("eta8/record-review/passRecord", params);
+};
+/**
+ * 审核驳回学生奖项（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+
+
+exports.passRecord = passRecord;
+
+var notPassRecord = function notPassRecord(params) {
+  return (0, _http.get)("eta8/record-review/notPassRecord", params);
+};
+/**
+* 审核通过教师项目（GET）
+* 需传入的参数
+* id：奖项id
+* @param {URLSearchParams} params
+* @returns
+*/
+
+
+exports.notPassRecord = notPassRecord;
+
+var passSubject = function passSubject(params) {
+  return (0, _http.get)("eta8/record-review/passSubject", params);
+};
+/**
+ * 审核驳回学生项目（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+
+
+exports.passSubject = passSubject;
+
+var notPassSubject = function notPassSubject(params) {
+  return (0, _http.get)("eta8/record-review/notPassSubject", params);
 }; // =====================================================================> 奖项展示组件 API
 
 /**
@@ -1056,7 +1156,7 @@ var notPassAward = function notPassAward(params) {
  */
 
 
-exports.notPassAward = notPassAward;
+exports.notPassSubject = notPassSubject;
 
 var addAwardShow = function addAwardShow(params) {
   return (0, _http.post)("eta8/home/imageadd", params);

@@ -267,7 +267,7 @@ export const uploadPaper = (data) => postFile(`eta8/record/uploadpaper`, data);
 export const getAwardList = (params) => get(`eta8/upload/listAward`, params);
 
 /**
- * 获取可上传奖项列表（GET）
+ * 获取可上传成果列表（GET）
  * 需传入的参数
  * limit：每页的记录条数
  * page：当前页码
@@ -278,7 +278,7 @@ export const getTeacherPaperList = (params) =>
   get(`eta8/record/listPaper`, params);
 
 /**
- * 获取可上传奖项列表（GET）
+ * 获取可上传项目列表（GET）
  * 需传入的参数
  * limit：每页的记录条数
  * page：当前页码
@@ -297,14 +297,7 @@ export const uploadSchool = (data) =>
   postFile(`eta8/subject/uploadSchool`, data);
 
 /**
- * 上传项目与（POST）
- * 需传入的参数
- * awardId: 奖项ID
- * awardName: 奖项名
- * rankId: 奖项等级ID
- * awardTime: 2021-02-04 时间
- * awardPlace: 获奖级别
- * file: (二进制)
+ * 上传横向项目（POST）
  * @param {FormData} data
  * @returns
  */
@@ -689,6 +682,13 @@ export const delTeaSubject = (params) => get(`eta8/query-subject/del`, params);
 export const initReview = () => get(`eta8/review`);
 
 /**
+ * 初始化查询参数（GET）
+ * 返回的参数有
+ * @returns
+ */
+ export const initRecordReview = () => get(`eta8/record-review`);
+
+/**
  * 获取未审核的奖项列表（GET）
  * 需传入的参数
  * limit: 每页的记录条数
@@ -704,6 +704,34 @@ export const initReview = () => get(`eta8/review`);
  * @returns
  */
 export const getReviewAwardList = (params) => get(`eta8/review/list`, params);
+
+/**
+ * 获取未审核的成果列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 学号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+ export const getReviewRecordList = (params) => get(`eta8/record-review/listPaper`, params);
+
+ /**
+ * 获取未审核的项目列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 学号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+  export const getReviewSubjectList = (params) => get(`eta8/record-review/listSubject`, params);
 
 /**
  * 审核通过学生奖项（GET）
@@ -723,6 +751,41 @@ export const passAward = (params) => get(`eta8/review/pass`, params);
  */
 export const notPassAward = (params) => get(`eta8/review/notPass`, params);
 
+/**
+ * 审核通过教师成果（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+ export const passRecord = (params) => get(`eta8/record-review/passRecord`, params);
+
+ /**
+  * 审核驳回学生奖项（GET）
+  * 需传入的参数
+  * id：奖项id
+  * @param {URLSearchParams} params
+  * @returns
+  */
+ export const notPassRecord = (params) => get(`eta8/record-review/notPassRecord`, params);
+
+ /**
+ * 审核通过教师项目（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+  export const passSubject = (params) => get(`eta8/record-review/passSubject`, params);
+
+  /**
+   * 审核驳回学生项目（GET）
+   * 需传入的参数
+   * id：奖项id
+   * @param {URLSearchParams} params
+   * @returns
+   */
+  export const notPassSubject = (params) => get(`eta8/record-review/notPassSubject`, params);
 // =====================================================================> 奖项展示组件 API
 /**
  * 添加展示的奖项（POST）

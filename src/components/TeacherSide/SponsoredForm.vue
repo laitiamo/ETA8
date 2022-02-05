@@ -27,14 +27,14 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="levelName">
+          <el-form-item label="项目类别" prop="RankName">
             <el-input v-model="RankName" readonly></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="levelId">
+          <el-form-item label="项目等级" prop="rankId">
             <el-select
-              v-model="FormData.levelId"
+              v-model="FormData.rankId"
               placeholder="请选择项目等级"
               style="display: block"
             >
@@ -722,7 +722,7 @@ export default {
   data() {
     return {
       submitButton: false,
-      RankId: 1,
+      levelId: 1,
       RankName: "纵向项目",
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
@@ -753,7 +753,7 @@ export default {
         ],
         subjectName: "",
         subjectNum: "",
-        levelId: "",
+        rankId: "",
 
         //项目经费
         subjectFund: "",
@@ -809,7 +809,6 @@ export default {
         PropertyId: "",
 
         subjectFileList: [],
-        subjectType: 1,
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
@@ -832,8 +831,8 @@ export default {
             trigger: "blur",
           },
         ],
-        levelId: [
-          { required: true, message: "请选择项目级别", trigger: "blur" },
+        rankId: [
+          { required: true, message: "请选择项目等级", trigger: "change" },
         ],
 
         //项目经费
@@ -1163,7 +1162,7 @@ export default {
       let _this = this;
       //初始化校级项目来源
       let params = new URLSearchParams();
-      params.append("rankId", this.RankId);
+      params.append("levelId", this.levelId);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
@@ -1189,29 +1188,22 @@ export default {
           let data2upload = new FormData();
           //获取实际input组件的文件
           let filesList = this.FormData.subjectFileList;
-          data2upload.append("subjectId", 13);
           data2upload.append("subjectNum", this.FormData.subjectNum);
+          data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectTime", this.FormData.subjectTime);
+          data2upload.append("startTime", this.FormData.startTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
           data2upload.append("subjectPlace", this.FormData.subjectPlace);
-          data2upload.append("rankId", this.RankId);
-          data2upload.append("levelId", this.FormData.levelId);
-          data2upload.append("typeId", this.FormData.typeId);
+          data2upload.append("rankId", this.FormData.rankId);
+          data2upload.append("levelId", this.levelId);
           data2upload.append("subjectFund", this.FormData.subjectFund);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
-
-          // 联系方式
-          data2upload.append("tel", this.tel);
-          data2upload.append("email", this.email);
           //校级项目表单
-          data2upload.append(
-            "subject3Economic",
-            this.FormData.subject3Economic
-          );
-          data2upload.append("subject3Society", this.FormData.subject3Society);
+          data2upload.append("EconomicId", this.FormData.EconomicId);
+          data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("SourceId", this.FormData.SourceId);
           data2upload.append("typeId", this.FormData.TypeId);
           data2upload.append("cooperateId", this.FormData.cooperateId);
@@ -1221,7 +1213,7 @@ export default {
             data2upload.append("file", filesList[i].raw, filesList[i].raw.name);
           }
 
-          uploadSchool(data2upload)
+          uploadSponsored(data2upload)
             .then((res) => {
               //closeDebug console.log("-----------表单提交---------------");
               //closeDebug console.log("服务器返回值：", res);
