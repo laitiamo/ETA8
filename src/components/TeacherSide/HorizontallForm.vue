@@ -254,17 +254,17 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同编号" prop="contractId">
+          <el-form-item label="合同编号" prop="contractNum">
             <el-input
-              v-model="FormData.contractId"
+              v-model="FormData.contractNum"
               placeholder="请输入合同编号"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="经费号" prop="fundId">
+          <el-form-item label="经费号" prop="fundNum">
             <el-input
-              v-model="FormData.fundId"
+              v-model="FormData.fundNum"
               placeholder="请输入经费号"
             ></el-input>
           </el-form-item>
@@ -278,9 +278,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同类别" prop="contractType">
+          <el-form-item label="合同类别" prop="contractId">
             <el-select
-              v-model="FormData.contractType"
+              v-model="FormData.contractId"
               placeholder="请选择合同类别"
               style="display: block"
             >
@@ -505,7 +505,7 @@
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="技术邻域分类一级" prop="TechnicalId">
             <el-select
-              v-model="FormData.technicalTypeId"
+              v-model="FormData.TechnicalId"
               placeholder="请选择技术邻域分类一级"
               style="display: block"
             >
@@ -554,7 +554,6 @@
           :file-list="fileList"
           :multiple="true"
           list-type="text"
-          accept=".PDF"
           :limit="5"
         >
           <el-button size="small">上传附件</el-button>
@@ -568,7 +567,6 @@
           type="primary"
           @click="submitForm('FormData')"
           :loading="submitButton"
-          :disabled="true"
           >立即提交</el-button
         >
         <el-button @click="cancelUpload('FormData')">重置</el-button>
@@ -643,10 +641,10 @@ export default {
 
         //合作单位
         cooperateId: "",
-        contractId: "",
-        fundId: "",
+        contractNum: "",
+        fundNum: "",
         contractName: "",
-        contractType: "",
+        contractId: "",
         contractFund: "",
         cooperatePrincipal: "",
         bankName: "",
@@ -761,7 +759,7 @@ export default {
         cooperateId: [
           { required: true, message: "请选择合作单位", trigger: "blur" },
         ],
-        contractId: [
+        contractNum: [
           { required: true, message: "请输入合同编号", trigger: "blur" },
           {
             min: 2,
@@ -770,7 +768,7 @@ export default {
             trigger: "blur",
           },
         ],
-        fundId: [
+        fundNum: [
           { required: true, message: "请输入经费编号", trigger: "blur" },
           {
             min: 2,
@@ -788,7 +786,7 @@ export default {
             trigger: "blur",
           },
         ],
-        contractType: [
+        contractId: [
           { required: true, message: "请选择合同类型", trigger: "blur" },
         ],
         contractFund: [
@@ -1015,7 +1013,7 @@ export default {
           data2upload.append("introduction", this.FormData.introduction);
           data2upload.append("subjectTime", this.FormData.subjectTime);
           data2upload.append("startTime", this.FormData.startTime);
-          data2upload.append("FinishTime", this.FormData.FinishTime);
+          data2upload.append("finishTime", this.FormData.finishTime);
           data2upload.append(
             "relyCenterSubject",
             this.FormData.relyCenterSubject
@@ -1024,10 +1022,10 @@ export default {
 
           //合作单位表单
           data2upload.append("cooperateId", this.FormData.cooperateId);
-          data2upload.append("contractId", this.FormData.contractId);
-          data2upload.append("fundId", this.FormData.fundId);
+          data2upload.append("contractNum", this.FormData.contractNum);
+          data2upload.append("fundNum", this.FormData.fundNum);
           data2upload.append("contractName", this.FormData.contractName);
-          data2upload.append("contractType", this.FormData.contractType);
+          data2upload.append("contractId", this.FormData.contractId);
           data2upload.append(
             "cooperatePrincipal",
             this.FormData.cooperatePrincipal
@@ -1044,10 +1042,7 @@ export default {
 
           //技术市场信息
           data2upload.append("payId", this.FormData.payId);
-          data2upload.append("EcoFirstId", this.FormData.EcoFirstId);
-          data2upload.append("EcoSecondId", this.FormData.EcoSecondId);
           data2upload.append("EconomicId", this.FormData.EconomicId);
-          data2upload.append("SocFirstId", this.FormData.SocFirstId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("SourceId", this.FormData.SourceId);
           data2upload.append("TechnicalId", this.FormData.TechnicalId);
