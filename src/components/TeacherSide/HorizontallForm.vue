@@ -913,7 +913,7 @@ export default {
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.TopicList = obj2.tpoic;
+          this.TopicList = obj2.topic;
           this.TeacherList = obj2.teacher;
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;

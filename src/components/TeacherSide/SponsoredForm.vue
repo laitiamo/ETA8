@@ -1073,7 +1073,7 @@ export default {
       getRankList()
         .then((res) => {
           let obj1 = JSON.parse(res.msg);
-          //closeDebug console.log("LevelList初始化", obj);
+          //closeDebug console.log("RankList初始化", obj);
           this.rankList = obj1.rank;
         })
         .catch((failResponse) => {});
@@ -1085,18 +1085,19 @@ export default {
           this.TeacherList = obj2.teacher;
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;
+          this.BelongList = obj2.belong;
         })
         .catch((failResponse) => {});
       initSponsored()
         .then((res) => {
           let obj3 = JSON.parse(res.msg);
-          //closeDebug console.log("teacherList初始化", obj);
-          this.BelongList = obj3.belong;
+          //closeDebug console.log("CooperateList初始化", obj);
           this.CooperateList = obj3.cooperate;
           this.ContractList = obj3.contract;
           this.EntrustList = obj3.entrust;
           this.ResearchList = obj3.research;
           this.PropertyList = obj3.property;
+          this.TechnicalList = obj3.technical;
         })
         .catch((failResponse) => {});
     },
