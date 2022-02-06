@@ -727,22 +727,22 @@ export default {
       fileList: [], //已上传的文件列表
       rankList: [], //项目类别的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
-      SourceList: [], //项目来源列表「从后端取得」
-      CooperateList: [], //合作单位列表「从后端取得」
-      BelongList: [], //统计归属列表「从后端取得」
       ResearchList: [], //研究方向列表「从后端取得」
+      BelongList: [], //统计归属列表「从后端取得」
       TypeList: [], //一级学科列表「从后端取得」
       EntrustList: [], //委托单位列表「从后端取得」
-
+      TopicList: [], //课题类型
+      CooperateList: [], //合作单位列表「从后端取得」
+      ContractList: [], //合同列表「从后端取得」
       EcoFirstList: [], //国民经济一级目录
       EcoSecondList: [], //国民经济二级目录
       EconomicList: [], //国民经济行业列表「从后端取得」
-
       SocFirstList: [], //社会经济一级目录
       SocietyList: [], //社会经济服务目标列表「从后端取得」
+      SourceList: [], //项目来源列表「从后端取得」
+      TechnicalList: [], //技术邻域分类一级列表「从后端取得」
       PropertyList: [], //知识产权类别一级「从后端取得」
-      TopicList: [], //课题类型
-      ContractList: [], //合同列表「从后端取得」
+
       //基础信息表单数据
       FormData: {
         //基础信息
@@ -751,68 +751,67 @@ export default {
             value: "",
           },
         ],
-        subjectName: "",
-        subjectNum: "",
-        rankId: "",
+        subjectName: "", //项目名称
+        subjectNum: "", //项目编号
+        rankId: "", //项目等级
 
         //项目经费
-        subjectFund: "",
-        hardwareFund: "",
-        softwareFund: "",
-        staySchoolFund: "",
-        outboundFund: "",
+        subjectFund: "", //批准经费
+        hardwareFund: "", //硬件经费
+        softwareFund: "", //软件经费
+        staySchoolFund: "", //留校经费
+        outboundFund: "", //外拨经费
 
         //项目描述
-        subjectPlace: "",
-        ResearchId: "",
-        isSecrecy: "",
-        isVoucher: "",
-        isSubmitFill: "",
-        isPromote: "",
-        isDutyFree: "",
-        DutyFreeId: "",
-        subjectTime: "",
-        startTime: "",
-        FinishTime: "",
+        subjectPlace: "", //所属单位
+        ResearchId: "", //研究类别
+        isSecrecy: "", //是否保密
+        isVoucher: "", //是否开发票或收据
+        isSubmitFill: "", //是否交科技处存档
+        isPromote: "", //是否希望科技处推广
+        isDutyFree: "", //此合同是否可以进行技术认证并免税
+        DutyFreeId: "", //减免税号
+        subjectTime: "", //立项时间
+        startTime: "", //开始时间
+        FinishTime: "", //预计完成时间
 
         //教育部统计信息
-        BelongId: "",
-        TypeId: "",
-        entrustPlaceId: "",
-        applicationCode: "",
-        introduction: "",
-        topicId: "",
-        mainProjectName: "",
-        remarks: "",
+        BelongId: "", //统计归属
+        TypeId: "", //一级学科
+        entrustPlaceId: "", //委托单位性质
+        topicId: "", //课题类型
+        mainProjectName: "", //主项目名称
+        applicationCode: "", //申请代码
+        introduction: "", //项目简介
+        remarks: "", //备注
 
         //合作单位
-        cooperateId: "",
-        contractId: "",
-        fundId: "",
-        contractName: "",
-        contractType: "",
-        contractFund: "",
-        cooperatePrincipal: "",
-        bankName: "",
-        bankAccount: "",
-        dutyBreachContract: "",
+        cooperateId: "", //合作单位
+        contractId: "", //合同编号
+        fundId: "", //经费号
+        contractName: "", //合同名称
+        contractType: "", //合同类别
+        contractFund: "", //合同金额
+        cooperatePrincipal: "", //合同负责人
+        bankName: "", //银行名称
+        bankAccount: "", //银行账号
+        dutyBreachContract: "", //双方违约责任
 
         //技术市场信息
-        payId: "",
-        EcoFirstId: "",
-        EcoSecondId: "",
-        EconomicId: "",
-        SocFirstId: "",
-        SocietyId: "",
-        SourceId: "",
-        TechnicalTypeId: "",
-        PropertyId: "",
-
-        subjectFileList: [],
+        payId: "", //支付方式
+        EcoFirstId: "", //国民经济行业
+        EcoSecondId: "", //国民经济行业二级目录
+        EconomicId: "", //国民经济行业三级目录
+        SocFirstId: "", //社会经济服务目标一级目录
+        SocietyId: "", //社会经济服务目标二级目录
+        SourceId: "", //计划来源一级
+        TechnicalTypeId: "", //技术邻域分类一级
+        PropertyId: "", //知识产权类别一级
+        subjectFileList: [], //项目附件
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
-        //基础信息
+        //项目申报基础信息
         subjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           {
@@ -840,12 +839,12 @@ export default {
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
-        softwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
         hardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
+          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+        ],
+        softwareFund: [
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
         ],
         staySchoolFund: [
@@ -900,18 +899,6 @@ export default {
         DutyFreeId: [
           { required: false, message: "请输入减免税号", trigger: "blur" },
         ],
-        cooperatePrincipal: [
-          { required: true, message: "请输入负责人", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
-        ],
-        bankName: [
-          { required: true, message: "请输入银行名称", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
-        ],
-        bankAccount: [
-          { required: true, message: "请输入银行账号", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
-        ],
         subjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
@@ -932,19 +919,19 @@ export default {
         entrustPlaceId: [
           { required: true, message: "请选择委托单位", trigger: "blur" },
         ],
+        topicId: [
+          { required: true, message: "请选择课题类型", trigger: "blur" },
+        ],
+        mainProjectName: [
+          { required: false, message: "请输入主项目名称", trigger: "blur" },
+          { min: 3, message: "长度大于等于3", trigger: "blur" },
+        ],
         applicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
         introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
-        ],
-        topicId: [
-          { required: true, message: "请选择课题类型", trigger: "blur" },
-        ],
-        mainProjectName: [
-          { required: false, message: "请输入主项目名称", trigger: "blur" },
           { min: 3, message: "长度大于等于3", trigger: "blur" },
         ],
         remarks: [
