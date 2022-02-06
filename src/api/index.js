@@ -304,6 +304,14 @@ export const uploadSchool = (data) =>
 export const uploadHorizon = (data) =>
   postFile(`eta8/subject/uploadHorizon`, data);
 
+  /**
+ * 上传横向项目（POST）
+ * @param {FormData} data
+ * @returns
+ */
+export const uploadSponsored = (data) =>
+postFile(`eta8/subject/uploadSponsored`, data);
+
 /**
  * 上传奖项（POST）
  * 需传入的参数

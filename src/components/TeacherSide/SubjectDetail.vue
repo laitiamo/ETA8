@@ -131,6 +131,106 @@
           >
         </el-row>
       </template>
+      <template v-if="detailData.levelId == 1">
+        <el-divider content-position="left"
+          ><span class="div-font">横向项目</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >研究类别：{{ detailData.ResearchName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >是否保密：{{ detailData.isSecrecy }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >是否开发票或收据：{{ detailData.isVoucher }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >是否交科技处存档：{{ detailData.isSubmitFill }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >是否希望科技处推广：{{ detailData.isPromote }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >此合同是否可以进行技术认证并免税：{{ detailData.isDutyFree }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24" v-if="detailData.isDutyFree == '是'"
+            >减免税号：{{ detailData.DutyFreeId }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >统计归属：{{ detailData.BelongName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >一级学科：{{ detailData.TypeName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >委托单位性质：{{ detailData.entrustPlaceName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >课题类型：{{ detailData.topicName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >主项目名称：{{ detailData.mainProjectName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >申请代码：{{ detailData.applicationCode }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >项目简介：{{ detailData.introduction }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >备注：{{ detailData.remarks }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合作单位：{{ detailData.cooperateName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合同编号：{{ detailData.contractNum }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >经费编号：{{ detailData.fundName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合同名称：{{ detailData.contractName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合同类型：{{ detailData.contractType }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合同经费：{{ detailData.contractFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >合同负责人：{{ detailData.cooperatePrincipal }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >银行名称：{{ detailData.bankName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >银行账号：{{ detailData.bankAccount }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >双方违约责任：{{ detailData.dutyBreachContract }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >支付方式：{{ detailData.pay }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >国民经济行业：{{ detailData.EconomicName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >社会经济服务目标：{{ detailData.SocietyName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >计划来源：{{ detailData.SourceName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >技术邻域分类一级：{{ detailData.TechnicalTypeName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >知识产权类别：{{ detailData.PropertyName }}</el-col
+          >
+        </el-row>
+      </template>
       <el-divider content-position="left"
         ><span class="div-font">审核信息</span></el-divider
       >

@@ -152,18 +152,10 @@
       <h3>项目描述</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目所属单位" prop="subjectPlace">
+          <el-form-item label="所属单位" prop="subjectPlace">
             <el-input
               v-model="FormData.subjectPlace"
               placeholder="请输入项目所属单位"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目简介" prop="introduction">
-            <el-input
-              v-model="FormData.introduction"
-              placeholder="请输入项目简介"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -231,6 +223,15 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目简介" prop="introduction">
+            <el-input
+              type="textarea"
+              v-model="FormData.introduction"
+              placeholder="请输入项目简介"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-row>
 
       <el-divider></el-divider>
@@ -253,19 +254,20 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同编号" prop="contractNum">
-            <el-input
-              v-model="FormData.contractNum"
-              placeholder="请输入合同编号"
-            ></el-input>
-          </el-form-item>
-        </el-col>
+
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="经费号" prop="fundNum">
             <el-input
               v-model="FormData.fundNum"
               placeholder="请输入经费号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="合同编号" prop="contractNum">
+            <el-input
+              v-model="FormData.contractNum"
+              placeholder="请输入合同编号"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -295,13 +297,15 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同金额（万元）" prop="contractFund">
+          <el-form-item label="合同金额（元）" prop="contractFund">
             <el-input
               v-model="FormData.contractFund"
-              placeholder="请输入合同金额（万元）"
+              placeholder="请输入合同金额（元）"
             ></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="负责人" prop="cooperatePrincipal">
             <el-input
@@ -310,6 +314,8 @@
             ></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="银行名称" prop="bankName">
             <el-input
@@ -323,6 +329,17 @@
             <el-input
               v-model="FormData.bankAccount"
               placeholder="请输入银行账号"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="双方违约责任" prop="dutyBreachContract">
+            <el-input
+              type="textarea"
+              v-model="FormData.dutyBreachContract"
+              placeholder="请输入双方违约责任"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -362,16 +379,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="双方违约责任" prop="dutyBreachContract">
-            <el-input
-              v-model="FormData.dutyBreachContract"
-              placeholder="请输入双方违约责任"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
 
       <el-divider></el-divider>
       <h4>技术市场信息</h4>
@@ -380,8 +387,7 @@
           <el-form-item label="请选择支付方式" prop="payId">
             <el-radio-group v-model="FormData.payId">
               <el-radio label="1">一次支付</el-radio>
-              <el-radio label="2">提成支付</el-radio>
-              <el-radio label="3">分期支付</el-radio>
+              <el-radio label="2">分期支付</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -1026,6 +1032,7 @@ export default {
           data2upload.append("fundNum", this.FormData.fundNum);
           data2upload.append("contractName", this.FormData.contractName);
           data2upload.append("contractId", this.FormData.contractId);
+          data2upload.append("contractFund", this.FormData.contractFund);
           data2upload.append(
             "cooperatePrincipal",
             this.FormData.cooperatePrincipal
