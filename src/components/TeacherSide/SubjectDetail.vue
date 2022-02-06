@@ -164,10 +164,10 @@
             >一级学科：{{ detailData.TypeName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >委托单位性质：{{ detailData.entrustPlaceName }}</el-col
+            >委托单位性质：{{ detailData.entrustName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >课题类型：{{ detailData.topicName }}</el-col
+            >课题类型：{{ detailData.TopicName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >主项目名称：{{ detailData.mainProjectName }}</el-col
@@ -188,7 +188,7 @@
             >合同编号：{{ detailData.contractNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >经费编号：{{ detailData.fundName }}</el-col
+            >经费编号：{{ detailData.fundNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >合同名称：{{ detailData.contractName }}</el-col
@@ -224,7 +224,7 @@
             >计划来源：{{ detailData.SourceName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >技术邻域分类一级：{{ detailData.TechnicalTypeName }}</el-col
+            >技术邻域分类一级：{{ detailData.TechnicalName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >知识产权类别：{{ detailData.PropertyName }}</el-col

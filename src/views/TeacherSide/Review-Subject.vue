@@ -244,11 +244,11 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.s_rank;
-          this.rankList2 = obj.rank;
+          this.rankList1 = obj.rank;
+          this.rankList2 = obj.s_rank;
         })
         .catch((failResponse) => {});
-      this.ifButtonTrue = false;
+        this.ifButtonTrue = false;
     },
     //数据格式化(还没用到)
     formatter(row, column) {

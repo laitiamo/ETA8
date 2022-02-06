@@ -302,8 +302,8 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.rank1;
-          this.rankList2 = obj.rank2;
+          this.rankList1 = obj.rank;
+          this.rankList2 = obj.s_rank;
         })
         .catch((failResponse) => {});
     },

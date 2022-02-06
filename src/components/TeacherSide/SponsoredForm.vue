@@ -511,8 +511,7 @@
           <el-form-item label="请选择支付方式" prop="payId">
             <el-radio-group v-model="FormData.payId">
               <el-radio label="1">一次支付</el-radio>
-              <el-radio label="2">提成支付</el-radio>
-              <el-radio label="3">分期支付</el-radio>
+              <el-radio label="2">分期支付</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -684,13 +683,13 @@
           :on-change="handleChange"
           :file-list="fileList"
           :multiple="true"
-          list-type="text"
-          accept=".PDF"
+          list-type="picture"
           :limit="5"
+          accept="image/jpeg,image/png"
         >
           <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只支持上传PDF文件，总大小不超过10MB，最多上传5份附件
+            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
           </div>
         </el-upload>
       </el-form-item>
@@ -699,7 +698,6 @@
           type="primary"
           @click="submitForm('FormData')"
           :loading="submitButton"
-          :disabled="true"
           >立即提交</el-button
         >
         <el-button
@@ -795,12 +793,12 @@ export default {
         remarks: "", //备注
 
         //合作单位
-        cooperateId: "",
-        contractNum: "",
-        fundNum: "",
-        contractName: "",
-        contractId: "",
-        contractFund: "",
+        cooperateId: "", //合作单位
+        contractNum: "", //合同编号
+        fundNum: "", //经费编号
+        contractName: "", //合同名称
+        contractId: "", //合同类型
+        contractFund: "", //合同经费
         cooperatePrincipal: "", //合同负责人
         bankName: "", //银行名称
         bankAccount: "", //银行账号
@@ -825,8 +823,7 @@ export default {
           { required: true, message: "请输入项目名称", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 2 个字符以上",
             trigger: "blur",
           },
         ],
@@ -846,23 +843,23 @@ export default {
         //项目经费
         subjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         hardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         softwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         staySchoolFund: [
           { required: false, message: "请输入留校经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         outboundFund: [
           { required: false, message: "请输入外拨经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
         //项目描述
@@ -907,6 +904,12 @@ export default {
         ],
         DutyFreeId: [
           { required: false, message: "请输入减免税号", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
         ],
         subjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
@@ -933,7 +936,7 @@ export default {
         ],
         mainProjectName: [
           { required: false, message: "请输入主项目名称", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
         applicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
@@ -941,11 +944,11 @@ export default {
         ],
         introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
         remarks: [
           { required: false, message: "请输入备注", trigger: "blur" },
-          { min: 3, message: "长度大于等于3", trigger: "blur" },
+          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
 
         //合作单位
@@ -956,8 +959,8 @@ export default {
           { required: true, message: "请输入合同编号", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            max: 10,
+            message: "长度在 2 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -965,8 +968,8 @@ export default {
           { required: true, message: "请输入经费编号", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            max: 10,
+            message: "长度在 2 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -984,7 +987,7 @@ export default {
         ],
         contractFund: [
           { required: true, message: "请输入合同经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         cooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },
@@ -998,18 +1001,18 @@ export default {
         bankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
           {
-            min: 2,
+            min: 5,
             max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 5 到 20 个字符",
             trigger: "blur",
           },
         ],
         bankAccount: [
           { required: true, message: "请输入银行账号", trigger: "blur" },
           {
-            min: 2,
+            min: 15,
             max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 15 到 20 个字符",
             trigger: "blur",
           },
         ],
@@ -1017,8 +1020,8 @@ export default {
           { required: true, message: "请输入违约金", trigger: "blur" },
           {
             min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
+            max: 8,
+            message: "金额在 2 到 8 位数",
             trigger: "blur",
           },
         ],
@@ -1060,10 +1063,10 @@ export default {
           { required: true, message: "请选择项目来源", trigger: "blur" },
         ],
         TechnicalId: [
-          { required: true, message: "请选择技术邻域分类", trigger: "blur" },
+          { required: true, message: "请选择技术邻域分类一级", trigger: "blur" },
         ],
         PropertyId: [
-          { required: true, message: "请选择知识产权分类", trigger: "blur" },
+          { required: true, message: "请选择知识产权分类一级", trigger: "blur" },
         ],
         subjectFileList: [
           { required: true, message: "请选择图片", trigger: "blur" },
@@ -1228,7 +1231,6 @@ export default {
           data2upload.append("topicId", this.FormData.topicId);
           data2upload.append("mainProjectName", this.FormData.mainProjectName);
           data2upload.append("applicationCode", this.FormData.applicationCode);
-          data2upload.append("mainProjectName", this.FormData.mainProjectName);
           data2upload.append("introduction", this.FormData.introduction);
 
           //合作单位表单
@@ -1251,12 +1253,12 @@ export default {
           );
 
           //技术市场信息
-          data2upload.append("payId", this.payId);
-          data2upload.append("EconomicId", this.EconomicId);
+          data2upload.append("payId", this.FormData.payId);
+          data2upload.append("EconomicId", this.FormData.EconomicId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("SourceId", this.FormData.SourceId);
-          data2upload.append("TechnicalTypeId", this.TechnicalTypeId);
-          data2upload.append("PropertyId", this.PropertyId);
+          data2upload.append("TechnicalId", this.FormData.TechnicalId);
+          data2upload.append("PropertyId", this.FormData.PropertyId);
 
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {

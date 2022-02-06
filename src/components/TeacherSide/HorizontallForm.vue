@@ -559,12 +559,13 @@
           :on-change="handleChange"
           :file-list="fileList"
           :multiple="true"
-          list-type="text"
+          list-type="picture"
           :limit="5"
+          accept="image/jpeg,image/png"
         >
           <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只支持上传PDF文件，总大小不超过10MB，最多上传5份附件
+            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
           </div>
         </el-upload>
       </el-form-item>
@@ -680,8 +681,7 @@ export default {
           { required: true, message: "请输入项目名称", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 2 个字符以上",
             trigger: "blur",
           },
         ],
@@ -701,28 +701,28 @@ export default {
         //项目经费
         subjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        softwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         hardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        softwareFund: [
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         staySchoolFund: [
           { required: false, message: "请输入留校经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         outboundFund: [
           { required: false, message: "请输入外拨经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
         //项目描述
         subjectPlace: [
-          { required: true, message: "请输入项目地点", trigger: "blur" },
+          { required: true, message: "请输入所属单位", trigger: "blur" },
           {
             min: 2,
             max: 20,
@@ -732,12 +732,7 @@ export default {
         ],
         introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
-          {
-            min: 2,
-            max: 200,
-            message: "长度在 2 到 200 个字符",
-            trigger: "blur",
-          },
+          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
         subjectTime: [
           { required: true, message: "请选择项目填报时间", trigger: "blur" },
@@ -769,8 +764,8 @@ export default {
           { required: true, message: "请输入合同编号", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            max: 10,
+            message: "长度在 2 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -778,8 +773,8 @@ export default {
           { required: true, message: "请输入经费编号", trigger: "blur" },
           {
             min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
+            max: 10,
+            message: "长度在 2 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -797,7 +792,7 @@ export default {
         ],
         contractFund: [
           { required: true, message: "请输入合同经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         cooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },
@@ -811,18 +806,18 @@ export default {
         bankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
           {
-            min: 2,
+            min: 5,
             max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 5 到 20 个字符",
             trigger: "blur",
           },
         ],
         bankAccount: [
           { required: true, message: "请输入银行账号", trigger: "blur" },
           {
-            min: 2,
+            min: 15,
             max: 20,
-            message: "长度在 2 到 20 个字符",
+            message: "长度在 15 到 20 个字符",
             trigger: "blur",
           },
         ],
@@ -843,8 +838,8 @@ export default {
           { required: true, message: "请输入违约金", trigger: "blur" },
           {
             min: 2,
-            max: 6,
-            message: "金额在 2 到 6 位数",
+            max: 8,
+            message: "金额在 2 到 8 位数",
             trigger: "blur",
           },
         ],
@@ -883,13 +878,24 @@ export default {
           },
         ],
         SourceId: [
-          { required: true, message: "请选择计划来源", trigger: "blur" },
+          { required: true, message: "请选择计划来源一级", trigger: "blur" },
         ],
         TechnicalId: [
-          { required: true, message: "请选择技术邻域分类", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择技术邻域分类一级",
+            trigger: "blur",
+          },
         ],
         PropertyId: [
-          { required: true, message: "请选择知识产权分类", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择知识产权分类一级",
+            trigger: "blur",
+          },
+        ],
+        subjectFileList: [
+          { required: true, message: "请选择图片", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
