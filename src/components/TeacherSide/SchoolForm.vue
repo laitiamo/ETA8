@@ -521,26 +521,27 @@ export default {
           { required: true, message: "请输入项目所属单位", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
+
         //项目经费
         subjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
-        ],
-        softwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         hardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        softwareFund: [
+          { required: false, message: "请输入项目软件经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         staySchoolFund: [
           { required: false, message: "请输入留校经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         outboundFund: [
           { required: false, message: "请输入外拨经费", trigger: "blur" },
-          { min: 3, message: "长度在 3 到 5 位数", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
         rankId: [
@@ -724,27 +725,33 @@ export default {
           //获取实际input组件的文件
           let filesList = this.FormData.subjectFileList;
           data2upload.append("subjectNum", this.FormData.subjectNum);
-          data2upload.append("subjectType", this.RankName);
           data2upload.append("subjectName", this.FormData.subjectName);
-          data2upload.append("subjectTime", this.FormData.subjectTime);
-          data2upload.append("startTime", this.FormData.startTime);
+          data2upload.append("subjectType", this.RankName);
+          data2upload.append("SubjectTime", this.FormData.subjectTime);
+          data2upload.append("StartTime", this.FormData.startTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
-          data2upload.append("subjectPlace", this.FormData.subjectPlace);
+          data2upload.append("SubjectPlace", this.FormData.subjectPlace);
           data2upload.append("rankId", this.FormData.rankId);
           data2upload.append("levelId", this.levelId);
-          data2upload.append("subjectFund", this.FormData.subjectFund);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
+          //项目经费
+          data2upload.append("subjectFund", this.FormData.subjectFund);
+          data2upload.append("hardwareFund", this.FormData.hardwareFund);
+          data2upload.append("softwareFund", this.FormData.softwareFund);
+          data2upload.append("staySchoolFund", this.FormData.staySchoolFund);
+          data2upload.append("outboundFund", this.FormData.outboundFund);
+
           //校级项目表单
           data2upload.append("EconomicId", this.FormData.EconomicId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
-          data2upload.append("sourceId", this.FormData.sourceId);
-          data2upload.append("belongId", this.FormData.BelongId);
-          data2upload.append("typeId", this.FormData.TypeId);
-          data2upload.append("cooperateId", this.FormData.cooperateId);
-          data2upload.append("researchId", this.FormData.ResearchId);
+          data2upload.append("SourceId", this.FormData.sourceId);
+          data2upload.append("BelongId", this.FormData.BelongId);
+          data2upload.append("TypeId", this.FormData.TypeId);
+          data2upload.append("CooperateId", this.FormData.cooperateId);
+          data2upload.append("ResearchId", this.FormData.ResearchId);
 
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {

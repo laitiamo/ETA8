@@ -1,17 +1,18 @@
 <template>
-  <div class="review">
-    <h3 v-show="!ifShowDetail">项目审核</h3>
+  <div class="Review-Record">
+    <h3 v-show="!ifShowDetail">成果审核</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
-        <el-form-item>
+                <el-form-item>
           <el-select
             v-model="form2Query.typeId"
-            placeholder="全部等级"
-            style="width:140px"
+            placeholder="全部类型"
+            @change="QueryPaper"
+            style="width: 140px"
           >
-            <el-option label="全部等级" value=""></el-option>
+            <el-option label="全部类型" value=""></el-option>
             <el-option
-              v-for="opt in TypeList"
+              v-for="opt in rankList1"
               :key="opt.id"
               :label="opt.typeName"
               :value="opt.id"
@@ -19,9 +20,30 @@
           </el-select>
         </el-form-item>
         <el-form-item>
+          <el-select
+            v-model="form2Query.rankId"
+            placeholder="全部等级"
+            style="width: 140px"
+          >
+            <el-option label="全部等级" value=""></el-option>
+            <el-option
+              v-for="opt in rankList2"
+              :key="opt.id"
+              :label="opt.rankName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-input
             v-model="form2Query.keyAwardName"
-            placeholder="搜索奖项名称"
+            placeholder="搜索成果名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyAwardPlace"
+            placeholder="搜索所属单位"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -151,12 +173,10 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
-        keyUsername: "", //用户id
-        keyName: "", //姓名
         typeId: "", //成果类型
         rankId: "", //成果记录等级
-        keyPaperName: "", //成果名
-        keyPaperPlace: "", //成果单位
+        keyAwardName: "", //成果名
+        keyAwardPlace: "", //期刊名
       },
       //下拉栏内容列表
       rankList1: [],
@@ -312,12 +332,12 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("keyUsername", this.form2Query.keyUsername); //用户id
-      params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //获奖等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
-      params.append("order", this.orderMode); //奖项名
-      params.append("field", this.orderField); //奖项名
+      params.append("typeId", this.form2Query.typeId); //成果类型
+      params.append("rankId", this.form2Query.rankId); //成果等级
+      params.append("keyPaperName", this.form2Query.keyAwardName); //成果名
+      params.append("keyPaperPlace", this.form2Query.keyAwardPlace); //期刊名
+      params.append("order", this.orderMode);
+      params.append("field", this.orderField);
       getReviewRecordList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");

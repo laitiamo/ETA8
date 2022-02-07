@@ -79,25 +79,25 @@
         >
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >项目简介：{{ detailData.introduction }}</el-col
+            >项目简介：{{ detailData.Introduction }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >依托中心项目：{{ detailData.relyCenterSubject }}</el-col
+            >依托中心项目：{{ detailData.RelyCenterSubject }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同名称：{{ detailData.contractName }}</el-col
+            >合同名称：{{ detailData.ContractName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >负责人：{{ detailData.cooperatePrincipal }}</el-col
+            >负责人：{{ detailData.CooperatePrincipal }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同编号：{{ detailData.contractNum }}</el-col
+            >合同编号：{{ detailData.ContractNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >经费号：{{ detailData.fundNum }}</el-col
+            >经费号：{{ detailData.FundNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >委托单位性质：{{ detailData.entrustName }}</el-col
+            >委托单位性质：{{ detailData.EntrustName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >合作单位：{{ detailData.CooperateName }}</el-col
@@ -106,13 +106,13 @@
             >合同类别：{{ detailData.ContractType }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >银行名称：{{ detailData.bankName }}</el-col
+            >银行名称：{{ detailData.BankName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >银行账号：{{ detailData.bankAccount }}</el-col
+            >银行账号：{{ detailData.BankAccount }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >双方违约责任：{{ detailData.dutyBreachContract }}</el-col
+            >双方违约责任：{{ detailData.DutyBreachContract }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >国民经济行业：{{ detailData.EconomicName }}</el-col
@@ -140,21 +140,21 @@
             >研究类别：{{ detailData.ResearchName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >是否保密：{{ detailData.isSecrecy }}</el-col
+            >是否保密：{{ detailData.IsSecrecy }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >是否开发票或收据：{{ detailData.isVoucher }}</el-col
+            >是否开发票或收据：{{ detailData.IsVoucher }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >是否交科技处存档：{{ detailData.isSubmitFill }}</el-col
+            >是否交科技处存档：{{ detailData.IsSubmitFill }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >是否希望科技处推广：{{ detailData.isPromote }}</el-col
+            >是否希望科技处推广：{{ detailData.IsPromote }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >此合同是否可以进行技术认证并免税：{{ detailData.isDutyFree }}</el-col
+            >此合同是否可以进行技术认证并免税：{{ detailData.IsDutyFree }}</el-col
           >
-          <el-col class="detail-info" :span="12" :xs="24" v-if="detailData.isDutyFree == '是'"
+          <el-col class="detail-info" :span="12" :xs="24" v-if="detailData.IsDutyFree == '是'"
             >减免税号：{{ detailData.DutyFreeId }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
@@ -164,55 +164,55 @@
             >一级学科：{{ detailData.TypeName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >委托单位性质：{{ detailData.entrustName }}</el-col
+            >委托单位性质：{{ detailData.EntrustName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >课题类型：{{ detailData.TopicName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >主项目名称：{{ detailData.mainProjectName }}</el-col
+            >主项目名称：{{ detailData.MainProjectName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >申请代码：{{ detailData.applicationCode }}</el-col
+            >申请代码：{{ detailData.ApplicationCode }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >项目简介：{{ detailData.introduction }}</el-col
+            >项目简介：{{ detailData.Introduction }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >备注：{{ detailData.remarks }}</el-col
+            >备注：{{ detailData.Remarks }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合作单位：{{ detailData.cooperateName }}</el-col
+            >合作单位：{{ detailData.CooperateName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同编号：{{ detailData.contractNum }}</el-col
+            >合同编号：{{ detailData.ContractNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >经费编号：{{ detailData.fundNum }}</el-col
+            >经费编号：{{ detailData.FundNum }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同名称：{{ detailData.contractName }}</el-col
+            >合同名称：{{ detailData.ContractName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同类型：{{ detailData.contractType }}</el-col
+            >合同类型：{{ detailData.ContractType }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同经费：{{ detailData.contractFund }}</el-col
+            >合同经费：{{ detailData.ContractFund }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同负责人：{{ detailData.cooperatePrincipal }}</el-col
+            >合同负责人：{{ detailData.CooperatePrincipal }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >银行名称：{{ detailData.bankName }}</el-col
+            >银行名称：{{ detailData.BankName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >银行账号：{{ detailData.bankAccount }}</el-col
+            >银行账号：{{ detailData.BankAccount }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >双方违约责任：{{ detailData.dutyBreachContract }}</el-col
+            >双方违约责任：{{ detailData.DutyBreachContract }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >支付方式：{{ detailData.pay }}</el-col
+            >支付方式：{{ detailData.Pay }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >国民经济行业：{{ detailData.EconomicName }}</el-col

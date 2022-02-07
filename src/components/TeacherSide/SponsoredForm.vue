@@ -1063,10 +1063,18 @@ export default {
           { required: true, message: "请选择项目来源", trigger: "blur" },
         ],
         TechnicalId: [
-          { required: true, message: "请选择技术邻域分类一级", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择技术邻域分类一级",
+            trigger: "blur",
+          },
         ],
         PropertyId: [
-          { required: true, message: "请选择知识产权分类一级", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择知识产权分类一级",
+            trigger: "blur",
+          },
         ],
         subjectFileList: [
           { required: true, message: "请选择图片", trigger: "blur" },
@@ -1195,8 +1203,8 @@ export default {
           //获取实际input组件的文件
           let filesList = this.FormData.subjectFileList;
           //上传项目基础信息（项目申报）
-          data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectNum", this.FormData.subjectNum);
+          data2upload.append("subjectName", this.FormData.subjectName);
           data2upload.append("subjectType", this.RankName);
           data2upload.append("rankId", this.FormData.rankId);
           data2upload.append("levelId", this.levelId); //项目的等级id（横向纵向）
@@ -1212,7 +1220,7 @@ export default {
           data2upload.append("outboundFund", this.FormData.outboundFund);
 
           //项目描述
-          data2upload.append("subjectPlace", this.FormData.subjectPlace);
+          data2upload.append("SubjectPlace", this.FormData.subjectPlace);
           data2upload.append("ResearchId", this.FormData.ResearchId);
           data2upload.append("isSecrecy", this.FormData.isSecrecy);
           data2upload.append("isVoucher", this.FormData.isVoucher);
@@ -1220,40 +1228,40 @@ export default {
           data2upload.append("isPromote", this.FormData.isPromote);
           data2upload.append("isDutyFree", this.FormData.isDutyFree);
           data2upload.append("DutyFreeId", this.FormData.DutyFreeId);
-          data2upload.append("subjectTime", this.FormData.subjectTime);
-          data2upload.append("startTime", this.FormData.startTime);
+          data2upload.append("SubjectTime", this.FormData.subjectTime);
+          data2upload.append("StartTime", this.FormData.startTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
 
           //教育部统计信息
           data2upload.append("BelongId", this.FormData.BelongId);
           data2upload.append("TypeId", this.FormData.TypeId);
-          data2upload.append("entrustPlaceId", this.FormData.entrustPlaceId);
-          data2upload.append("topicId", this.FormData.topicId);
-          data2upload.append("mainProjectName", this.FormData.mainProjectName);
-          data2upload.append("applicationCode", this.FormData.applicationCode);
-          data2upload.append("introduction", this.FormData.introduction);
+          data2upload.append("EntrustPlaceId", this.FormData.entrustPlaceId);
+          data2upload.append("TopicId", this.FormData.topicId);
+          data2upload.append("MainProjectName", this.FormData.mainProjectName);
+          data2upload.append("ApplicationCode", this.FormData.applicationCode);
+          data2upload.append("Introduction", this.FormData.introduction);
 
           //合作单位表单
-          data2upload.append("cooperateId", this.FormData.cooperateId);
-          data2upload.append("contractNum", this.FormData.contractNum);
-          data2upload.append("fundNum", this.FormData.fundNum);
-          data2upload.append("contractName", this.FormData.contractName);
-          data2upload.append("contractId", this.FormData.contractId);
-          data2upload.append("remarks", this.FormData.remarks);
-          data2upload.append("contractFund", this.FormData.contractFund);
+          data2upload.append("CooperateId", this.FormData.cooperateId);
+          data2upload.append("ContractNum", this.FormData.contractNum);
+          data2upload.append("FundNum", this.FormData.fundNum);
+          data2upload.append("ContractName", this.FormData.contractName);
+          data2upload.append("ContractId", this.FormData.contractId);
+          data2upload.append("Remarks", this.FormData.remarks);
+          data2upload.append("ContractFund", this.FormData.contractFund);
           data2upload.append(
-            "cooperatePrincipal",
+            "CooperatePrincipal",
             this.FormData.cooperatePrincipal
           );
-          data2upload.append("bankName", this.FormData.bankName);
-          data2upload.append("bankAccount", this.FormData.bankAccount);
+          data2upload.append("BankName", this.FormData.bankName);
+          data2upload.append("BankAccount", this.FormData.bankAccount);
           data2upload.append(
-            "dutyBreachContract",
+            "DutyBreachContract",
             this.FormData.dutyBreachContract
           );
 
           //技术市场信息
-          data2upload.append("payId", this.FormData.payId);
+          data2upload.append("PayId", this.FormData.payId);
           data2upload.append("EconomicId", this.FormData.EconomicId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("SourceId", this.FormData.SourceId);
@@ -1266,7 +1274,7 @@ export default {
           }
 
           uploadSponsored(data2upload)
-            .then((res) => {
+.then((res) => {
               //closeDebug console.log("-----------表单提交---------------");
               //closeDebug console.log("服务器返回值：", res);
               if (res.code === 0) {
@@ -1277,7 +1285,6 @@ export default {
                   type: "success",
                 });
                 _this.cancelUpload("FormData");
-                _this.goback();
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;
@@ -1314,7 +1321,6 @@ export default {
         }
       });
     },
-
     //取消上传，清空文件列表及表单
     cancelUpload(formName) {
       this.$refs[formName].resetFields();
