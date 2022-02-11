@@ -11,17 +11,17 @@
     >
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目名称" prop="subjectName">
+          <el-form-item label="项目名称" prop="SubjectName">
             <el-input
-              v-model="FormData.subjectName"
+              v-model="FormData.SubjectName"
               placeholder="请输入项目名称"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目编号" prop="subjectNum">
+          <el-form-item label="项目编号" prop="SubjectNum">
             <el-input
-              v-model="FormData.subjectNum"
+              v-model="FormData.SubjectNum"
               placeholder="请输入项目编号"
             ></el-input>
           </el-form-item>
@@ -32,13 +32,13 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="rankId">
+          <el-form-item label="项目等级" prop="RankId">
             <el-select
-              v-model="FormData.rankId"
+              v-model="FormData.RankId"
               placeholder="请选择项目等级"
               style="display: block"
             >
-              <template v-for="rankEach1 in rankList">
+              <template v-for="rankEach1 in RankList">
                 <el-option
                   :label="rankEach1.rankName"
                   :value="rankEach1.id"
@@ -107,41 +107,41 @@
       <h3>项目经费</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="批准经费（元）" prop="subjectFund">
+          <el-form-item label="批准经费（元）" prop="SubjectFund">
             <el-input
-              v-model="FormData.subjectFund"
+              v-model="FormData.SubjectFund"
               placeholder="请输入项目批准经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="硬件经费（元）" prop="hardwareFund">
+          <el-form-item label="硬件经费（元）" prop="HardwareFund">
             <el-input
-              v-model="FormData.hardwareFund"
+              v-model="FormData.HardwareFund"
               placeholder="请输入项目硬件经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="软件经费（元）" prop="softwareFund">
+          <el-form-item label="软件经费（元）" prop="SoftwareFund">
             <el-input
-              v-model="FormData.softwareFund"
+              v-model="FormData.SoftwareFund"
               placeholder="请输入项目硬件经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="留校经费（元）" prop="staySchoolFund">
+          <el-form-item label="留校经费（元）" prop="StaySchoolFund">
             <el-input
-              v-model="FormData.staySchoolFund"
+              v-model="FormData.StaySchoolFund"
               placeholder="请输入项目留校经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="外拨经费（元）" prop="outboundFund">
+          <el-form-item label="外拨经费（元）" prop="OutboundFund">
             <el-input
-              v-model="FormData.outboundFund"
+              v-model="FormData.OutboundFund"
               placeholder="请输入项目外拨经费"
             ></el-input>
           </el-form-item>
@@ -152,9 +152,9 @@
       <h3>项目描述</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="所属单位" prop="subjectPlace">
+          <el-form-item label="所属单位" prop="SubjectPlace">
             <el-input
-              v-model="FormData.subjectPlace"
+              v-model="FormData.SubjectPlace"
               placeholder="请输入项目所属单位"
             ></el-input>
           </el-form-item>
@@ -237,9 +237,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="立项时间" prop="subjectTime">
+          <el-form-item label="立项时间" prop="SubjectTime">
             <el-date-picker
-              v-model="FormData.subjectTime"
+              v-model="FormData.SubjectTime"
               type="date"
               placeholder="选择日期"
               range-separator="至"
@@ -250,9 +250,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="开始时间" prop="startTime">
+          <el-form-item label="开始时间" prop="StartTime">
             <el-date-picker
-              v-model="FormData.startTime"
+              v-model="FormData.StartTime"
               type="date"
               placeholder="选择日期"
               range-separator="至"
@@ -322,9 +322,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="委托单位性质" prop="entrustPlaceId">
+          <el-form-item label="委托单位性质" prop="EntrustPlaceId">
             <el-select
-              v-model="FormData.entrustPlaceId"
+              v-model="FormData.EntrustPlaceId"
               placeholder="请选择委托单位性质"
               style="display: block"
             >
@@ -339,9 +339,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="课题类型" prop="topicId">
+          <el-form-item label="课题类型" prop="TopicId">
             <el-select
-              v-model="FormData.topicId"
+              v-model="FormData.TopicId"
               placeholder="请选择课题类型"
               style="display: block"
             >
@@ -356,26 +356,26 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="主项目名称" prop="mainProjectName">
+          <el-form-item label="主项目名称" prop="MainProjectName">
             <el-input
-              v-model="FormData.mainProjectName"
+              v-model="FormData.MainProjectName"
               placeholder="请输入主项目名称"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="申请代码" prop="applicationCode">
+          <el-form-item label="申请代码" prop="ApplicationCode">
             <el-input
-              v-model="FormData.applicationCode"
+              v-model="FormData.ApplicationCode"
               placeholder="请输入项目申请代码"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目简介" prop="introduction">
+          <el-form-item label="项目简介" prop="Introduction">
             <el-input
               type="textarea"
-              v-model="FormData.introduction"
+              v-model="FormData.Introduction"
               placeholder="请输入项目简介"
             ></el-input>
           </el-form-item>
@@ -383,10 +383,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="备注" prop="remarks">
+          <el-form-item label="备注" prop="Remarks">
             <el-input
               type="textarea"
-              v-model="FormData.remarks"
+              v-model="FormData.Remarks"
               placeholder="请输入备注"
             ></el-input>
           </el-form-item>
@@ -397,9 +397,9 @@
       <h3>合作单位</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合作单位" prop="cooperateId">
+          <el-form-item label="合作单位" prop="CooperateId">
             <el-select
-              v-model="FormData.cooperateId"
+              v-model="FormData.CooperateId"
               placeholder="请选择合作单位"
               style="display: block"
             >
@@ -415,33 +415,33 @@
         </el-col>
 
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="经费号" prop="fundNum">
+          <el-form-item label="经费号" prop="FundNum">
             <el-input
-              v-model="FormData.fundNum"
+              v-model="FormData.FundNum"
               placeholder="请输入经费号"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同编号" prop="contractNum">
+          <el-form-item label="合同编号" prop="ContractNum">
             <el-input
-              v-model="FormData.contractNum"
+              v-model="FormData.ContractNum"
               placeholder="请输入合同编号"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同名称" prop="contractName">
+          <el-form-item label="合同名称" prop="ContractName">
             <el-input
-              v-model="FormData.contractName"
+              v-model="FormData.ContractName"
               placeholder="请输入合同名称"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同类别" prop="contractId">
+          <el-form-item label="合同类别" prop="ContractId">
             <el-select
-              v-model="FormData.contractId"
+              v-model="FormData.ContractId"
               placeholder="请选择合同类别"
               style="display: block"
             >
@@ -456,9 +456,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合同金额（元）" prop="contractFund">
+          <el-form-item label="合同金额（元）" prop="ContractFund">
             <el-input
-              v-model="FormData.contractFund"
+              v-model="FormData.ContractFund"
               placeholder="请输入合同金额（元）"
             ></el-input>
           </el-form-item>
@@ -466,9 +466,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="负责人" prop="cooperatePrincipal">
+          <el-form-item label="负责人" prop="CooperatePrincipal">
             <el-input
-              v-model="FormData.cooperatePrincipal"
+              v-model="FormData.CooperatePrincipal"
               placeholder="请输入负责人"
             ></el-input>
           </el-form-item>
@@ -476,17 +476,17 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="银行名称" prop="bankName">
+          <el-form-item label="银行名称" prop="BankName">
             <el-input
-              v-model="FormData.bankName"
+              v-model="FormData.BankName"
               placeholder="请输入银行名称"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="银行账号" prop="bankAccount">
+          <el-form-item label="银行账号" prop="BankAccount">
             <el-input
-              v-model="FormData.bankAccount"
+              v-model="FormData.BankAccount"
               placeholder="请输入银行账号"
             ></el-input>
           </el-form-item>
@@ -494,10 +494,10 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="双方违约责任" prop="dutyBreachContract">
+          <el-form-item label="双方违约责任" prop="ContractDuty">
             <el-input
               type="textarea"
-              v-model="FormData.dutyBreachContract"
+              v-model="FormData.ContractDuty"
               placeholder="请输入双方违约责任"
             ></el-input>
           </el-form-item>
@@ -508,8 +508,8 @@
       <h4>技术市场信息</h4>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="请选择支付方式" prop="payId">
-            <el-radio-group v-model="FormData.payId">
+          <el-form-item label="请选择支付方式" prop="PayId">
+            <el-radio-group v-model="FormData.PayId">
               <el-radio label="1">一次支付</el-radio>
               <el-radio label="2">分期支付</el-radio>
             </el-radio-group>
@@ -671,7 +671,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="项目附件" required prop="subjectFileList">
+      <el-form-item label="项目附件" required prop="SubjectFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -681,7 +681,7 @@
           :on-remove="handleRemove"
           :on-exceed="handleExceed"
           :on-change="handleChange"
-          :file-list="fileList"
+          :file-list="FileList"
           :multiple="true"
           list-type="picture"
           :limit="5"
@@ -731,8 +731,8 @@ export default {
       submitButton: false,
       levelId: 1,
       RankName: "纵向项目",
-      fileList: [], //已上传的文件列表
-      rankList: [], //项目类别的列表「从后端取得」
+      FileList: [], //已上传的文件列表
+      RankList: [], //项目类别的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       ResearchList: [], //研究方向列表「从后端取得」
       BelongList: [], //统计归属列表「从后端取得」
@@ -758,19 +758,19 @@ export default {
             value: "",
           },
         ],
-        subjectName: "", //项目名称
-        subjectNum: "", //项目编号
-        rankId: "", //项目等级
+        SubjectName: "", //项目名称
+        SubjectNum: "", //项目编号
+        RankId: "", //项目等级
 
         //项目经费
-        subjectFund: "", //批准经费
-        hardwareFund: "", //硬件经费
-        softwareFund: "", //软件经费
-        staySchoolFund: "", //留校经费
-        outboundFund: "", //外拨经费
+        SubjectFund: "", //批准经费
+        HardwareFund: "", //硬件经费
+        SoftwareFund: "", //软件经费
+        StaySchoolFund: "", //留校经费
+        OutboundFund: "", //外拨经费
 
         //项目描述
-        subjectPlace: "", //所属单位
+        SubjectPlace: "", //所属单位
         ResearchId: "", //研究类别
         isSecrecy: "", //是否保密
         isVoucher: "", //是否开发票或收据
@@ -778,34 +778,34 @@ export default {
         isPromote: "", //是否希望科技处推广
         isDutyFree: "", //此合同是否可以进行技术认证并免税
         DutyFreeId: "", //减免税号
-        subjectTime: "", //立项时间
-        startTime: "", //开始时间
+        SubjectTime: "", //立项时间
+        StartTime: "", //开始时间
         FinishTime: "", //预计完成时间
 
         //教育部统计信息
         BelongId: "", //统计归属
         TypeId: "", //一级学科
-        entrustPlaceId: "", //委托单位性质
-        topicId: "", //课题类型
-        mainProjectName: "", //主项目名称
-        applicationCode: "", //申请代码
-        introduction: "", //项目简介
-        remarks: "", //备注
+        EntrustPlaceId: "", //委托单位性质
+        TopicId: "", //课题类型
+        MainProjectName: "", //主项目名称
+        ApplicationCode: "", //申请代码
+        Introduction: "", //项目简介
+        Remarks: "", //备注
 
         //合作单位
-        cooperateId: "", //合作单位
-        contractNum: "", //合同编号
-        fundNum: "", //经费编号
-        contractName: "", //合同名称
-        contractId: "", //合同类型
-        contractFund: "", //合同经费
-        cooperatePrincipal: "", //合同负责人
-        bankName: "", //银行名称
-        bankAccount: "", //银行账号
-        dutyBreachContract: "", //双方违约责任
+        CooperateId: "", //合作单位
+        ContractNum: "", //合同编号
+        FundNum: "", //经费编号
+        ContractName: "", //合同名称
+        ContractId: "", //合同类型
+        ContractFund: "", //合同经费
+        CooperatePrincipal: "", //合同负责人
+        BankName: "", //银行名称
+        BankAccount: "", //银行账号
+        ContractDuty: "", //双方违约责任
 
         //技术市场信息
-        payId: "", //支付方式
+        PayId: "", //支付方式
         EcoFirstId: "", //国民经济行业
         EcoSecondId: "", //国民经济行业二级目录
         EconomicId: "", //国民经济行业三级目录
@@ -814,12 +814,12 @@ export default {
         SourceId: "", //计划来源一级
         TechnicalId: "", //技术邻域分类一级
         PropertyId: "", //知识产权类别一级
-        subjectFileList: [], //项目附件
+        SubjectFileList: [], //项目附件
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
         //项目申报基础信息
-        subjectName: [
+        SubjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           {
             min: 2,
@@ -827,7 +827,7 @@ export default {
             trigger: "blur",
           },
         ],
-        subjectNum: [
+        SubjectNum: [
           { required: true, message: "请输入项目编号", trigger: "blur" },
           {
             min: 2,
@@ -836,34 +836,34 @@ export default {
             trigger: "blur",
           },
         ],
-        rankId: [
+        RankId: [
           { required: true, message: "请选择项目等级", trigger: "change" },
         ],
 
         //项目经费
-        subjectFund: [
+        SubjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        hardwareFund: [
+        HardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        softwareFund: [
+        SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        staySchoolFund: [
+        StaySchoolFund: [
           { required: false, message: "请输入留校经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        outboundFund: [
+        OutboundFund: [
           { required: false, message: "请输入外拨经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
         //项目描述
-        subjectPlace: [
+        SubjectPlace: [
           { required: true, message: "请输入所属单位", trigger: "blur" },
           {
             min: 2,
@@ -911,10 +911,10 @@ export default {
             trigger: "blur",
           },
         ],
-        subjectTime: [
+        SubjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
-        startTime: [
+        StartTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
         FinishTime: [
@@ -928,34 +928,34 @@ export default {
         TypeId: [
           { required: true, message: "请选择一级学科", trigger: "blur" },
         ],
-        entrustPlaceId: [
+        EntrustPlaceId: [
           { required: true, message: "请选择委托单位", trigger: "blur" },
         ],
-        topicId: [
+        TopicId: [
           { required: true, message: "请选择课题类型", trigger: "blur" },
         ],
-        mainProjectName: [
+        MainProjectName: [
           { required: false, message: "请输入主项目名称", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
-        applicationCode: [
+        ApplicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
-        introduction: [
+        Introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
-        remarks: [
+        Remarks: [
           { required: false, message: "请输入备注", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
 
         //合作单位
-        cooperateId: [
+        CooperateId: [
           { required: true, message: "请选择合作单位", trigger: "blur" },
         ],
-        contractNum: [
+        ContractNum: [
           { required: true, message: "请输入合同编号", trigger: "blur" },
           {
             min: 2,
@@ -964,7 +964,7 @@ export default {
             trigger: "blur",
           },
         ],
-        fundNum: [
+        FundNum: [
           { required: true, message: "请输入经费编号", trigger: "blur" },
           {
             min: 2,
@@ -973,7 +973,7 @@ export default {
             trigger: "blur",
           },
         ],
-        contractName: [
+        ContractName: [
           { required: true, message: "请输入合同名称", trigger: "blur" },
           {
             min: 2,
@@ -982,14 +982,14 @@ export default {
             trigger: "blur",
           },
         ],
-        contractId: [
+        ContractId: [
           { required: true, message: "请选择合同类型", trigger: "blur" },
         ],
-        contractFund: [
+        ContractFund: [
           { required: true, message: "请输入合同经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        cooperatePrincipal: [
+        CooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },
           {
             min: 2,
@@ -998,7 +998,7 @@ export default {
             trigger: "blur",
           },
         ],
-        bankName: [
+        BankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
           {
             min: 5,
@@ -1007,7 +1007,7 @@ export default {
             trigger: "blur",
           },
         ],
-        bankAccount: [
+        BankAccount: [
           { required: true, message: "请输入银行账号", trigger: "blur" },
           {
             min: 15,
@@ -1016,7 +1016,7 @@ export default {
             trigger: "blur",
           },
         ],
-        dutyBreachContract: [
+        ContractDuty: [
           { required: true, message: "请输入违约金", trigger: "blur" },
           {
             min: 2,
@@ -1027,7 +1027,7 @@ export default {
         ],
 
         //技术市场信息
-        payId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
+        PayId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
         EcoFirstId: [
           {
             required: true,
@@ -1076,7 +1076,7 @@ export default {
             trigger: "blur",
           },
         ],
-        subjectFileList: [
+        SubjectFileList: [
           { required: true, message: "请选择图片", trigger: "blur" },
         ],
       },
@@ -1100,7 +1100,7 @@ export default {
         .then((res) => {
           let obj1 = JSON.parse(res.msg);
           //closeDebug console.log("RankList初始化", obj);
-          this.rankList = obj1.rank;
+          this.RankList = obj1.rank;
         })
         .catch((failResponse) => {});
       initSubject()
@@ -1201,26 +1201,26 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.subjectFileList;
+          let filesList = this.FormData.SubjectFileList;
           //上传项目基础信息（项目申报）
-          data2upload.append("subjectNum", this.FormData.subjectNum);
-          data2upload.append("subjectName", this.FormData.subjectName);
-          data2upload.append("subjectType", this.RankName);
-          data2upload.append("rankId", this.FormData.rankId);
-          data2upload.append("levelId", this.levelId); //项目的等级id（横向纵向）
+          data2upload.append("SubjectNum", this.FormData.SubjectNum);
+          data2upload.append("SubjectName", this.FormData.SubjectName);
+          data2upload.append("SubjectType", this.RankName);
+          data2upload.append("RankId", this.FormData.RankId);
+          data2upload.append("LevelId", this.levelId); //项目的等级id（横向纵向）
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
           //项目经费
-          data2upload.append("subjectFund", this.FormData.subjectFund);
-          data2upload.append("hardwareFund", this.FormData.hardwareFund);
-          data2upload.append("softwareFund", this.FormData.softwareFund);
-          data2upload.append("staySchoolFund", this.FormData.staySchoolFund);
-          data2upload.append("outboundFund", this.FormData.outboundFund);
+          data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("HardwareFund", this.FormData.HardwareFund);
+          data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
+          data2upload.append("StaySchoolFund", this.FormData.StaySchoolFund);
+          data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //项目描述
-          data2upload.append("SubjectPlace", this.FormData.subjectPlace);
+          data2upload.append("SubjectPlace", this.FormData.SubjectPlace);
           data2upload.append("ResearchId", this.FormData.ResearchId);
           data2upload.append("isSecrecy", this.FormData.isSecrecy);
           data2upload.append("isVoucher", this.FormData.isVoucher);
@@ -1228,40 +1228,40 @@ export default {
           data2upload.append("isPromote", this.FormData.isPromote);
           data2upload.append("isDutyFree", this.FormData.isDutyFree);
           data2upload.append("DutyFreeId", this.FormData.DutyFreeId);
-          data2upload.append("SubjectTime", this.FormData.subjectTime);
-          data2upload.append("StartTime", this.FormData.startTime);
+          data2upload.append("SubjectTime", this.FormData.SubjectTime);
+          data2upload.append("StartTime", this.FormData.StartTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
 
           //教育部统计信息
           data2upload.append("BelongId", this.FormData.BelongId);
           data2upload.append("TypeId", this.FormData.TypeId);
-          data2upload.append("EntrustPlaceId", this.FormData.entrustPlaceId);
-          data2upload.append("TopicId", this.FormData.topicId);
-          data2upload.append("MainProjectName", this.FormData.mainProjectName);
-          data2upload.append("ApplicationCode", this.FormData.applicationCode);
-          data2upload.append("Introduction", this.FormData.introduction);
+          data2upload.append("EntrustPlaceId", this.FormData.EntrustPlaceId);
+          data2upload.append("TopicId", this.FormData.TopicId);
+          data2upload.append("MainProjectName", this.FormData.MainProjectName);
+          data2upload.append("ApplicationCode", this.FormData.ApplicationCode);
+          data2upload.append("Introduction", this.FormData.Introduction);
 
           //合作单位表单
-          data2upload.append("CooperateId", this.FormData.cooperateId);
-          data2upload.append("ContractNum", this.FormData.contractNum);
-          data2upload.append("FundNum", this.FormData.fundNum);
-          data2upload.append("ContractName", this.FormData.contractName);
-          data2upload.append("ContractId", this.FormData.contractId);
-          data2upload.append("Remarks", this.FormData.remarks);
-          data2upload.append("ContractFund", this.FormData.contractFund);
+          data2upload.append("CooperateId", this.FormData.CooperateId);
+          data2upload.append("ContractNum", this.FormData.ContractNum);
+          data2upload.append("FundNum", this.FormData.FundNum);
+          data2upload.append("ContractName", this.FormData.ContractName);
+          data2upload.append("ContractId", this.FormData.ContractId);
+          data2upload.append("Remarks", this.FormData.Remarks);
+          data2upload.append("ContractFund", this.FormData.ContractFund);
           data2upload.append(
             "CooperatePrincipal",
-            this.FormData.cooperatePrincipal
+            this.FormData.CooperatePrincipal
           );
-          data2upload.append("BankName", this.FormData.bankName);
-          data2upload.append("BankAccount", this.FormData.bankAccount);
+          data2upload.append("BankName", this.FormData.BankName);
+          data2upload.append("BankAccount", this.FormData.BankAccount);
           data2upload.append(
-            "DutyBreachContract",
-            this.FormData.dutyBreachContract
+            "ContractDuty",
+            this.FormData.ContractDuty
           );
 
           //技术市场信息
-          data2upload.append("PayId", this.FormData.payId);
+          data2upload.append("PayId", this.FormData.PayId);
           data2upload.append("EconomicId", this.FormData.EconomicId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
           data2upload.append("SourceId", this.FormData.SourceId);
@@ -1274,7 +1274,7 @@ export default {
           }
 
           uploadSponsored(data2upload)
-.then((res) => {
+            .then((res) => {
               //closeDebug console.log("-----------表单提交---------------");
               //closeDebug console.log("服务器返回值：", res);
               if (res.code === 0) {
@@ -1349,13 +1349,13 @@ export default {
       }
     },
     //处理已上传图片与表单内容的同步
-    handleChange(file, fileList) {
-      //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.subjectFileList = fileList;
+    handleChange(file, FileList) {
+      //closeDebug console.log("添加图片后", file, FileList);
+      this.FormData.SubjectFileList = FileList;
     },
     //处理已上传的图片的删除
-    handleRemove(file, fileList) {
-      //closeDebug console.log("删除图片后", file, fileList);
+    handleRemove(file, FileList) {
+      //closeDebug console.log("删除图片后", file, FileList);
     },
     //处理已上传的图片的点击预览
     handlePreview(file) {
@@ -1364,8 +1364,8 @@ export default {
       this.dialogVisible = true;
     },
     //处理上传图片超过限制
-    handleExceed(files, fileList) {
-      //closeDebug console.log("数量超出限制时", files, fileList);
+    handleExceed(files, FileList) {
+      //closeDebug console.log("数量超出限制时", files, FileList);
       this.$message({
         message: "已达到图片数量上限",
         type: "error",

@@ -11,17 +11,17 @@
     >
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目名称" prop="subjectName">
+          <el-form-item label="项目名称" prop="SubjectName">
             <el-input
-              v-model="FormData.subjectName"
+              v-model="FormData.SubjectName"
               placeholder="请输入项目名称"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目编号" prop="subjectNum">
+          <el-form-item label="项目编号" prop="SubjectNum">
             <el-input
-              v-model="FormData.subjectNum"
+              v-model="FormData.SubjectNum"
               placeholder="请输入项目编号"
             ></el-input>
           </el-form-item>
@@ -32,13 +32,13 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="rankId">
+          <el-form-item label="项目等级" prop="RankId">
             <el-select
-              v-model="FormData.rankId"
+              v-model="FormData.RankId"
               placeholder="请选择项目等级"
               style="display: block"
             >
-              <template v-for="rankEach1 in rankList">
+              <template v-for="rankEach1 in RankList">
                 <el-option
                   :label="rankEach1.rankName"
                   :value="rankEach1.id"
@@ -91,7 +91,7 @@
             >
               <el-option label="全部教师" value=""></el-option>
               <el-option
-                v-for="opt in teacherList"
+                v-for="opt in TeacherList"
                 :key="opt.id"
                 :label="opt.teaName"
                 :value="opt.userId"
@@ -107,41 +107,41 @@
       <h3>项目经费</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="批准经费（元）" prop="subjectFund">
+          <el-form-item label="批准经费（元）" prop="SubjectFund">
             <el-input
-              v-model="FormData.subjectFund"
+              v-model="FormData.SubjectFund"
               placeholder="请输入项目批准经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="硬件经费（元）" prop="hardwareFund">
+          <el-form-item label="硬件经费（元）" prop="HardwareFund">
             <el-input
-              v-model="FormData.hardwareFund"
+              v-model="FormData.HardwareFund"
               placeholder="请输入项目硬件经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="软件经费（元）" prop="softwareFund">
+          <el-form-item label="软件经费（元）" prop="SoftwareFund">
             <el-input
-              v-model="FormData.softwareFund"
+              v-model="FormData.SoftwareFund"
               placeholder="请输入项目硬件经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="留校经费（元）" prop="staySchoolFund">
+          <el-form-item label="留校经费（元）" prop="StaySchoolFund">
             <el-input
-              v-model="FormData.staySchoolFund"
+              v-model="FormData.StaySchoolFund"
               placeholder="请输入项目留校经费"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="外拨经费（元）" prop="outboundFund">
+          <el-form-item label="外拨经费（元）" prop="OutboundFund">
             <el-input
-              v-model="FormData.outboundFund"
+              v-model="FormData.OutboundFund"
               placeholder="请输入项目外拨经费"
             ></el-input>
           </el-form-item>
@@ -152,17 +152,17 @@
       <h3>项目描述</h3>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目所属单位" prop="subjectPlace">
+          <el-form-item label="项目所属单位" prop="SubjectPlace">
             <el-input
-              v-model="FormData.subjectPlace"
+              v-model="FormData.SubjectPlace"
               placeholder="请输入项目所属单位"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="立项时间" prop="subjectTime">
+          <el-form-item label="立项时间" prop="SubjectTime">
             <el-date-picker
-              v-model="FormData.subjectTime"
+              v-model="FormData.SubjectTime"
               type="date"
               placeholder="选择日期"
               range-separator="至"
@@ -173,9 +173,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="开始时间" prop="startTime">
+          <el-form-item label="开始时间" prop="StartTime">
             <el-date-picker
-              v-model="FormData.startTime"
+              v-model="FormData.StartTime"
               type="date"
               placeholder="选择日期"
               range-separator="至"
@@ -359,9 +359,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目来源" prop="sourceId">
+          <el-form-item label="项目来源" prop="SourceId">
             <el-select
-              v-model="FormData.sourceId"
+              v-model="FormData.SourceId"
               placeholder="请选择项目来源"
               style="display: block"
             >
@@ -376,9 +376,9 @@
           </el-form-item>
         </el-col>
         <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="合作单位" prop="cooperateId">
+          <el-form-item label="合作单位" prop="CooperateId">
             <el-select
-              v-model="FormData.cooperateId"
+              v-model="FormData.CooperateId"
               placeholder="请选择合作单位"
               style="display: block"
             >
@@ -396,7 +396,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="项目附件" required prop="subjectFileList">
+      <el-form-item label="项目附件" required prop="SubjectFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -406,7 +406,7 @@
           :on-remove="handleRemove"
           :on-exceed="handleExceed"
           :on-change="handleChange"
-          :file-list="fileList"
+          :file-list="FileList"
           :multiple="true"
           list-type="picture"
           :limit="5"
@@ -450,9 +450,9 @@ export default {
       submitButton: false,
       levelId: 3,
       RankName: "校级项目",
-      fileList: [], //已上传的文件列表
-      rankList: [], //项目等级的列表「从后端取得」
-      teacherList: [], //教师列表「从后端取得」
+      FileList: [], //已上传的文件列表
+      RankList: [], //项目等级的列表「从后端取得」
+      TeacherList: [], //教师列表「从后端取得」
       SourceList: [], //项目来源列表「从后端取得」
       CooperateList: [], //合作单位列表「从后端取得」
       BelongList: [], //统计归属列表「从后端取得」
@@ -474,21 +474,21 @@ export default {
             value: "",
           },
         ],
-        subjectName: "",
-        subjectNum: "",
-        rankId: "",
+        SubjectNum: "",
+        SubjectName: "",
+        RankId: "",
 
         //项目经费
-        subjectFund: "",
-        hardwareFund: "",
-        softwareFund: "",
-        staySchoolFund: "",
-        outboundFund: "",
+        SubjectFund: "",
+        HardwareFund: "",
+        SoftwareFund: "",
+        StaySchoolFund: "",
+        OutboundFund: "",
 
         //项目描述
-        subjectPlace: "",
-        subjectTime: "",
-        startTime: "",
+        SubjectPlace: "",
+        SubjectTime: "",
+        StartTime: "",
         FinishTime: "",
 
         //教育部统计信息
@@ -502,55 +502,55 @@ export default {
         EcoSecondId: "",
         EconomicId: "",
 
-        sourceId: "",
-        cooperateId: "",
-        subjectFileList: [],
+        SourceId: "",
+        CooperateId: "",
+        SubjectFileList: [],
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
         //基础信息
-        subjectName: [
+        SubjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
-        subjectNum: [
+        SubjectNum: [
           { required: true, message: "请输入项目编号", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
-        subjectPlace: [
+        SubjectPlace: [
           { required: true, message: "请输入项目所属单位", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
 
         //项目经费
-        subjectFund: [
+        SubjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        hardwareFund: [
+        HardwareFund: [
           { required: false, message: "请输入项目硬件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        softwareFund: [
+        SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        staySchoolFund: [
+        StaySchoolFund: [
           { required: false, message: "请输入留校经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        outboundFund: [
+        OutboundFund: [
           { required: false, message: "请输入外拨经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
-        rankId: [
+        RankId: [
           { required: true, message: "请选择项目等级", trigger: "change" },
         ],
-        subjectTime: [
+        SubjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
-        startTime: [
+        StartTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
         FinishTime: [
@@ -559,9 +559,7 @@ export default {
         ResearchId: [
           { required: true, message: "请选择研究方向", trigger: "change" },
         ],
-        subjectFileList: [
-          { required: true, message: "请选择图片", trigger: "blur" },
-        ],
+
         EcoFirstId: [
           {
             required: true,
@@ -593,7 +591,7 @@ export default {
             trigger: "change",
           },
         ],
-        sourceId: [
+        SourceId: [
           { required: true, message: "请选择项目等级", trigger: "blur" },
         ],
         BelongId: [
@@ -602,8 +600,11 @@ export default {
         TypeId: [
           { required: true, message: "请选择一级学科", trigger: "blur" },
         ],
-        cooperateId: [
+        CooperateId: [
           { required: true, message: "请选择合作单位", trigger: "blur" },
+        ],
+        SubjectFileList: [
+          { required: true, message: "请选择图片", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
@@ -626,14 +627,14 @@ export default {
         .then((res) => {
           let obj1 = JSON.parse(res.msg);
           //closeDebug console.log("RankList初始化", obj);
-          this.rankList = obj1.rank;
+          this.RankList = obj1.rank;
         })
         .catch((failResponse) => {});
       initSubject()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
           //closeDebug console.log("teacherList初始化", obj);
-          this.teacherList = obj2.teacher;
+          this.TeacherList = obj2.teacher;
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;
           this.BelongList = obj2.belong;
@@ -723,34 +724,34 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.subjectFileList;
-          data2upload.append("subjectNum", this.FormData.subjectNum);
-          data2upload.append("subjectName", this.FormData.subjectName);
-          data2upload.append("subjectType", this.RankName);
-          data2upload.append("SubjectTime", this.FormData.subjectTime);
-          data2upload.append("StartTime", this.FormData.startTime);
+          let filesList = this.FormData.SubjectFileList;
+          data2upload.append("SubjectNum", this.FormData.SubjectNum);
+          data2upload.append("SubjectName", this.FormData.SubjectName);
+          data2upload.append("SubjectType", this.RankName);
+          data2upload.append("SubjectTime", this.FormData.SubjectTime);
+          data2upload.append("StartTime", this.FormData.StartTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
-          data2upload.append("SubjectPlace", this.FormData.subjectPlace);
-          data2upload.append("rankId", this.FormData.rankId);
-          data2upload.append("levelId", this.levelId);
+          data2upload.append("SubjectPlace", this.FormData.SubjectPlace);
+          data2upload.append("RankId", this.FormData.RankId);
+          data2upload.append("LevelId", this.levelId);
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
           //项目经费
-          data2upload.append("subjectFund", this.FormData.subjectFund);
-          data2upload.append("hardwareFund", this.FormData.hardwareFund);
-          data2upload.append("softwareFund", this.FormData.softwareFund);
-          data2upload.append("staySchoolFund", this.FormData.staySchoolFund);
-          data2upload.append("outboundFund", this.FormData.outboundFund);
+          data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("HardwareFund", this.FormData.HardwareFund);
+          data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
+          data2upload.append("StaySchoolFund", this.FormData.StaySchoolFund);
+          data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //校级项目表单
           data2upload.append("EconomicId", this.FormData.EconomicId);
           data2upload.append("SocietyId", this.FormData.SocietyId);
-          data2upload.append("SourceId", this.FormData.sourceId);
+          data2upload.append("SourceId", this.FormData.SourceId);
           data2upload.append("BelongId", this.FormData.BelongId);
           data2upload.append("TypeId", this.FormData.TypeId);
-          data2upload.append("CooperateId", this.FormData.cooperateId);
+          data2upload.append("CooperateId", this.FormData.CooperateId);
           data2upload.append("ResearchId", this.FormData.ResearchId);
 
           //循环加入多文件
@@ -835,13 +836,13 @@ export default {
       }
     },
     //处理已上传图片与表单内容的同步
-    handleChange(file, fileList) {
-      //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.subjectFileList = fileList;
+    handleChange(file, FileList) {
+      //closeDebug console.log("添加图片后", file, FileList);
+      this.FormData.SubjectFileList = FileList;
     },
     //处理已上传的图片的删除
-    handleRemove(file, fileList) {
-      //closeDebug console.log("删除图片后", file, fileList);
+    handleRemove(file, FileList) {
+      //closeDebug console.log("删除图片后", file, FileList);
     },
     //处理已上传的图片的点击预览
     handlePreview(file) {
@@ -850,8 +851,8 @@ export default {
       this.dialogVisible = true;
     },
     //处理上传图片超过限制
-    handleExceed(files, fileList) {
-      //closeDebug console.log("数量超出限制时", files, fileList);
+    handleExceed(files, FileList) {
+      //closeDebug console.log("数量超出限制时", files, FileList);
       this.$message({
         message: "已达到图片数量上限",
         type: "error",

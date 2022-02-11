@@ -40,8 +40,16 @@
               <span slot="title" class="menu-title">审核记录</span>
             </template>
             <el-menu-item index="/eta/award-review">奖项审核</el-menu-item>
-            <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
-            <el-menu-item index="/eta/subject-review">项目审核</el-menu-item>
+            <el-menu-item
+              index="/eta/record-review"
+              v-if="roleId !== 3 && roleId !== 6"
+              >成果审核</el-menu-item
+            >
+            <el-menu-item
+              index="/eta/subject-review"
+              v-if="roleId !== 3 && roleId !== 6"
+              >项目审核</el-menu-item
+            >
           </el-submenu>
         </template>
         <el-submenu index="4">
@@ -50,10 +58,12 @@
             <span slot="title" class="menu-title">奖项记录</span>
           </template>
           <el-menu-item index="/eta/mine">奖项记录</el-menu-item>
-          <template v-if="roleId !== 5 && roleId !== 6">
-            <el-menu-item index="/eta/mine-paper">成果记录</el-menu-item>
-            <el-menu-item index="/eta/mine-subject">项目记录</el-menu-item>
-          </template>
+          <el-menu-item index="/eta/mine-paper" v-if="roleId !== 6"
+            >成果记录</el-menu-item
+          >
+          <el-menu-item index="/eta/mine-subject" v-if="roleId !== 6"
+            >项目记录</el-menu-item
+          >
         </el-submenu>
         <template
           v-if="roleId == 1 || roleId == 2 || roleId == 3 || roleId === 7"
@@ -88,7 +98,9 @@
               index="/eta/manage-stu"
               >学生管理</el-menu-item
             >
-            <el-menu-item v-if="roleId == 1 || roleId === 7" index="/eta/manage-tea"
+            <el-menu-item
+              v-if="roleId == 1 || roleId === 7"
+              index="/eta/manage-tea"
               >教师管理</el-menu-item
             >
             <el-menu-item v-if="roleId == 1" index="/eta/manage-class"

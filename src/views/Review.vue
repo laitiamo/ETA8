@@ -6,7 +6,7 @@
         :inline="true"
         class="demo-form-inline"
         size="mini"
-        v-if="roleId !== 6"
+        v-if="roleId !== 6 && roleId !== 7"
       >
         <el-form-item>
           <el-select
@@ -90,6 +90,21 @@
             placeholder="搜索奖项名称"
           ></el-input>
         </el-form-item>
+        <template v-if="roleId == 7">
+          <el-form :inline="true" class="demo-form-inline" size="mini">
+            <el-form-item>
+              <el-input
+                v-model="form2Query.keyUsername"
+                placeholder="搜索教职工号"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                v-model="form2Query.keyName"
+                placeholder="搜索姓名"
+              ></el-input>
+            </el-form-item> </el-form
+        ></template>
         <el-form-item>
           <el-button type="primary" @click="onQuery">筛选</el-button>
         </el-form-item>
