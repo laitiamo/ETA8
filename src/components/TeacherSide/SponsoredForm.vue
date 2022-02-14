@@ -683,13 +683,13 @@
           :on-change="handleChange"
           :file-list="FileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
           :limit="5"
-          accept="image/jpeg,image/png"
+          accept=".pdf"
         >
           <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
+            只能上传 PDF 格式文件，且总大小不超过100MB，最多上传5份
           </div>
         </el-upload>
       </el-form-item>
