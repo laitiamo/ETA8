@@ -190,6 +190,20 @@ export const QuerySecondList = (params) =>
 export const QueryEconomicList = (params) =>
   get(`eta8/subject/listEconomic`, params);
 
+ /**
+ * 获取买方地市
+ * @returns
+ */
+  export const QueryCityList = (params) =>
+  get(`eta8/subject/listCity`, params);
+
+/**
+* 获取买方县区
+* @returns
+*/
+export const QueryCountyList = (params) =>
+get(`eta8/subject/listCounty`, params);
+
 /**
  * 获取成果等级列表
  * @returns
@@ -230,6 +244,7 @@ export const initSchool = () => get(`eta8/subject/initSchool`);
  * @returns
  */
 export const initHorizon = () => get(`eta8/subject/initHorizon`);
+
 
 /**
  * 获取纵向项目列表

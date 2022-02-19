@@ -57,13 +57,13 @@
           <el-form-item label="项目负责人">
             <el-input
               v-model="username"
-              style="width:140px"
+              style="width: 140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
             <el-input
               v-model="name"
-              style="width:140px"
+              style="width: 140px"
               placeholder="请输入项目第一参与者"
               readonly
             ></el-input>
@@ -87,7 +87,7 @@
               v-model="domain.value"
               placeholder="请选择教师"
               filterable
-              style="width:140px"
+              style="width: 140px"
             >
               <el-option label="全部教师" value=""></el-option>
               <el-option
@@ -154,8 +154,9 @@
         <el-col class="subject-info" :span="12" :xs="24">
           <el-form-item label="所属单位" prop="SubjectPlace">
             <el-input
-              v-model="FormData.SubjectPlace"
+              v-model="SubjectPlace"
               placeholder="请输入项目所属单位"
+              readonly
             ></el-input>
           </el-form-item>
         </el-col>
@@ -379,7 +380,184 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-divider></el-divider>
+      <h4>买方信息</h4>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方名称" prop="BuyerName">
+            <el-input
+              v-model="FormData.BuyerName"
+              placeholder="请输入买方名称"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方性质" prop="BuyerType">
+            <el-select
+              v-model="FormData.BuyerType"
+              placeholder="请选择买方性质"
+              style="display: block"
+            >
+              <template v-for="rankEach in BuyerTypeList">
+                <el-option
+                  :label="rankEach.Type"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方国家" prop="BuyerCountry">
+            <el-select
+              v-model="FormData.BuyerCountry"
+              placeholder="请选择买方国家"
+              style="display: block"
+            >
+              <template v-for="rankEach in BuyerCountryList">
+                <el-option
+                  :label="rankEach.country"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          class="subject-info"
+          :span="12"
+          :xs="24"
+          v-if="FormData.BuyerCountry == 13"
+        >
+          <el-form-item label="买方省份" prop="BuyerProvince">
+            <el-select
+              v-model="FormData.BuyerProvince"
+              placeholder="请选择买方省份"
+              @change="QueryCity"
+              style="display: block"
+            >
+              <template v-for="rankEach in BuyerProvinceList">
+                <el-option
+                  :label="rankEach.Province"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="BuyerCity" v-if="FormData.BuyerProvince !== ''">
+            <el-select
+              v-model="FormData.BuyerCity"
+              placeholder="请选择买方地市"
+              @change="QueryCounty"
+              style="display: block"
+            >
+              <template v-for="rankEach in BuyerCityList">
+                <el-option
+                  :label="rankEach.City"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item prop="BuyerCounty" v-if="FormData.BuyerCity !== ''">
+            <el-select
+              v-model="FormData.BuyerCounty"
+              placeholder="请选择买方县区"
+              style="display: block"
+            >
+              <template v-for="rankEach in BuyerCountyList">
+                <el-option
+                  :label="rankEach.County"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方邮编" prop="BuyerPostCode">
+            <el-input
+              v-model="FormData.BuyerPostCode"
+              placeholder="请输入买方邮编"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="联系人" prop="BuyerContact">
+            <el-input
+              v-model="FormData.BuyerContact"
+              placeholder="请输入买方联系人"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="联系人手机" prop="BuyerTel">
+            <el-input
+              v-model="FormData.BuyerTel"
+              placeholder="请输入买方联系人手机"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="法定代表人" prop="BuyerLegalPerson">
+            <el-input
+              v-model="FormData.BuyerLegalPerson"
+              placeholder="请输入法定代表人"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="法人代码" prop="BuyerLegalEntityCode">
+            <el-input
+              v-model="FormData.BuyerLegalEntityCode"
+              placeholder="请输入买方法人代码"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="电子邮件" prop="BuyerEmail">
+            <el-input
+              v-model="FormData.BuyerEmail"
+              placeholder="请输入买方电子邮件"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方注册地址" prop="BuyerRegisteredAddress">
+            <el-input
+              v-model="FormData.BuyerRegisteredAddress"
+              placeholder="请输入买方买方注册地址"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="买方通信地址" prop="BuyerMailingAddress">
+            <el-input
+              v-model="FormData.BuyerMailingAddress"
+              placeholder="请输入买方通信地址"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-divider></el-divider>
       <h4>技术市场信息</h4>
       <el-row :gutter="20">
@@ -592,14 +770,17 @@ import {
   getSourceList,
   QuerySecondList,
   QueryEconomicList,
+  QueryCityList,
+  QueryCountyList,
 } from "../../api";
 export default {
   name: "HorizontallForm",
   data() {
     return {
       submitButton: false,
-      levelId: 2,
+      LevelId: 2,
       RankName: "横向项目",
+      SubjectPlace: "东南大学成贤学院",
       FileList: [], //已上传的文件列表
       RankList: [], //项目类别的列表「从后端取得」
       TopicList: [], //课题的列表「从后端取得」
@@ -607,6 +788,12 @@ export default {
       ContractList: [], //合同列表「从后端取得」
       CooperateList: [], //合作单位列表「从后端取得」
       EntrustList: [], //委托单位列表「从后端取得」
+
+      BuyerCountryList: [], //买方城市
+      BuyerTypeList: [], //买方性质
+      BuyerProvinceList: [], //买方省份
+      BuyerCityList: [], //买方地市
+      BuyerCountyList: [], //买方县区
 
       EcoFirstList: [], //国民经济一级目录
       EcoSecondList: [], //国民经济二级目录
@@ -638,7 +825,6 @@ export default {
         OutboundFund: "",
 
         //项目描述
-        SubjectPlace: "",
         Introduction: "",
         SubjectTime: "",
         StartTime: "",
@@ -660,6 +846,22 @@ export default {
         DutyFreeId: "",
         isPromote: "",
         ContractDuty: "",
+
+        //买方信息
+        BuyerName: "",
+        BuyerCountry: "",
+        BuyerType: "",
+        BuyerProvince: "",
+        BuyerCity: "",
+        BuyerCounty: "",
+        BuyerPostCode: "",
+        BuyerContact: "",
+        BuyerTel: "",
+        BuyerLegalPerson: "",
+        BuyerLegalEntityCode: "",
+        BuyerEmail: "",
+        BuyerRegisteredAddress: "",
+        BuyerMailingAddress: "",
 
         //技术市场信息
         PayId: "",
@@ -721,15 +923,6 @@ export default {
         ],
 
         //项目描述
-        SubjectPlace: [
-          { required: true, message: "请输入所属单位", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
         Introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
           { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
@@ -844,6 +1037,104 @@ export default {
           },
         ],
 
+        //买方信息
+        BuyerName: [
+          { required: true, message: "请输入买方名称", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "长度在 2 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+        BuyerCountry: [
+          { required: true, message: "请选择买方国家", trigger: "blur" },
+        ],
+        BuyerType: [
+          { required: true, message: "请选择买方性质", trigger: "blur" },
+        ],
+        BuyerProvince: [
+          { required: false, message: "请选择买方省份", trigger: "blur" },
+        ],
+        BuyerCity: [
+          { required: false, message: "请选择买方地市", trigger: "blur" },
+        ],
+        BuyerCounty: [
+          { required: false, message: "请选择买方县区", trigger: "blur" },
+        ],
+        BuyerPostCode: [
+          { required: true, message: "请输入买方邮编", trigger: "blur" },
+          {
+            min: 6,
+            max: 6,
+            message: "请输入正确邮编",
+            trigger: "blur",
+          },
+        ],
+        BuyerContact: [
+          { required: true, message: "请输入联系人", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "联系人名字在 2 到 20 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerTel: [
+          { required: true, message: "请输入联系人手机", trigger: "blur" },
+          {
+            min: 3,
+            max: 12,
+            message: "电话在 3 到 12 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerLegalPerson: [
+          { required: true, message: "买方法定代表人", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "法定代表人名字在 2 到 20 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerLegalEntityCode: [
+          { required: false, message: "请输入法人代码", trigger: "blur" },
+          {
+            min: 9,
+            max: 9,
+            message: "法人代码为 9 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerEmail: [
+          { required: true, message: "请输入电子邮件", trigger: "blur" },
+          {
+            min: 2,
+            max: 320,
+            message: "电子邮件在 2 到 320 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerRegisteredAddress: [
+          { required: true, message: "请输入注册地址", trigger: "blur" },
+          {
+            min: 2,
+            max: 30,
+            message: "注册地址在 2 到 30 位数",
+            trigger: "blur",
+          },
+        ],
+        BuyerMailingAddress: [
+          { required: true, message: "请输入买方通信地址", trigger: "blur" },
+          {
+            min: 2,
+            max: 20,
+            message: "买方通信地址在 2 到 20 位数",
+            trigger: "blur",
+          },
+        ],
+
         //技术市场信息
         PayId: [{ required: true, message: "请选择付款方式", trigger: "blur" }],
         EcoFirstId: [
@@ -938,8 +1229,35 @@ export default {
           this.ContractList = obj3.contract;
           this.EntrustList = obj3.entrust;
           this.CooperateList = obj3.cooperate;
+          this.BuyerCountryList = obj3.buyercountry;
+          this.BuyerTypeList = obj3.buyertype;
+          this.BuyerProvinceList = obj3.buyerprovince;
           this.TechnicalList = obj3.technical;
           this.PropertyList = obj3.property;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新买方信息可供筛选的地市
+    QueryCity() {
+      let _this = this;
+      _this.FormData.BuyerCity = "";
+      let params = new URLSearchParams();
+      params.append("ProvinceId", this.FormData.BuyerProvince);
+      QueryCityList(params)
+        .then((res) => {
+          _this.BuyerCityList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新买方信息可供筛选的县区
+    QueryCounty() {
+      let _this = this;
+      _this.FormData.BuyerCounty = "";
+      let params = new URLSearchParams();
+      params.append("CityId", this.FormData.BuyerCity);
+      QueryCountyList(params)
+        .then((res) => {
+          _this.BuyerCountyList = res;
         })
         .catch((failResponse) => {});
     },
@@ -982,7 +1300,7 @@ export default {
     //初始化横向来源
     initHorizon2() {
       let params = new URLSearchParams();
-      params.append("levelId", this.levelId);
+      params.append("LevelId", this.LevelId);
       getSourceList(params)
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
@@ -1026,7 +1344,7 @@ export default {
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //项目描述
-          data2upload.append("SubjectPlace", this.FormData.SubjectPlace);
+          data2upload.append("SubjectPlace", this.SubjectPlace);
           data2upload.append("Introduction", this.FormData.Introduction);
           data2upload.append("SubjectTime", this.FormData.SubjectTime);
           data2upload.append("StartTime", this.FormData.StartTime);
@@ -1053,9 +1371,33 @@ export default {
           data2upload.append("isDutyFree", this.FormData.isDutyFree);
           data2upload.append("DutyFreeId", this.FormData.DutyFreeId);
           data2upload.append("isPromote", this.FormData.isPromote);
+          data2upload.append("ContractDuty", this.FormData.ContractDuty);
+
+          //买方信息
+          data2upload.append("BuyerName", this.FormData.BuyerName);
+          data2upload.append("BuyerType", this.FormData.BuyerType);
+          data2upload.append("BuyerProvince", this.FormData.BuyerProvince);
+          data2upload.append("BuyerCity", this.FormData.BuyerCity);
+          data2upload.append("BuyerCounty", this.FormData.BuyerCounty);
+          data2upload.append("BuyerPostCode", this.FormData.BuyerPostCode);
+          data2upload.append("BuyerContact", this.FormData.BuyerContact);
+          data2upload.append("BuyerTel", this.FormData.BuyerTel);
           data2upload.append(
-            "ContractDuty",
-            this.FormData.ContractDuty
+            "BuyerLegalPerson",
+            this.FormData.BuyerLegalPerson
+          );
+          data2upload.append(
+            "BuyerLegalEntityCode",
+            this.FormData.BuyerLegalEntityCode
+          );
+          data2upload.append("BuyerEmail", this.FormData.BuyerEmail);
+          data2upload.append(
+            "BuyerRegisteredAddress",
+            this.FormData.BuyerRegisteredAddress
+          );
+          data2upload.append(
+            "BuyerMailingAddress",
+            this.FormData.BuyerMailingAddress
           );
 
           //技术市场信息
