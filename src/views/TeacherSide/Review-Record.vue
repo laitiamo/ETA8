@@ -191,8 +191,8 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
       this.Columns = [
-        { name: "成果名称", value: "paperName", width: "200", ifShow: true },
-        { name: "所属单位", value: "paperPlace", width: "auto", ifShow: false },
+        { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
+        { name: "所属单位", value: "paperPlace", width: "200", ifShow: false },
         { name: "成果等级", value: "rankName", width: "120", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
         { name: "审核状态", value: "reviewName", width: "120", ifShow: false },
@@ -200,7 +200,7 @@ export default {
           name: "成果记录时间",
           value: "paperTime",
           width: "200",
-          ifShow: true,
+          ifShow: false,
         },
       ];
     }

@@ -36,20 +36,14 @@
         >
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-s-operation"></i>
+              <i class="el-icon-help"></i>
               <span slot="title" class="menu-title">审核记录</span>
             </template>
             <el-menu-item index="/eta/award-review">奖项审核</el-menu-item>
-            <el-menu-item
-              index="/eta/record-review"
-              v-if="roleId !== 3 && roleId !== 6"
-              >成果审核</el-menu-item
-            >
-            <el-menu-item
-              index="/eta/subject-review"
-              v-if="roleId !== 3 && roleId !== 6"
-              >项目审核</el-menu-item
-            >
+            <template v-if="roleId !== 6">
+              <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
+              <el-menu-item index="/eta/subject-review">项目审核</el-menu-item>
+            </template>
           </el-submenu>
         </template>
         <el-submenu index="4">
@@ -237,14 +231,18 @@
             >
               <el-submenu index="3">
                 <template slot="title">
-                  <i class="el-icon-s-operation"></i>
+                  <i class="el-icon-help"></i>
                   <span slot="title" class="menu-title">审核记录</span>
                 </template>
                 <el-menu-item index="/eta/award-review">奖项审核</el-menu-item>
-                <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
-                <el-menu-item index="/eta/subject-review"
-                  >项目审核</el-menu-item
-                >
+                <template v-if="roleId !== 6">
+                  <el-menu-item index="/eta/record-review"
+                    >成果审核</el-menu-item
+                  >
+                  <el-menu-item index="/eta/subject-review"
+                    >项目审核</el-menu-item
+                  >
+                </template>
               </el-submenu>
             </template>
             <el-submenu index="4">

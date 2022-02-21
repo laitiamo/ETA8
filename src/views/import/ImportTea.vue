@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getTeaTemplate, uploadTeaTemplate } from "../api";
+import { getTeaTemplate, uploadTeaTemplate } from "../../api";
 export default {
   name: "ImportTea",
   components: {},

@@ -212,7 +212,7 @@ export default {
       this.ifSmall = true;
       this.Columns = [
         { name: "项目编号", value: "subjectNum", width: "120", ifShow: false },
-        { name: "项目名称", value: "subjectName", width: "180", ifShow: true },
+        { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
         {
           name: "所属单位",
           value: "subjectPlace",

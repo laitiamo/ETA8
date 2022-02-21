@@ -1,5 +1,6 @@
 <template>
-  <div class="BookForm">
+  <div class="PaperForm">
+    <h3>{{ paperType }}</h3>
     <el-form
       :model="FormData"
       :rules="rules"
@@ -11,29 +12,29 @@
       <el-form-item label="记录类型" class="no-padding">
         <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
-      <el-form-item label="著作名称" prop="paperName">
+      <el-form-item label="论文名称" prop="paperName">
         <el-input
           v-model="FormData.paperName"
-          placeholder="请输入著作名称"
+          placeholder="请输入论文名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="著作作者（按作者排序）" prop="FirstWriter">
+      <el-form-item label="论文作者（按作者排序）" prop="name">
         <el-input
-          v-model="FirstWriter"
+          v-model="name"
           style="width:140px"
-          placeholder="请输入项目第一参与者"
+          placeholder="请输入论文第一作者"
           readonly
         ></el-input>
         <el-button @click="addDomain">新增参与者</el-button>
       </el-form-item>
       <el-form-item
         v-for="(domain, index) in FormData.domains"
-        :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+        :label="'论文第' + (index + 2) + '位作者（按参与者排序）'"
         :key="domain.key"
         :prop="'domains.' + index + '.value'"
         :rules="{
           required: true,
-          message: '参与者不能为空',
+          message: '作者不能为空',
           trigger: 'blur',
         }"
       >
@@ -63,19 +64,19 @@
           value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="出版社名称" prop="paperPlace">
+      <el-form-item label="期刊名称" prop="paperPlace">
         <el-input
           v-model="FormData.paperPlace"
-          placeholder="请输入出版社名称"
+          placeholder="请输入期刊名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="书本类型" prop="rankId">
+      <el-form-item label="期刊类型" prop="rankId">
         <el-select
           v-model="FormData.rankId"
-          placeholder="请选择书类"
+          placeholder="请选择奖项等级"
           style="display: block"
         >
-          <template v-for="rankEach in BookList">
+          <template v-for="rankEach in PaperList">
             <el-option
               :label="rankEach.rankName"
               :value="rankEach.id"
@@ -87,7 +88,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="出版社图片" required prop="paperPicList">
+      <el-form-item label="期刊图片" required prop="paperPicList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -129,22 +130,18 @@
 </template>
 
 <script>
-import { getTeacherList, getPaperList, uploadPaper } from "../../api";
-
+import { getTeacherList, getPaperList, uploadPaper } from "../../../api";
+import { mapGetters } from "vuex";
 export default {
-  name: "BookForm",
-  props: {
-    FirstWriter: String,
-    paperType: String,
-    paperId: Number,
-    typeId: Number,
-    goback: { type: Function },
-  },
+  name: "PaperForm",
   data() {
     return {
+      typeId: 1,
+      paperId: 10,
+      paperType: "发表论文",
       submitButton: false,
       fileList: [], //已上传的文件列表
-      BookList: [], //奖项等级的列表「从后端取得」
+      PaperList: [], //奖项等级的列表「从后端取得」
       teacherList: [], //教师列表「从后端取得」
       //表单数据
       FormData: {
@@ -162,19 +159,21 @@ export default {
       //<el-form-item>标签的prop值的校验规则
       rules: {
         paperName: [
-          { required: true, message: "请输入著作名称", trigger: "blur" },
+          { required: true, message: "请输入论文名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
-        rankId: [{ required: true, message: "请选择书类", trigger: "change" }],
+        rankId: [
+          { required: true, message: "请选择论文类型", trigger: "change" },
+        ],
         paperTime: [
-          { required: true, message: "请选择日期", trigger: "change" },
+          { required: true, message: "请选择发表日期", trigger: "change" },
         ],
         paperPlace: [
-          { required: true, message: "请输入出版社名称", trigger: "blur" },
+          { required: true, message: "请输入刊物名称", trigger: "blur" },
           { min: 2, message: "长度需大于两个字符", trigger: "blur" },
         ],
         paperPicList: [
-          { required: true, message: "请选择著作图片", trigger: "blur" },
+          { required: true, message: "请上传相关图片", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
@@ -187,13 +186,12 @@ export default {
   methods: {
     //初始化奖项等级列表
     initRankList() {
-      let _this = this;
       let params = new URLSearchParams();
-      params.append("typeId", 2);
+      params.append("typeId", 1);
       getPaperList(params)
         .then((res) => {
           //closeDebug console.log("Ranklist初始化", obj);
-          this.BookList = res;
+          this.PaperList = res;
           this.submitButton = false;
         })
         .catch((failResponse) => {});
@@ -223,7 +221,6 @@ export default {
           let data2upload = new FormData();
           //获取实际input组件的文件
           let filesList = this.FormData.paperPicList;
-          data2upload.append("awardId", this.paperId);
           data2upload.append("typeId", this.typeId);
           data2upload.append("paperName", this.FormData.paperName);
           data2upload.append("paperTime", this.FormData.paperTime);
@@ -285,12 +282,17 @@ export default {
         }
       });
     },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    //删除一行作者
     removeDomain(item) {
       var index = this.FormData.domains.indexOf(item);
       if (index !== -1) {
         this.FormData.domains.splice(index, 1);
       }
     },
+    //增加一行作者
     addDomain() {
       this.FormData.domains.push({
         value: "",
@@ -325,13 +327,17 @@ export default {
         type: "error",
       });
     },
+    //返回成果上传页面
+    goback() {
+      this.$router.push({
+        path: "/eta/record",
+      });
+    },
+  },
+  computed: {
+    ...mapGetters(["name", "username", "roleId"]),
   },
 };
 </script>
 
 <!-- 添加 "scoped" 标签 可以使以下CSS样式仅在本组件生效 例：<style scoped> -->
-<style>
-.demo-FormData {
-  width: auto;
-}
-</style>

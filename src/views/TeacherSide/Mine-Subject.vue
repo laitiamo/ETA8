@@ -86,11 +86,43 @@
       v-show="ifShowDetail"
     >
     </SubjectDetail>
+    <el-dialog title="成果选择" :visible.sync="ifShowDialog" width="90%">
+      <el-table :data="PaperData" style="margin-top:10px">
+        <el-table-column
+          property="PaperType"
+          label="简述"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          property="imagePath"
+          label="图片地址"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column label="操作" width="100" fixed="right" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDel(scope.$index, scope.row)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <el-row type="flex" justify="center">
+      <el-button
+        v-show="ifShowDetail"
+        @click="onSelectPaper"
+        style="margin:10px"
+        >上传成果</el-button
+      >
+    </el-row>
   </div>
 </template>
 
 <script>
-import { getMySubjectList, getSubjectDetail } from "../../api";
+import { getMySubjectList, getSubjectDetail, getMyPaperList } from "../../api";
 import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
@@ -104,10 +136,12 @@ export default {
       ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowDetail: false,
+      ifShowDialog: false,
       detailData: {},
       currentPage: 1,
       pageSize: 10,
       tableData: [{}],
+      PaperData: [{}],
       // 数据列
       Columns: [
         { name: "审核状态", value: "reviewName", width: "130", ifShow: true },
@@ -172,9 +206,29 @@ export default {
         })
         .catch((failResponse) => {});
     },
+    getPaperData() {
+      let _this = this;
+      //参数绑定「分页大小、页码」
+      let params = new URLSearchParams();
+      params.append("limit", this.pageSize);
+      params.append("page", this.currentPage);
+      params.append("typeId",this.detailData.PaperType)
+      getMyPaperList(params)
+        .then((res) => {
+          //closeDebug console.log("-----------获取个人成果列表---------------");
+          //closeDebug console.log(res.data);
+          (this.PaperData = res.data), (this.dataCount = res.count);
+        })
+        .catch((failResponse) => {});
+    },
     //数据格式化
     formatter(row, column) {
       return row.address;
+    },
+    //展示上传成果页
+    onSelectPaper() {
+      this.ifShowDialog = true;
+      this.getPaperData();
     },
     handleSizeChange(val) {
       this.pageSize = val;

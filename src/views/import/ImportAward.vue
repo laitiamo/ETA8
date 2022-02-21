@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getAwardTemplate, uploadAwardTemplate } from "../api";
+import { getAwardTemplate, uploadAwardTemplate } from "../../api";
 export default {
   name: "ImportAward",
   components: {},

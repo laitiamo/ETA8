@@ -35,27 +35,44 @@ const routes = [
       {
         path: "record",
         name: "上传成果",
-        component: () => import("../views/TeacherSide/Record"),
+        component: () => import("../views/Record"),
       },
       {
         path: "subject",
         name: "项目申报",
-        component: () => import("../views/TeacherSide/Subject"),
+        component: () => import("../views/Subject"),
       },
       {
         path: "sponsored",
         name: "纵向项目",
-        component: () => import("../components/TeacherSide/SponsoredForm"),
+        component: () =>
+          import("../components/TeacherSide/Subject/SponsoredForm"),
       },
       {
         path: "horizon",
         name: "横向项目",
-        component: () => import("../components/TeacherSide/HorizontallForm"),
+        component: () =>
+          import("../components/TeacherSide/Subject/HorizontallForm"),
       },
       {
         path: "school",
         name: "校级项目",
-        component: () => import("../components/TeacherSide/SchoolForm"),
+        component: () => import("../components/TeacherSide/Subject/SchoolForm"),
+      },
+      {
+        path: "book",
+        name: "著作教材",
+        component: () => import("../components/TeacherSide/Record/BookForm"),
+      },
+      {
+        path: "paper",
+        name: "发表论文",
+        component: () => import("../components/TeacherSide/Record/PaperForm"),
+      },
+      {
+        path: "patent",
+        name: "设计专利",
+        component: () => import("../components/TeacherSide/Record/PatentForm"),
       },
       {
         path: "mine",
@@ -140,19 +157,19 @@ const routes = [
         component: () => import("../views/ManageClass"),
       },
       {
-        path: "import-award",
-        name: "奖项导入",
-        component: () => import("../views/ImportAward"),
-      },
-      {
         path: "import-stu",
         name: "学生导入",
-        component: () => import("../views/ImportStu"),
+        component: () => import("../views/import/ImportStu"),
       },
       {
         path: "import-tea",
         name: "教师导入",
-        component: () => import("../views/ImportTea"),
+        component: () => import("../views/import/ImportTea"),
+      },
+      {
+        path: "import-award",
+        name: "奖项导入",
+        component: () => import("../views/import/ImportAward"),
       },
       {
         path: "/403",

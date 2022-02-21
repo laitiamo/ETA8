@@ -1,18 +1,7 @@
 <template>
   <div>
-    <el-page-header @back="goback()" content="著作详情页"> </el-page-header>
-    <el-carousel :interval="4000" height="300px" type="card">
-      <el-carousel-item v-for="item in detailData.imagePaths" :key="item">
-        <el-image
-          class="image-row"
-          :src="item"
-          fit="scale-down"
-          :preview-src-list="detailData.imagePaths"
-          ><div slot="error" class="image-slot">
-            <i class="el-icon-picture-outline"></i></div
-        ></el-image>
-      </el-carousel-item>
-    </el-carousel>
+    <el-page-header @back="goback()" content="项目详情页"> </el-page-header>
+    <el-divider></el-divider>
     <el-card class="box-card">
       <el-divider content-position="left"
         ><span class="div-font">负责人教师信息</span></el-divider
@@ -302,6 +291,23 @@
         </el-row>
       </template>
       <el-divider content-position="left"
+        ><span class="div-font">成果信息</span></el-divider
+      >
+      <el-row :gutter="20">
+        <el-col class="detail-info" :span="12" :xs="24"
+          >成果形式：{{ detailData.PaperType }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >成果名称：{{ detailData.Paper }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >成果审核状态：{{ detailData.PaperReview }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >成果审核时间：{{ detailData.PaperReviewAt }}</el-col
+        >
+      </el-row>
+      <el-divider content-position="left"
         ><span class="div-font">审核信息</span></el-divider
       >
 
@@ -326,16 +332,52 @@
           >项目成果：</el-col
         >
       </el-row>
+      <el-row :gutter="20">
+        <el-col class="detail-info" :span="12" :xs="24">
+          <el-button type="primary" @click="onExportFile"
+            >导出附件</el-button
+          ></el-col
+        >
+      </el-row>
     </el-card>
   </div>
 </template>
 
 <script>
+import { exportTeaSubjectPDF } from "../../api";
 export default {
   name: "SubjectDetail",
   props: {
     detailData: {},
     goback: { type: Function },
+  },
+  methods: {
+    //处理导出附件
+    onExportFile() {
+      //closeDebug console.log("export XLS:", this.form2Query);
+      //参数绑定「筛选参数」
+      let params = new URLSearchParams();
+      params.append("id", this.detailData.id); //年级
+      exportTeaSubjectPDF(params)
+        .then((res) => {
+          //closeDebug console.log("-----------导出学生奖项表格文件---------------");
+          //closeDebug console.log(res);
+          const blob = new Blob([res.data]);
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
+          //new一个时间对象
+          var nowDate = new Date().toLocaleDateString();
+          downloadElement.download = decodeURIComponent(
+            nowDate + "_" + this.detailData.subject + ".zip"
+          );
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        })
+        .catch((failResponse) => {});
+    },
   },
 };
 </script>

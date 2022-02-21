@@ -92,7 +92,7 @@ import {
   uploadStuTemplate,
   initManageStu,
   getClassList,
-} from "../api";
+} from "../../api";
 export default {
   name: "ImportStu",
   components: {},

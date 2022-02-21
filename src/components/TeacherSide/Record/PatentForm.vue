@@ -1,5 +1,6 @@
 <template>
-  <div class="CultivateForm">
+  <div class="PatentForm">
+    <h3>{{ paperType }}</h3>
     <el-form
       :model="FormData"
       :rules="rules"
@@ -9,15 +10,73 @@
       class="demo-FormData"
     >
       <el-form-item label="记录类型" class="no-padding">
-        <el-input v-model="awardName" readonly></el-input>
+        <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
-      <el-form-item label="记录等级" prop="rankId">
+      <el-form-item label="专利名称" prop="paperName">
+        <el-input
+          v-model="FormData.paperName"
+          placeholder="请输入专利名称"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="专利作者（按作者排序）" prop="name">
+        <el-input
+          v-model="name"
+          style="width:140px"
+          placeholder="请输入项目第一参与者"
+          readonly
+        ></el-input>
+        <el-button @click="addDomain">新增参与者</el-button>
+      </el-form-item>
+      <el-form-item
+        v-for="(domain, index) in FormData.domains"
+        :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+        :key="domain.key"
+        :prop="'domains.' + index + '.value'"
+        :rules="{
+          required: true,
+          message: '参与者不能为空',
+          trigger: 'blur',
+        }"
+      >
+        <el-select
+          v-model="domain.value"
+          placeholder="请选择教师"
+          filterable
+          style="width:140px"
+        >
+          <el-option label="全部教师" value=""></el-option>
+          <el-option
+            v-for="opt in teacherList"
+            :key="opt.id"
+            :label="opt.teaName"
+            :value="opt.userId"
+          ></el-option>
+        </el-select>
+        <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+      </el-form-item>
+      <el-form-item label="发表时间" prop="paperTime">
+        <el-date-picker
+          type="date"
+          placeholder="选择日期"
+          v-model="FormData.paperTime"
+          style="width: 100%"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item label="证书号" prop="paperPlace">
+        <el-input
+          v-model="FormData.paperPlace"
+          placeholder="请输入证书号"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="专利类型" prop="rankId">
         <el-select
           v-model="FormData.rankId"
-          placeholder="请选择奖项等级"
+          placeholder="请选择专利类型"
           style="display: block"
         >
-          <template v-for="rankEach in rankList">
+          <template v-for="rankEach in PatentList">
             <el-option
               :label="rankEach.rankName"
               :value="rankEach.id"
@@ -26,26 +85,10 @@
           </template>
         </el-select>
       </el-form-item>
-      <el-form-item label="培训时间" prop="awardTime">
-        <el-date-picker
-          type="date"
-          placeholder="选择日期"
-          v-model="FormData.awardTime"
-          style="width: 100%"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="培训单位" prop="awardPlace">
-        <el-input
-          v-model="FormData.awardPlace"
-          placeholder="例如：全国高校教师网络培训中心"
-        ></el-input>
-      </el-form-item>
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="证书图片" required prop="awardPicList">
+      <el-form-item label="证书图片" required prop="paperPicList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -87,45 +130,48 @@
 </template>
 
 <script>
-import { getRankList, uploadAward } from "../../api";
-
+import { mapGetters } from "vuex";
+import { getTeacherList, getPaperList, uploadPaper } from "../../../api";
 export default {
-  name: "CultivateForm",
-  props: {
-    awardName: String,
-    awardId: Number,
-    goback: { type: Function },
-  },
+  name: "PatentForm",
   data() {
     return {
+      typeId: 3,
+      paperId: 128,
+      paperType: "设计专利",
       submitButton: false,
       fileList: [], //已上传的文件列表
-      rankList: [], //奖项等级的列表「从后端取得」
+      PatentList: [], //奖项等级的列表「从后端取得」
+      teacherList: [], //教师列表「从后端取得」
       //表单数据
       FormData: {
+        domains: [
+          {
+            value: "",
+          },
+        ],
+        paperName: "",
         rankId: "",
-        awardTime: "",
-        awardPlace: "",
-        awardPicList: [],
+        paperTime: "",
+        paperPlace: "",
+        paperPicList: [],
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
-        awardPlace: [
-          { required: true, message: "请输入获奖名次", trigger: "blur" },
+        paperName: [
+          { required: true, message: "请输入专利名称", trigger: "blur" },
+          { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
+        ],
+        rankId: [{ required: true, message: "请选择专利类型", trigger: "change" }],
+        paperTime: [
+          { required: true, message: "请选择日期", trigger: "change" },
+        ],
+        paperPlace: [
+          { required: true, message: "请输入专利号", trigger: "blur" },
           { min: 2, message: "长度需大于两个字符", trigger: "blur" },
         ],
-        rankId: [
-          { required: true, message: "请选择奖项等级", trigger: "change" },
-        ],
-        awardTime: [
-          {
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-        awardPicList: [
-          { required: true, message: "请选择奖项图片", trigger: "blur" },
+        paperPicList: [
+          { required: true, message: "请选择专利图片", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
@@ -139,12 +185,20 @@ export default {
     //初始化奖项等级列表
     initRankList() {
       let _this = this;
-      getRankList()
+      let params = new URLSearchParams();
+      params.append("typeId", this.typeId);
+      getPaperList(params)
         .then((res) => {
-          let obj = JSON.parse(res.msg);
           //closeDebug console.log("Ranklist初始化", obj);
-          this.rankList = obj.rank;
+          this.PatentList = res;
           this.submitButton = false;
+        })
+        .catch((failResponse) => {});
+      getTeacherList()
+        .then((res) => {
+          let obj2 = JSON.parse(res.msg);
+          //closeDebug console.log("teacherList初始化", obj);
+          this.teacherList = obj2.teacher;
         })
         .catch((failResponse) => {});
     },
@@ -165,24 +219,21 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.awardPicList;
-          data2upload.append("awardId", this.awardId);
-          data2upload.append("awardName", this.awardName);
+          let filesList = this.FormData.paperPicList;
+          data2upload.append("awardId", this.paperId);
+          data2upload.append("typeId", this.typeId);
+          data2upload.append("paperName", this.FormData.paperName);
+          data2upload.append("paperTime", this.FormData.paperTime);
+          data2upload.append("paperPlace", this.FormData.paperPlace);
           data2upload.append("rankId", this.FormData.rankId);
-          data2upload.append("awardTime", this.FormData.awardTime);
-          data2upload.append("awardPlace", this.FormData.awardPlace);
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {
             data2upload.append("file", filesList[i].raw, filesList[i].raw.name);
           }
-          //   //closeDebug console.log("awardId", this.awardId);
-          //   //closeDebug console.log("awardName", this.awardName);
-          //   //closeDebug console.log("rankId", this.FormData.rankId);
-          //   //closeDebug console.log("awardTime", this.FormData.awardTime);
-          //   //closeDebug console.log("awardPlace", this.FormData.awardPlace);
-          //   //closeDebug console.log("file", filesList);
-
-          uploadAward(data2upload)
+          for (let i = 0; i < this.FormData.domains.length; i++) {
+            data2upload.append("userids[]", this.FormData.domains[i].value);
+          }
+          uploadPaper(data2upload)
             .then((res) => {
               //closeDebug console.log("-----------表单提交---------------");
               //closeDebug console.log("服务器返回值：", res);
@@ -231,6 +282,18 @@ export default {
         }
       });
     },
+    removeDomain(item) {
+      var index = this.FormData.domains.indexOf(item);
+      if (index !== -1) {
+        this.FormData.domains.splice(index, 1);
+      }
+    },
+    addDomain() {
+      this.FormData.domains.push({
+        value: "",
+        key: Date.now(),
+      });
+    },
     //取消上传，清空文件列表及表单
     cancelUpload(formName) {
       this.$refs[formName].resetFields();
@@ -239,7 +302,7 @@ export default {
     //处理已上传图片与表单内容的同步
     handleChange(file, fileList) {
       //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.awardPicList = fileList;
+      this.FormData.paperPicList = fileList;
     },
     //处理已上传的图片的删除
     handleRemove(file, fileList) {
@@ -259,6 +322,15 @@ export default {
         type: "error",
       });
     },
+    //返回成果上传页面
+    goback() {
+      this.$router.push({
+        path: "/eta/record",
+      });
+    },
+  },
+  computed: {
+    ...mapGetters(["name", "username", "roleId"]),
   },
 };
 </script>
