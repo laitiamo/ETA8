@@ -241,6 +241,7 @@ export default {
         { name: "性别", value: "genderName", width: "80", ifShow: false },
         { name: "年级", value: "gradeName", width: "100", ifShow: true },
         { name: "专业", value: "majorName", width: "auto", ifShow: true },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: true },
         { name: "班号", value: "classNo", width: "100", ifShow: true },
         { name: "角色", value: "roleName", width: "110", ifShow: true },
       ],
@@ -284,6 +285,7 @@ export default {
         { name: "性别", value: "genderName", width: "80", ifShow: false },
         { name: "年级", value: "gradeName", width: "100", ifShow: false },
         { name: "专业", value: "majorName", width: "auto", ifShow: false },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: false },
         { name: "班号", value: "classNo", width: "100", ifShow: true },
         { name: "角色", value: "roleName", width: "auto", ifShow: false },
       ];
@@ -301,6 +303,7 @@ export default {
         { name: "性别", value: "genderName", width: "80", ifShow: false },
         { name: "年级", value: "gradeName", width: "100", ifShow: false },
         { name: "专业", value: "majorName", width: "auto", ifShow: true },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: false },
         { name: "班号", value: "classNo", width: "100", ifShow: false },
         { name: "角色", value: "roleName", width: "auto", ifShow: false },
       ];

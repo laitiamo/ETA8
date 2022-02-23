@@ -72,9 +72,7 @@
       </template>
       <el-table-column label="操作" width="80" fixed="right" align="center">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="select2Change(scope.$index, scope.row)"
+          <el-button size="mini" @click="select2Change(scope.$index, scope.row)"
             >编辑</el-button
           >
         </template>
@@ -92,7 +90,11 @@
       :total="dataCount"
     >
     </el-pagination>
-    <el-dialog title="修改用户信息" :visible.sync="ifShowUpdateDialog" width="80%">
+    <el-dialog
+      title="修改用户信息"
+      :visible.sync="ifShowUpdateDialog"
+      width="80%"
+    >
       <h4>在输入栏按下回车进行提交修改</h4>
       <el-form label-position="left" label-width="50px" @submit.native.prevent>
         <el-form-item label="姓名">
@@ -105,11 +107,7 @@
         </el-form-item>
         <el-collapse>
           <el-collapse-item title="设置角色">
-            <el-form
-              :inline="true"
-              class="demo-form-inline"
-              size="mini"
-            >
+            <el-form :inline="true" class="demo-form-inline" size="mini">
               <el-form-item>
                 <el-select
                   v-model="newRoleId"
@@ -202,7 +200,7 @@ export default {
   computed: {},
   data() {
     return {
-      ifSmall:false,
+      ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowUpdateDialog: false, //修改弹窗
       selectTea: {}, //选中的教师
@@ -214,7 +212,9 @@ export default {
         { name: "教职工号", value: "username", width: "150", ifShow: true },
         { name: "姓名", value: "name", width: "120", ifShow: true },
         { name: "性别", value: "genderName", width: "80", ifShow: false },
-        { name: "角色", value: "roleName", width: "auto", ifShow: true },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: true },
+        { name: "部门", value: "sectorName", width: "180", ifShow: true },
+        { name: "角色", value: "roleName", width: "180", ifShow: true },
       ],
       currentPage: 1,
       pageSize: 10,
@@ -229,8 +229,8 @@ export default {
       },
       //用于筛选的表单
       form2Search: {
-        gradeId: "", 
-        majorId: "", 
+        gradeId: "",
+        majorId: "",
         classId: "",
       },
       //下拉栏内容列表
@@ -248,15 +248,16 @@ export default {
     this.onQuery();
     if (document.documentElement.clientWidth < 720) {
       //closeDebug console.log("触发移动端布局");
-      this.ifSmall = true
+      this.ifSmall = true;
       this.paginationLayout = "prev, pager,next, ->, total";
-      this.Columns=[
+      this.Columns = [
         { name: "ID", value: "userId", width: "100", ifShow: false },
         { name: "教职工号", value: "username", width: "150", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
         { name: "性别", value: "genderName", width: "80", ifShow: false },
         { name: "角色", value: "roleName", width: "auto", ifShow: true },
-      ]
+        { name: "学院", value: "collegeName", width: "120", ifShow: false },
+      ];
     }
   },
   methods: {
@@ -413,10 +414,10 @@ export default {
               type: "success",
             });
             _this.onQuery();
-            _this.form2Search.gradeId="";
-            _this.form2Search.majorId="";
-            _this.form2Search.classId="";
-            _this.ifShowUpdateDialog=false;
+            _this.form2Search.gradeId = "";
+            _this.form2Search.majorId = "";
+            _this.form2Search.classId = "";
+            _this.ifShowUpdateDialog = false;
           } else {
             _this.$message({
               message: res.msg,

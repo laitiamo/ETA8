@@ -23,7 +23,15 @@
                 <i class="el-icon-info"></i>
                 教职工号：{{ username }}
               </div>
+              <div class="info-username">
+                <i class="el-icon-info"></i>
+                所属部门：{{ t_sector }}
+              </div>
             </template>
+            <div class="info-username">
+              <i class="el-icon-info"></i>
+              所属学院：{{ college }}
+            </div>
             <div class="info-username">
               <i class="el-icon-user-solid"></i>
               身份：{{ role }}
@@ -67,12 +75,14 @@ export default {
   components: { Inform },
   props: [
     "name",
+    "college",
     "role",
     "roleId",
     "genderId",
     "l_class",
     "l_number",
     "username",
+    "t_sector",
     "l_unmanage",
     "stuItemNum",
     "teaItemNum",
@@ -88,7 +98,13 @@ export default {
       // 判断登录用户
       if (roleId === 5 || roleId === 6) {
         rolename = `同学`;
-      } else if (roleId === 1 || roleId === 2 || roleId === 3 || roleId === 4 || roleId === 7) {
+      } else if (
+        roleId === 1 ||
+        roleId === 2 ||
+        roleId === 3 ||
+        roleId === 4 ||
+        roleId === 7
+      ) {
         rolename = `老师`;
       } else {
         rolename = `数据加载中`;

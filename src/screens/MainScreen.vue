@@ -375,6 +375,7 @@ export default {
       //如果是学生的话还有以下参数
       "grade",
       "major",
+      "college",
       "l_class",
     ]),
   },
@@ -415,11 +416,14 @@ export default {
               reviewer: obj.l_name, //审阅人姓名
               username: obj.l_username, //用户编号
               role: obj.l_role, //用户角色
+              college:obj.l_college, //学院
               //如果是学生的话还有以下参数
               grade: obj.l_grade, //年级
               major: obj.l_major, //专业
               l_genderId: obj.l_genderId, //性别
               l_class: obj.l_class, //班级
+              //如果是教师的话设置所属部门
+              t_sector: obj.t_sector,//所属部门
             });
           } else {
             _this.$notify({

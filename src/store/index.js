@@ -14,6 +14,8 @@ const store = new Vuex.Store({
     //如果是学生的话还有以下参数
     grade: "", //年级
     major: "", //专业
+    college:"",//学院
+    t_sector:"",//所属部门
     l_genderId:"",//性别
     l_class: "", //班级
   },
@@ -26,14 +28,17 @@ const store = new Vuex.Store({
       state.role = info.role;
       state.roleId = info.roleId;
       state.l_genderId = info.l_genderId;
+      state.college = info.college;
       if (info.roleId === 5 || info.roleId === 6) {
         state.grade = info.grade;
         state.major = info.major;
         state.l_class = info.l_class;
+        state.t_sector = null;
       } else {
         state.grade = null;
         state.major = null;
         state.l_class = null;
+        state.t_sector = info.t_sector;
       }
     },
     //设置登陆状态「未启用」
@@ -52,6 +57,8 @@ const store = new Vuex.Store({
     //如果是学生的话还有以下参数
     grade: (state) => state.grade, //年级
     major: (state) => state.major, //专业
+    college: (state) => state.college,//学院
+    t_sector: (state) => state.t_sector,//所属部门
     l_genderId:(state) => state.l_genderId,//性别
     l_class: (state) => state.l_class, //班级
   },

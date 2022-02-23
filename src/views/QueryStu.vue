@@ -89,12 +89,12 @@
           <el-button type="primary" @click="onQuery">筛选</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onExportXLS"
+          <el-button type="primary" @click="onExportXLS" :loading="XLSloading"
             >导出获奖信息(XLS)</el-button
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onExportZIP"
+          <el-button type="primary" @click="onExportZIP" :loading="ZIPloading"
             >导出获奖图片(ZIP)</el-button
           >
         </el-form-item>
@@ -232,6 +232,8 @@ export default {
   computed: {},
   data() {
     return {
+      XLSloading: false,
+      ZIPloading: false,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       selectId: 0,
       ifSmall: false,
@@ -462,6 +464,7 @@ export default {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      this.XLSloading = true;
       params.append("gradeId", this.form2Query.gradeId); //年级
       params.append("majorId", this.form2Query.majorId); //专业
       params.append("classId", this.form2Query.classId); //班级
@@ -486,6 +489,7 @@ export default {
           downloadElement.click();
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(href);
+          this.XLSloading = false;
         })
         .catch((failResponse) => {});
     },
@@ -494,6 +498,7 @@ export default {
       //closeDebug console.log("export ZIP:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      this.ZIPloading = true;
       params.append("gradeId", this.form2Query.gradeId); //年级
       params.append("majorId", this.form2Query.majorId); //专业
       params.append("classId", this.form2Query.classId); //班级
@@ -518,6 +523,7 @@ export default {
           downloadElement.click();
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(href);
+          this.ZIPloading = false;
         })
         .catch((failResponse) => {});
     },

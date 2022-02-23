@@ -78,14 +78,32 @@
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="项目负责人">
               <el-input
-                v-model="username"
-                style="width: 140px"
+                v-model="name"
+                style="width:140px"
                 placeholder="请输入项目第一参与者"
                 readonly
               ></el-input>
               <el-input
-                v-model="name"
-                style="width: 140px"
+                v-model="username"
+                style="width:140px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
+                v-model="role"
+                style="width:140px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
+                v-model="college"
+                style="width:200px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
+                v-model="t_sector"
+                style="width:140px"
                 placeholder="请输入项目第一参与者"
                 readonly
               ></el-input>
@@ -109,16 +127,45 @@
                 v-model="domain.value"
                 placeholder="请选择教师"
                 filterable
-                style="width: 140px"
+                @change="QueryRole(index)"
+                style="width:140px"
               >
                 <el-option label="全部教师" value=""></el-option>
                 <el-option
                   v-for="opt in TeacherList"
-                  :key="opt.id"
-                  :label="opt.teaName"
+                  :key="opt.userId"
+                  :label="opt.name"
                   :value="opt.userId"
                 ></el-option>
               </el-select>
+              <el-input
+                v-model="domain.teaNo"
+                style="width:140px"
+                placeholder="工号"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.roleName"
+                style="width:140px"
+                placeholder="教师角色"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.collegeName"
+                style="width:200px"
+                placeholder="所属学院"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.sectorName"
+                style="width:140px"
+                placeholder="所属部门"
+                filterable
+                readonly
+              ></el-input>
               <el-button @click="addDomain">新增</el-button>
               <el-button @click.prevent="removeDomain(domain)">删除</el-button>
             </el-form-item>
@@ -813,6 +860,7 @@ import {
   getFirstSubjectList,
   QuerySecondList,
   QueryEconomicList,
+  getTeacherDetail,
 } from "../../../api";
 export default {
   name: "SponsoredForm",
@@ -850,7 +898,11 @@ export default {
         //基础信息
         domains: [
           {
+            teaNo: "",
             value: "",
+            roleName: "",
+            collegeName: "",
+            sectorName: "",
           },
         ],
         SubjectName: "", //项目名称
@@ -1188,7 +1240,7 @@ export default {
       sum = sum1 + sum2 + sum3 + sum4 + sum5;
       return sum || 0;
     },
-    ...mapGetters(["name", "username"]),
+    ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
   mounted() {
     this.initSponsored();
@@ -1285,6 +1337,20 @@ export default {
         .then((res) => {
           //closeDebug console.log("LevelList初始化", obj);
           _this.SourceList = res;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新该教师角色
+    QueryRole(index) {
+      let params = new URLSearchParams();
+      params.append("TeacherId", this.FormData.domains[index].value);
+      getTeacherDetail(params)
+        .then((res) => {
+          let obj = JSON.parse(res.msg);
+          this.FormData.domains[index].teaNo = obj.username;
+          this.FormData.domains[index].roleName = obj.roleName;
+          this.FormData.domains[index].collegeName = obj.collegeName;
+          this.FormData.domains[index].sectorName = obj.sectorName;
         })
         .catch((failResponse) => {});
     },
@@ -1459,7 +1525,10 @@ export default {
       } else {
         this.FormData.domains.push({
           value: "",
-          value2: "",
+          teaNo: "",
+          roleName: "",
+          collegeName: "",
+          sectorName: "",
           key: Date.now(),
         });
       }

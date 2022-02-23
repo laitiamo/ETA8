@@ -61,6 +61,9 @@
           <el-col class="detail-info" :span="12" :xs="24"
             >一级学科：{{ detailData.Type }}</el-col
           >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >备注：{{ detailData.Remarks }}</el-col
+          >
         </el-row>
       </template>
       <template v-if="detailData.levelId == 2">
@@ -76,9 +79,6 @@
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >委托单位性质：{{ detailData.EntrustName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >项目简介：{{ detailData.Introduction }}</el-col
           >
         </el-row>
         <el-divider content-position="left"

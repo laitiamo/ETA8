@@ -13,9 +13,11 @@
           :username="username"
           :role="role"
           :roleId="roleId"
+          :college="college"
           :l_class="l_class"
           :l_number="l_number"
           :l_unmanage="l_unmanage"
+          :t_sector="t_sector"
           :genderId="l_genderId"
           :stuItemNum="stuItemNum"
           :teaItemNum="teaItemNum"
@@ -198,6 +200,8 @@ export default {
       "name",
       "username",
       "role",
+      "college",
+      "t_sector",
       "l_genderId",
       "l_class",
       "roleId",

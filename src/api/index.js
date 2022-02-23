@@ -219,15 +219,24 @@ export const QueryCountyList = (params) =>
 export const getTypeList = (params) => get(`eta8/query-paper/listType`, params);
 
 /**
- * 获取班级列表（GET）
+ * 获取一级学科列表（GET）
  * 需传入的参数
- * gradeId：年级ID
- * majorId：专业ID
+ * BelongId: 所属学科ID
  * @param {URLSearchParams} params
  * @returns
  */
 export const getFirstSubjectList = (params) =>
   get(`eta8/subject/listFirstSubject`, params);
+
+/**
+ * 获取教师角色信息（GET）
+ * 需传入的参数
+ * userId: 所属学科ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getTeacherDetail = (params) =>
+  get(`eta8/subject/getRole`, params);
 
 /**
  * 获取项目资源列表

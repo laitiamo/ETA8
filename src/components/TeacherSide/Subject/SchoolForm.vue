@@ -55,6 +55,23 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col class="subject-info" :span="12" :xs="24">
+          <el-form-item label="项目分类" prop="SubjectCategory">
+            <el-select
+              v-model="FormData.SubjectCategory"
+              placeholder="请选择项目分类"
+              style="display: block"
+            >
+              <template v-for="rankEach in CategoryList">
+                <el-option
+                  :label="rankEach.typeName"
+                  :value="rankEach.id"
+                  :key="rankEach.id"
+                ></el-option>
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <el-row :gutter="20">
@@ -78,13 +95,31 @@
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="项目负责人">
               <el-input
+                v-model="name"
+                style="width:140px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
                 v-model="username"
                 style="width:140px"
                 placeholder="请输入项目第一参与者"
                 readonly
               ></el-input>
               <el-input
-                v-model="name"
+                v-model="role"
+                style="width:140px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
+                v-model="college"
+                style="width:200px"
+                placeholder="请输入项目第一参与者"
+                readonly
+              ></el-input>
+              <el-input
+                v-model="t_sector"
                 style="width:140px"
                 placeholder="请输入项目第一参与者"
                 readonly
@@ -109,16 +144,45 @@
                 v-model="domain.value"
                 placeholder="请选择教师"
                 filterable
+                @change="QueryRole(index)"
                 style="width:140px"
               >
                 <el-option label="全部教师" value=""></el-option>
                 <el-option
                   v-for="opt in TeacherList"
-                  :key="opt.id"
-                  :label="opt.teaName"
+                  :key="opt.userId"
+                  :label="opt.name"
                   :value="opt.userId"
                 ></el-option>
               </el-select>
+              <el-input
+                v-model="domain.teaNo"
+                style="width:140px"
+                placeholder="工号"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.roleName"
+                style="width:140px"
+                placeholder="教师角色"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.collegeName"
+                style="width:200px"
+                placeholder="所属学院"
+                filterable
+                readonly
+              ></el-input>
+              <el-input
+                v-model="domain.sectorName"
+                style="width:140px"
+                placeholder="所属部门"
+                filterable
+                readonly
+              ></el-input>
               <el-button @click="addDomain">新增</el-button>
               <el-button @click.prevent="removeDomain(domain)">删除</el-button>
             </el-form-item>
@@ -147,7 +211,6 @@
           <el-input
             type="text"
             v-model="FormData.SubjectFund"
-            @change="Score"
             placeholder="请输入项目申请经费"
           ></el-input>
         </el-form-item>
@@ -155,7 +218,6 @@
           ><el-input
             type="text"
             v-model="FormData.HardwareFund"
-            @change="Score"
             placeholder="请输入项目硬件经费"
           ></el-input
         ></el-form-item>
@@ -163,7 +225,6 @@
           <el-input
             type="text"
             v-model="FormData.SoftwareFund"
-            @change="Score"
             placeholder="请输入项目软件经费"
           ></el-input
         ></el-form-item>
@@ -171,7 +232,6 @@
           <el-input
             type="text"
             v-model="FormData.StaySchoolFund"
-            @change="Score"
             placeholder="请输入留校经费"
           ></el-input
         ></el-form-item>
@@ -179,7 +239,6 @@
           <el-input
             type="text"
             v-model="FormData.OutboundFund"
-            @change="Score"
             placeholder="请输入外拨经费"
           ></el-input
         ></el-form-item>
@@ -191,9 +250,9 @@
         <h3>项目描述</h3>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="所属单位" prop="SubjectPlace">
+            <el-form-item label="所属单位" prop="t_sector">
               <el-input
-                v-model="SubjectPlace"
+                v-model="t_sector"
                 placeholder="请输入项目所属单位"
                 readonly
               ></el-input>
@@ -529,18 +588,19 @@ import {
   getFirstSubjectList,
   QuerySecondList,
   QueryEconomicList,
+  getTeacherDetail,
 } from "../../../api";
 export default {
   name: "SchoolForm",
   data() {
     return {
-      active: 0,
+      active: 4,
       submitButton: false,
       LevelId: 3,
       RankName: "校级项目",
-      SubjectPlace: "东南大学成贤学院",
       FileList: [], //已上传的文件列表
       RankList: [], //项目等级的列表「从后端取得」
+      CategoryList: [], //项目分类的列表「从后端取得」
       PaperList: [], //成果形式的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       SourceList: [], //项目来源列表「从后端取得」
@@ -561,12 +621,17 @@ export default {
         //基础信息
         domains: [
           {
+            teaNo: "",
             value: "",
+            roleName: "",
+            collegeName: "",
+            sectorName: "",
           },
         ],
         SubjectNum: "",
         SubjectName: "",
         RankId: "",
+        SubjectCategory: "",
 
         //项目经费
         SubjectFund: "",
@@ -612,6 +677,13 @@ export default {
           {
             required: true,
             message: "请选择成果形式",
+            trigger: "blur",
+          },
+        ],
+        SubjectCategory: [
+          {
+            required: true,
+            message: "请选择项目分类",
             trigger: "blur",
           },
         ],
@@ -716,7 +788,7 @@ export default {
       sum = sum1 + sum2 + sum3 + sum4 + sum5;
       return sum || 0;
     },
-    ...mapGetters(["name", "username"]),
+    ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
   mounted() {
     this.initSchool();
@@ -751,6 +823,7 @@ export default {
           //closeDebug console.log("CooperateList初始化", obj);
           this.CooperateList = obj3.cooperate;
           this.ResearchList = obj3.research;
+          this.CategoryList = obj3.category;
         })
         .catch((failResponse) => {});
     },
@@ -766,6 +839,21 @@ export default {
         })
         .catch((failResponse) => {});
     },
+    //更新该教师角色
+    QueryRole(index) {
+      let params = new URLSearchParams();
+      params.append("TeacherId", this.FormData.domains[index].value);
+      getTeacherDetail(params)
+        .then((res) => {
+          let obj = JSON.parse(res.msg);
+          this.FormData.domains[index].teaNo = obj.username;
+          this.FormData.domains[index].roleName = obj.roleName;
+          this.FormData.domains[index].collegeName = obj.collegeName;
+          this.FormData.domains[index].sectorName = obj.sectorName;
+        })
+        .catch((failResponse) => {});
+    },
+    //更新可供筛选的国民经济二级目录列表
     QuerySecondEco() {
       let _this = this;
       _this.FormData.EcoSecondId = "";
@@ -850,7 +938,6 @@ export default {
           data2upload.append("SubjectTime", this.FormData.SubjectTime);
           data2upload.append("StartTime", this.FormData.StartTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
-          data2upload.append("SubjectPlace", this.SubjectPlace);
           data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
           data2upload.append("Remarks", this.FormData.Remarks);
 
@@ -952,7 +1039,10 @@ export default {
       } else {
         this.FormData.domains.push({
           value: "",
-          value2: "",
+          teaNo: "",
+          roleName: "",
+          collegeName: "",
+          sectorName: "",
           key: Date.now(),
         });
       }
