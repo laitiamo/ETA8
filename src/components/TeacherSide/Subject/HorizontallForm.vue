@@ -125,18 +125,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              v-for="(domain, index) in FormData.domains"
-              :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
-              :key="domain.key"
-              :prop="'domains.' + index + '.value'"
-              :rules="{
-                required: true,
-                message: '参与者不能为空',
-                trigger: 'blur',
-              }"
-            >
+          <el-form-item
+            v-for="(domain, index) in FormData.domains"
+            :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+            :key="domain.key"
+            :prop="'domains.' + index + '.value'"
+            :rules="{
+              required: true,
+              message: '参与者不能为空',
+              trigger: 'blur',
+            }"
+          >
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-select
                 v-model="domain.value"
                 placeholder="请选择教师"
@@ -180,10 +180,12 @@
                 filterable
                 readonly
               ></el-input>
+            </el-col>
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-button @click="addDomain">新增</el-button>
               <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-            </el-form-item>
-          </el-col>
+            </el-col>
+          </el-form-item>
         </el-row>
         <el-row :gutter="20">
           <el-button

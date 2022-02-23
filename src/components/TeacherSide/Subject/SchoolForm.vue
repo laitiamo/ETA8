@@ -8,7 +8,6 @@
     </el-steps>
     <template v-if="active == 0">
       <el-divider></el-divider>
-
       <el-form
         :model="FormData"
         :rules="rules"
@@ -142,18 +141,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              v-for="(domain, index) in FormData.domains"
-              :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
-              :key="domain.key"
-              :prop="'domains.' + index + '.value'"
-              :rules="{
-                required: true,
-                message: '参与者不能为空',
-                trigger: 'blur',
-              }"
-            >
+          <el-form-item
+            v-for="(domain, index) in FormData.domains"
+            :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+            :key="domain.key"
+            :prop="'domains.' + index + '.value'"
+            :rules="{
+              required: true,
+              message: '参与者不能为空',
+              trigger: 'blur',
+            }"
+          >
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-select
                 v-model="domain.value"
                 placeholder="请选择教师"
@@ -197,10 +196,12 @@
                 filterable
                 readonly
               ></el-input>
+            </el-col>
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-button @click="addDomain">新增</el-button>
               <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-            </el-form-item>
-          </el-col>
+            </el-col>
+          </el-form-item>
         </el-row>
         <el-row :gutter="20">
           <el-button
@@ -232,69 +233,90 @@
         class="demo-FormData"
       >
         <h3>项目经费</h3>
-        <el-form-item label="项目获批经费" prop="SubjectFund">
-          <el-input
-            type="text"
-            v-model="FormData.SubjectFund"
-            style="width:70%;"
-            placeholder="请输入项目经费"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="办公、图文制作、邮费" prop="DocumentFund">
-          <el-input
-            type="text"
-            v-model="FormData.DocumentFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="学生劳务费" prop="LaborFund"
-          ><el-input
-            type="text"
-            v-model="FormData.LaborFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="材料、测试加工、维修费" prop="MaterialFund">
-          <el-input
-            type="text"
-            v-model="FormData.MaterialFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="设备购置" prop="HardwareFund">
-          <el-input
-            type="text"
-            v-model="FormData.HardwareFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="差旅、会议、国际合作交流" prop="OutboundFund">
-          <el-input
-            type="text"
-            v-model="FormData.OutboundFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="资料费、版面费、知识产权等" prop="PatentFund">
-          <el-input
-            type="text"
-            v-model="FormData.PatentFund"
-            style="width:40%;"
-            placeholder="请输入项目经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="总经费（自动计算）" prop="allScore">
-          <el-input
-            :disabled="true"
-            v-model="allScore"
-            style="width:70%;"
-          ></el-input
-        ></el-form-item>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="项目获批经费" prop="SubjectFund">
+              <el-input
+                type="text"
+                v-model="FormData.SubjectFund"
+                style="width:70%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="办公、图文制作、邮费" prop="DocumentFund">
+              <el-input
+                type="text"
+                v-model="FormData.DocumentFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="学生劳务费" prop="LaborFund"
+              ><el-input
+                type="text"
+                v-model="FormData.LaborFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="材料、测试加工、维修费" prop="MaterialFund">
+              <el-input
+                type="text"
+                v-model="FormData.MaterialFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="设备购置" prop="HardwareFund">
+              <el-input
+                type="text"
+                v-model="FormData.HardwareFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="差旅、会议、国际合作交流" prop="OutboundFund">
+              <el-input
+                type="text"
+                v-model="FormData.OutboundFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="资料费、版面费、知识产权等" prop="PatentFund">
+              <el-input
+                type="text"
+                v-model="FormData.PatentFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col> </el-row
+        ><el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="总经费（自动计算）" prop="allScore">
+              <el-input
+                :disabled="true"
+                v-model="allScore"
+                style="width:70%;"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+        </el-row>
 
         <el-divider></el-divider>
         <h3>项目描述</h3>
