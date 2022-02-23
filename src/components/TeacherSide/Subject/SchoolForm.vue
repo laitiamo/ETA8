@@ -940,6 +940,7 @@ export default {
           data2upload.append("FinishTime", this.FormData.FinishTime);
           data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
           data2upload.append("Remarks", this.FormData.Remarks);
+          data2upload.append("SubjectPlace", this.t_sector);
 
           data2upload.append("RankId", this.FormData.RankId);
           data2upload.append("LevelId", this.LevelId);

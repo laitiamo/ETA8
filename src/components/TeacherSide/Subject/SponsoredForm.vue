@@ -238,9 +238,9 @@
         <h3>项目描述</h3>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="所属单位" prop="SubjectPlace">
+            <el-form-item label="所属单位" prop="t_sector">
               <el-input
-                v-model="SubjectPlace"
+                v-model="t_sector"
                 placeholder="请输入项目所属单位"
                 readonly
               ></el-input>
@@ -870,7 +870,6 @@ export default {
       submitButton: false,
       LevelId: 1,
       RankName: "纵向项目",
-      SubjectPlace: "东南大学成贤学院", //所属单位
       FileList: [], //已上传的文件列表
       RankList: [], //项目类别的列表「从后端取得」
 
@@ -1404,7 +1403,7 @@ export default {
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //项目描述
-          data2upload.append("SubjectPlace", this.SubjectPlace);
+          data2upload.append("SubjectPlace", this.t_sector);
           data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
           data2upload.append("ResearchId", this.FormData.ResearchId);
           data2upload.append("isSecrecy", this.FormData.isSecrecy);
