@@ -6,65 +6,79 @@
       <el-step title="项目信息"></el-step>
       <el-step title="合作信息"></el-step>
     </el-steps>
-    <el-divider></el-divider>
-    <h3>项目申报</h3>
-    <el-form
-      :model="FormData"
-      :rules="rules"
-      label-position="top"
-      ref="FormData"
-      size="medium"
-      class="demo-FormData"
-    >
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目名称" prop="SubjectName">
-            <el-input
-              v-model="FormData.SubjectName"
-              placeholder="请输入项目名称"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目编号" prop="SubjectNum">
-            <el-input
-              v-model="FormData.SubjectNum"
-              placeholder="请输入项目编号"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="RankName">
-            <el-input v-model="RankName" readonly></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="RankId">
-            <el-select
-              v-model="FormData.RankId"
-              placeholder="请选择项目等级"
-              style="display: block"
-            >
-              <template v-for="rankEach1 in RankList">
-                <el-option
-                  :label="rankEach1.rankName"
-                  :value="rankEach1.id"
-                  :key="rankEach1.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <el-row :gutter="20">
-      <el-button style="margin-top: 12px;" @click="next('FormData')"
-        >下一步</el-button
-      >
-    </el-row>
-
-    <template v-if="active > 0">
+    <template v-if="active == 0">
       <el-divider></el-divider>
+
+      <el-form
+        :model="FormData"
+        :rules="rules"
+        label-position="top"
+        ref="FormData"
+        size="medium"
+        class="demo-FormData"
+      >
+        <h3>项目申报</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目名称" prop="SubjectName">
+              <el-input
+                v-model="FormData.SubjectName"
+                placeholder="请输入项目名称"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目编号" prop="SubjectNum">
+              <el-input
+                v-model="FormData.SubjectNum"
+                placeholder="请输入项目编号"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目类别" prop="RankName">
+              <el-input v-model="RankName" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目等级" prop="RankId">
+              <el-select
+                v-model="FormData.RankId"
+                placeholder="请选择项目等级"
+                style="display: block"
+              >
+                <template v-for="rankEach1 in RankList">
+                  <el-option
+                    :label="rankEach1.rankName"
+                    :value="rankEach1.id"
+                    :key="rankEach1.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 0"
+            >下一步</el-button
+          >
+        </el-row>
+      </el-form>
+    </template>
+
+    <template v-if="active == 1">
+      <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 1"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -172,15 +186,26 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-button style="margin-top: 12px;" @click="next('FormData')"
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 1"
             >下一步</el-button
           >
         </el-row>
       </el-form>
     </template>
 
-    <template v-if="active > 1">
+    <template v-if="active == 2">
       <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 2"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -338,15 +363,26 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-button style="margin-top: 12px;" @click="next('FormData')"
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 2"
             >下一步</el-button
           >
         </el-row>
       </el-form>
     </template>
 
-    <template v-if="active > 2">
+    <template v-if="active == 3">
       <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 3"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -918,7 +954,7 @@ export default {
       active: 0,
       submitButton: false,
       LevelId: 2,
-      RankName: "横向项目",//所属单位
+      RankName: "横向项目", //所属单位
       FileList: [], //已上传的文件列表
       RankList: [], //项目类别的列表「从后端取得」
       PaperList: [], //成果形式的列表「从后端取得」
@@ -1498,6 +1534,10 @@ export default {
           return false;
         }
       });
+    },
+    //上一步
+    back(formName) {
+      this.active--;
     },
     //处理表单提交事件
     submitForm(formName) {

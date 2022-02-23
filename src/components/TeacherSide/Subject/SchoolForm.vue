@@ -4,84 +4,98 @@
       <el-step title="项目申报"></el-step>
       <el-step title="参与者选择"></el-step>
       <el-step title="项目信息"></el-step>
-      <el-step title="合作信息"></el-step>
+      <el-step title="教育部统计信息"></el-step>
     </el-steps>
-    <el-divider></el-divider>
-    <h3>项目申报</h3>
-    <el-form
-      :model="FormData"
-      :rules="rules"
-      label-position="top"
-      ref="FormData"
-      size="medium"
-      class="demo-FormData"
-    >
-      <el-row :gutter="20">
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目名称" prop="SubjectName">
-            <el-input
-              v-model="FormData.SubjectName"
-              placeholder="请输入项目名称"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目编号" prop="SubjectNum">
-            <el-input
-              v-model="FormData.SubjectNum"
-              placeholder="请输入项目编号"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目类别" prop="RankName">
-            <el-input v-model="RankName" readonly></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目等级" prop="RankId">
-            <el-select
-              v-model="FormData.RankId"
-              placeholder="请选择项目等级"
-              style="display: block"
-            >
-              <template v-for="rankEach1 in RankList">
-                <el-option
-                  :label="rankEach1.rankName"
-                  :value="rankEach1.id"
-                  :key="rankEach1.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col class="subject-info" :span="12" :xs="24">
-          <el-form-item label="项目分类" prop="SubjectCategory">
-            <el-select
-              v-model="FormData.SubjectCategory"
-              placeholder="请选择项目分类"
-              style="display: block"
-            >
-              <template v-for="rankEach in CategoryList">
-                <el-option
-                  :label="rankEach.typeName"
-                  :value="rankEach.id"
-                  :key="rankEach.id"
-                ></el-option>
-              </template>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <el-row :gutter="20">
-      <el-button style="margin-top: 12px;" @click="next('FormData')"
-        >下一步</el-button
-      >
-    </el-row>
-
-    <template v-if="active > 0">
+    <template v-if="active == 0">
       <el-divider></el-divider>
+
+      <el-form
+        :model="FormData"
+        :rules="rules"
+        label-position="top"
+        ref="FormData"
+        size="medium"
+        class="demo-FormData"
+      >
+        <h3>项目申报</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目名称" prop="SubjectName">
+              <el-input
+                v-model="FormData.SubjectName"
+                placeholder="请输入项目名称"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目编号" prop="SubjectNum">
+              <el-input
+                v-model="FormData.SubjectNum"
+                placeholder="请输入项目编号"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目类别" prop="RankName">
+              <el-input v-model="RankName" readonly></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目等级" prop="RankId">
+              <el-select
+                v-model="FormData.RankId"
+                placeholder="请选择项目等级"
+                style="display: block"
+              >
+                <template v-for="rankEach1 in RankList">
+                  <el-option
+                    :label="rankEach1.rankName"
+                    :value="rankEach1.id"
+                    :key="rankEach1.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="项目分类" prop="CategoryId">
+              <el-select
+                v-model="FormData.CategoryId"
+                placeholder="请选择项目分类"
+                style="display: block"
+              >
+                <template v-for="rankEach in CategoryList">
+                  <el-option
+                    :label="rankEach.CategoryName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 0"
+            >下一步</el-button
+          >
+        </el-row>
+      </el-form>
+    </template>
+
+    <template v-if="active == 1">
+      <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 1"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -189,15 +203,26 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-button style="margin-top: 12px;" @click="next('FormData')"
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 1"
             >下一步</el-button
           >
         </el-row>
       </el-form>
     </template>
 
-    <template v-if="active > 1">
+    <template v-if="active == 2">
       <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 2"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -207,43 +232,68 @@
         class="demo-FormData"
       >
         <h3>项目经费</h3>
-        <el-form-item label="项目申请经费" prop="SubjectFund">
+        <el-form-item label="项目获批经费" prop="SubjectFund">
           <el-input
             type="text"
             v-model="FormData.SubjectFund"
-            placeholder="请输入项目申请经费"
+            style="width:70%;"
+            placeholder="请输入项目经费"
           ></el-input>
         </el-form-item>
-        <el-form-item label="项目硬件经费" prop="HardwareFund"
+        <el-form-item label="办公、图文制作、邮费" prop="DocumentFund">
+          <el-input
+            type="text"
+            v-model="FormData.DocumentFund"
+            style="width:40%;"
+            placeholder="请输入项目经费"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="学生劳务费" prop="LaborFund"
           ><el-input
             type="text"
+            v-model="FormData.LaborFund"
+            style="width:40%;"
+            placeholder="请输入项目经费"
+          ></el-input
+        ></el-form-item>
+        <el-form-item label="材料、测试加工、维修费" prop="MaterialFund">
+          <el-input
+            type="text"
+            v-model="FormData.MaterialFund"
+            style="width:40%;"
+            placeholder="请输入项目经费"
+          ></el-input
+        ></el-form-item>
+        <el-form-item label="设备购置" prop="HardwareFund">
+          <el-input
+            type="text"
             v-model="FormData.HardwareFund"
-            placeholder="请输入项目硬件经费"
+            style="width:40%;"
+            placeholder="请输入项目经费"
           ></el-input
         ></el-form-item>
-        <el-form-item label="项目软件经费" prop="SoftwareFund">
-          <el-input
-            type="text"
-            v-model="FormData.SoftwareFund"
-            placeholder="请输入项目软件经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="留校经费" prop="StaySchoolFund">
-          <el-input
-            type="text"
-            v-model="FormData.StaySchoolFund"
-            placeholder="请输入留校经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="外拨经费" prop="OutboundFund">
+        <el-form-item label="差旅、会议、国际合作交流" prop="OutboundFund">
           <el-input
             type="text"
             v-model="FormData.OutboundFund"
-            placeholder="请输入外拨经费"
+            style="width:40%;"
+            placeholder="请输入项目经费"
+          ></el-input
+        ></el-form-item>
+        <el-form-item label="资料费、版面费、知识产权等" prop="PatentFund">
+          <el-input
+            type="text"
+            v-model="FormData.PatentFund"
+            style="width:40%;"
+            placeholder="请输入项目经费"
           ></el-input
         ></el-form-item>
         <el-form-item label="总经费（自动计算）" prop="allScore">
-          <el-input :disabled="true" v-model="allScore"></el-input
+          <el-input
+            :disabled="true"
+            v-model="allScore"
+            style="width:70%;"
+          ></el-input
         ></el-form-item>
 
         <el-divider></el-divider>
@@ -327,15 +377,26 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-button style="margin-top: 12px;" @click="next('FormData')"
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 2"
             >下一步</el-button
           >
         </el-row>
       </el-form>
     </template>
 
-    <template v-if="active > 2">
+    <template v-if="active == 3">
       <el-divider></el-divider>
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 3"
+          >上一步</el-button
+        >
+      </el-row>
       <el-form
         :model="FormData"
         :rules="rules"
@@ -594,7 +655,7 @@ export default {
   name: "SchoolForm",
   data() {
     return {
-      active: 4,
+      active: 0,
       submitButton: false,
       LevelId: 3,
       RankName: "校级项目",
@@ -631,14 +692,16 @@ export default {
         SubjectNum: "",
         SubjectName: "",
         RankId: "",
-        SubjectCategory: "",
+        CategoryId: "",
 
         //项目经费
         SubjectFund: "",
+        DocumentFund: "",
+        LaborFund: "",
+        MaterialFund: "",
         HardwareFund: "",
-        SoftwareFund: "",
-        StaySchoolFund: "",
         OutboundFund: "",
+        PatentFund: "",
 
         //项目描述
         SubjectPaper: "",
@@ -680,7 +743,7 @@ export default {
             trigger: "blur",
           },
         ],
-        SubjectCategory: [
+        CategoryId: [
           {
             required: true,
             message: "请选择项目分类",
@@ -690,23 +753,31 @@ export default {
 
         //项目经费
         SubjectFund: [
-          { required: true, message: "请输入项目申请经费", trigger: "blur" },
+          { required: true, message: "请输入项目经费", trigger: "blur" },
+          { min: 1, message: "项目经费不能为空", trigger: "blur" },
+        ],
+        DocumentFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        LaborFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        MaterialFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         HardwareFund: [
-          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
-        SoftwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
-        StaySchoolFund: [
-          { required: false, message: "请输入留校经费", trigger: "blur" },
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         OutboundFund: [
-          { required: false, message: "请输入外拨经费", trigger: "blur" },
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        PatentFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
@@ -780,12 +851,13 @@ export default {
   computed: {
     allScore: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
-      let sum3 = parseFloat(this.FormData.SoftwareFund) || 0;
-      let sum4 = parseFloat(this.FormData.StaySchoolFund) || 0;
+      let sum1 = parseFloat(this.FormData.DocumentFund) || 0;
+      let sum2 = parseFloat(this.FormData.LaborFund) || 0;
+      let sum3 = parseFloat(this.FormData.MaterialFund) || 0;
+      let sum4 = parseFloat(this.FormData.HardwareFund) || 0;
       let sum5 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum1 + sum2 + sum3 + sum4 + sum5;
+      let sum6 = parseFloat(this.FormData.PatentFund) || 0;
+      sum = sum1 + sum2 + sum3 + sum4 + sum5 + sum6;
       return sum || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
@@ -914,6 +986,10 @@ export default {
         }
       });
     },
+    //上一步
+    back(formName) {
+      this.active--;
+    },
     //处理表单提交事件
     submitForm(formName) {
       let _this = this;
@@ -939,6 +1015,7 @@ export default {
           data2upload.append("StartTime", this.FormData.StartTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
           data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
+          data2upload.append("CategoryId", this.FormData.CategoryId);
           data2upload.append("Remarks", this.FormData.Remarks);
           data2upload.append("SubjectPlace", this.t_sector);
 
@@ -949,10 +1026,10 @@ export default {
           }
 
           //项目经费
-          data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("DocumentFund", this.FormData.DocumentFund);
+          data2upload.append("LaborFund", this.FormData.LaborFund);
+          data2upload.append("MaterialFund", this.FormData.MaterialFund);
           data2upload.append("HardwareFund", this.FormData.HardwareFund);
-          data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
-          data2upload.append("StaySchoolFund", this.FormData.StaySchoolFund);
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //校级项目表单
@@ -1011,7 +1088,7 @@ export default {
           _this.$message.closeAll();
           _this.submitButton = false;
           this.$message({
-            message: "填写的信息有误",
+            message: "信息有遗漏，请检查全部表单",
             type: "error",
           });
           return false;
