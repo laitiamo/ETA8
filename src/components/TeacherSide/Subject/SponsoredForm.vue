@@ -124,18 +124,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              v-for="(domain, index) in FormData.domains"
-              :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
-              :key="domain.key"
-              :prop="'domains.' + index + '.value'"
-              :rules="{
-                required: true,
-                message: '参与者不能为空',
-                trigger: 'blur',
-              }"
-            >
+          <el-form-item
+            v-for="(domain, index) in FormData.domains"
+            :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+            :key="domain.key"
+            :prop="'domains.' + index + '.value'"
+            :rules="{
+              required: true,
+              message: '参与者不能为空',
+              trigger: 'blur',
+            }"
+          >
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-select
                 v-model="domain.value"
                 placeholder="请选择教师"
@@ -179,10 +179,12 @@
                 filterable
                 readonly
               ></el-input>
+            </el-col>
+            <el-col class="subject-info" :span="12" :xs="24">
               <el-button @click="addDomain">新增</el-button>
               <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-            </el-form-item>
-          </el-col>
+            </el-col>
+          </el-form-item>
         </el-row>
         <el-row :gutter="20">
           <el-button
@@ -214,49 +216,138 @@
         class="demo-FormData"
       >
         <h3>项目经费</h3>
-        <el-form-item label="项目申请经费" prop="SubjectFund">
-          <el-input
-            type="text"
-            v-model="FormData.SubjectFund"
-            @change="Score"
-            placeholder="请输入项目申请经费"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="项目硬件经费" prop="HardwareFund"
-          ><el-input
-            type="text"
-            v-model="FormData.HardwareFund"
-            @change="Score"
-            placeholder="请输入项目硬件经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="项目软件经费" prop="SoftwareFund">
-          <el-input
-            type="text"
-            v-model="FormData.SoftwareFund"
-            @change="Score"
-            placeholder="请输入项目软件经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="留校经费" prop="StaySchoolFund">
-          <el-input
-            type="text"
-            v-model="FormData.StaySchoolFund"
-            @change="Score"
-            placeholder="请输入留校经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="外拨经费" prop="OutboundFund">
-          <el-input
-            type="text"
-            v-model="FormData.OutboundFund"
-            @change="Score"
-            placeholder="请输入外拨经费"
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="总经费（自动计算）" prop="allScore">
-          <el-input :disabled="true" v-model="allScore"></el-input
-        ></el-form-item>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="项目获批经费" prop="SubjectFund">
+              <el-input
+                type="text"
+                v-model="FormData.SubjectFund"
+                style="width:70%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-divider></el-divider>
+        <h4>预计经费</h4>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="资料费" prop="DocumentFund">
+              <el-input
+                type="text"
+                v-model="FormData.DocumentFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="资料费" prop="DataFund">
+              <el-input
+                type="text"
+                v-model="FormData.DataFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="差旅费" prop="OutboundFund">
+              <el-input
+                type="text"
+                v-model="FormData.OutboundFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="会议费" prop="MeetingFund"
+              ><el-input
+                type="text"
+                v-model="FormData.MeetingFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="国际合作与交流" prop="InternationalFund"
+              ><el-input
+                type="text"
+                v-model="FormData.InternationalFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="设备购置费" prop="HardwareFund">
+              <el-input
+                type="text"
+                v-model="FormData.HardwareFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="专家咨询费" prop="ConsultFund">
+              <el-input
+                type="text"
+                v-model="FormData.ConsultFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="劳务费" prop="LaborFund"
+              ><el-input
+                type="text"
+                v-model="FormData.LaborFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="印刷费" prop="MaterialFund">
+              <el-input
+                type="text"
+                v-model="FormData.MaterialFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="管理费" prop="PatentFund">
+              <el-input
+                type="text"
+                v-model="FormData.PatentFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col> </el-row
+        ><el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="总经费（自动计算）" prop="allScore">
+              <el-input
+                :disabled="true"
+                v-model="allScore"
+                style="width:70%;"
+              ></el-input>
+              <el-button
+                style="margin-top: 12px;"
+                @click="check('FormData')"
+                v-if="active == 2"
+                >核查经费</el-button
+              ></el-form-item
+            >
+          </el-col>
+        </el-row>
 
         <el-divider></el-divider>
         <h3>项目描述</h3>
@@ -955,11 +1046,17 @@ export default {
         RankId: "", //项目等级
 
         //项目经费
-        SubjectFund: "", //批准经费
-        HardwareFund: "", //硬件经费
-        SoftwareFund: "", //软件经费
-        StaySchoolFund: "", //留校经费
-        OutboundFund: "", //外拨经费
+        SubjectFund: "",
+        DocumentFund: "",
+        DataFund: "",
+        OutboundFund: "",
+        MeetingFund: "",
+        InternationalFund: "",
+        HardwareFund: "",
+        ConsultFund: "",
+        LaborFund: "",
+        MaterialFund: "",
+        PatentFund: "",
 
         //项目描述
         SubjectPaper: "", //成果形式
@@ -1034,23 +1131,31 @@ export default {
 
         //项目经费
         SubjectFund: [
-          { required: true, message: "请输入项目申请经费", trigger: "blur" },
+          { required: true, message: "请输入项目经费", trigger: "blur" },
+          { min: 1, message: "项目经费不能为空", trigger: "blur" },
+        ],
+        DocumentFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        LaborFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        MaterialFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         HardwareFund: [
-          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
-        SoftwareFund: [
-          { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
-        StaySchoolFund: [
-          { required: false, message: "请输入留校经费", trigger: "blur" },
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         OutboundFund: [
-          { required: false, message: "请输入外拨经费", trigger: "blur" },
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        PatentFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
@@ -1277,12 +1382,18 @@ export default {
   computed: {
     allScore: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
-      let sum3 = parseFloat(this.FormData.SoftwareFund) || 0;
-      let sum4 = parseFloat(this.FormData.StaySchoolFund) || 0;
-      let sum5 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum1 + sum2 + sum3 + sum4 + sum5;
+      let sum1 = parseFloat(this.FormData.DocumentFund) || 0;
+      let sum2 = parseFloat(this.FormData.DataFund) || 0;
+      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
+      let sum4 = parseFloat(this.FormData.MeetingFund) || 0;
+      let sum5 = parseFloat(this.FormData.InternationalFund) || 0;
+      let sum6 = parseFloat(this.FormData.HardwareFund) || 0;
+      let sum7 = parseFloat(this.FormData.ConsultFund) || 0;
+      let sum8 = parseFloat(this.FormData.LaborFund) || 0;
+      let sum9 = parseFloat(this.FormData.MaterialFund) || 0;
+      let sum10 = parseFloat(this.FormData.PatentFund) || 0;
+      sum =
+        sum1 + sum2 + sum3 + sum4 + sum5 + sum6 + sum7 + sum8 + sum9 + sum10;
       return sum || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
@@ -1417,6 +1528,25 @@ export default {
     back(formName) {
       this.active--;
     },
+    //核查经费
+    check(formName) {
+      if (this.FormData.SubjectFund > this.allScore) {
+        this.$message({
+          message: "经费核查通过",
+          type: "success",
+        });
+      } else if (this.FormData.SubjectFund < this.allScore) {
+        this.$message({
+          message: "经费不足，请检查该板块",
+          type: "error",
+        });
+      } else {
+        this.$message({
+          message: "填写为空，请重新填写",
+          type: "success",
+        });
+      }
+    },
     //处理表单提交事件
     submitForm(formName) {
       let _this = this;
@@ -1447,9 +1577,10 @@ export default {
 
           //项目经费
           data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("DocumentFund", this.FormData.DocumentFund);
+          data2upload.append("LaborFund", this.FormData.LaborFund);
+          data2upload.append("MaterialFund", this.FormData.MaterialFund);
           data2upload.append("HardwareFund", this.FormData.HardwareFund);
-          data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
-          data2upload.append("StaySchoolFund", this.FormData.StaySchoolFund);
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //项目描述

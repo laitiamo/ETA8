@@ -12,24 +12,53 @@
       <el-form-item label="记录类型" class="no-padding">
         <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
+      <el-form-item label="专利号" prop="paperNum">
+        <el-input
+          v-model="FormData.paperNum"
+          placeholder="请输入专利号"
+        ></el-input>
+      </el-form-item>
       <el-form-item label="专利名称" prop="paperName">
         <el-input
           v-model="FormData.paperName"
           placeholder="请输入专利名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="专利作者（按作者排序）" prop="name">
+      <el-form-item label="专利第一作者">
         <el-input
           v-model="name"
           style="width:140px"
-          placeholder="请输入项目第一参与者"
+          placeholder="请输入专利第一参与者"
           readonly
         ></el-input>
-        <el-button @click="addDomain">新增参与者</el-button>
+        <el-input
+          v-model="username"
+          style="width:140px"
+          placeholder="请输入专利第一参与者"
+          readonly
+        ></el-input>
+        <el-input
+          v-model="role"
+          style="width:140px"
+          placeholder="请输入专利第一参与者"
+          readonly
+        ></el-input>
+        <el-input
+          v-model="college"
+          style="width:200px"
+          placeholder="请输入专利第一参与者"
+          readonly
+        ></el-input>
+        <el-input
+          v-model="t_sector"
+          style="width:140px"
+          placeholder="请输入专利第一参与者"
+          readonly
+        ></el-input>
       </el-form-item>
       <el-form-item
         v-for="(domain, index) in FormData.domains"
-        :label="'项目第' + (index + 2) + '位参与者（按参与者排序）'"
+        :label="'专利第' + (index + 2) + '位参与者（按参与者排序）'"
         :key="domain.key"
         :prop="'domains.' + index + '.value'"
         :rules="{
@@ -42,16 +71,46 @@
           v-model="domain.value"
           placeholder="请选择教师"
           filterable
+          @change="QueryRole(index)"
           style="width:140px"
         >
           <el-option label="全部教师" value=""></el-option>
           <el-option
-            v-for="opt in teacherList"
-            :key="opt.id"
-            :label="opt.teaName"
+            v-for="opt in TeacherList"
+            :key="opt.userId"
+            :label="opt.name"
             :value="opt.userId"
           ></el-option>
         </el-select>
+        <el-input
+          v-model="domain.teaNo"
+          style="width:140px"
+          placeholder="工号"
+          filterable
+          readonly
+        ></el-input>
+        <el-input
+          v-model="domain.roleName"
+          style="width:140px"
+          placeholder="教师角色"
+          filterable
+          readonly
+        ></el-input>
+        <el-input
+          v-model="domain.collegeName"
+          style="width:200px"
+          placeholder="所属学院"
+          filterable
+          readonly
+        ></el-input>
+        <el-input
+          v-model="domain.sectorName"
+          style="width:140px"
+          placeholder="所属部门"
+          filterable
+          readonly
+        ></el-input>
+        <el-button @click="addDomain">新增</el-button>
         <el-button @click.prevent="removeDomain(domain)">删除</el-button>
       </el-form-item>
       <el-form-item label="发表时间" prop="paperTime">
@@ -131,7 +190,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getTeacherList, getPaperList, uploadPaper } from "../../../api";
+import {
+  getTeacherList,
+  getPaperList,
+  uploadPaper,
+  getTeacherDetail,
+} from "../../../api";
 export default {
   name: "PatentForm",
   data() {
@@ -142,14 +206,19 @@ export default {
       submitButton: false,
       fileList: [], //已上传的文件列表
       PatentList: [], //奖项等级的列表「从后端取得」
-      teacherList: [], //教师列表「从后端取得」
+      TeacherList: [], //教师列表「从后端取得」
       //表单数据
       FormData: {
         domains: [
           {
+            teaNo: "",
             value: "",
+            roleName: "",
+            collegeName: "",
+            sectorName: "",
           },
         ],
+        paperNum: "",
         paperName: "",
         rankId: "",
         paperTime: "",
@@ -158,11 +227,22 @@ export default {
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
+        paperNum: [
+          { required: true, message: "请输入论文编号", trigger: "blur" },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
         paperName: [
           { required: true, message: "请输入专利名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
-        rankId: [{ required: true, message: "请选择专利类型", trigger: "change" }],
+        rankId: [
+          { required: true, message: "请选择专利类型", trigger: "change" },
+        ],
         paperTime: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
@@ -197,8 +277,8 @@ export default {
       getTeacherList()
         .then((res) => {
           let obj2 = JSON.parse(res.msg);
-          //closeDebug console.log("teacherList初始化", obj);
-          this.teacherList = obj2.teacher;
+          //closeDebug console.log("TeacherList初始化", obj);
+          this.TeacherList = obj2.teacher;
         })
         .catch((failResponse) => {});
     },
@@ -220,8 +300,8 @@ export default {
           let data2upload = new FormData();
           //获取实际input组件的文件
           let filesList = this.FormData.paperPicList;
-          data2upload.append("awardId", this.paperId);
           data2upload.append("typeId", this.typeId);
+          data2upload.append("paperNum", this.FormData.paperNum);
           data2upload.append("paperName", this.FormData.paperName);
           data2upload.append("paperTime", this.FormData.paperTime);
           data2upload.append("paperPlace", this.FormData.paperPlace);
@@ -282,6 +362,20 @@ export default {
         }
       });
     },
+    //更新该教师角色
+    QueryRole(index) {
+      let params = new URLSearchParams();
+      params.append("TeacherId", this.FormData.domains[index].value);
+      getTeacherDetail(params)
+        .then((res) => {
+          let obj = JSON.parse(res.msg);
+          this.FormData.domains[index].teaNo = obj.username;
+          this.FormData.domains[index].roleName = obj.roleName;
+          this.FormData.domains[index].collegeName = obj.collegeName;
+          this.FormData.domains[index].sectorName = obj.sectorName;
+        })
+        .catch((failResponse) => {});
+    },
     removeDomain(item) {
       var index = this.FormData.domains.indexOf(item);
       if (index !== -1) {
@@ -291,6 +385,10 @@ export default {
     addDomain() {
       this.FormData.domains.push({
         value: "",
+        teaNo: "",
+        roleName: "",
+        collegeName: "",
+        sectorName: "",
         key: Date.now(),
       });
     },
@@ -330,7 +428,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["name", "username", "roleId"]),
+    ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
 };
 </script>

@@ -750,7 +750,7 @@ export const getReviewRecordList = (params) =>
  * @returns
  */
 export const getReviewSubjectList = (params) =>
-  get(`eta8/record-review/listSubject`, params);
+  get(`eta8/subject-review/listSubject`, params);
 
 /**
  * 审核通过学生奖项（GET）
@@ -778,7 +778,7 @@ export const notPassAward = (params) => get(`eta8/review/notPass`, params);
  * @returns
  */
 export const passRecord = (params) =>
-  get(`eta8/record-review/passRecord`, params);
+  get(`eta8/record-review/passPaper`, params);
 
 /**
  * 审核驳回学生奖项（GET）
@@ -788,7 +788,7 @@ export const passRecord = (params) =>
  * @returns
  */
 export const notPassRecord = (params) =>
-  get(`eta8/record-review/notPassRecord`, params);
+  get(`eta8/record-review/notPassPaper`, params);
 
 /**
  * 审核通过教师项目（GET）
@@ -798,7 +798,7 @@ export const notPassRecord = (params) =>
  * @returns
  */
 export const passSubject = (params) =>
-  get(`eta8/record-review/passSubject`, params);
+  get(`eta8/subject-review/passSubject`, params);
 
 /**
  * 审核驳回学生项目（GET）
@@ -808,7 +808,7 @@ export const passSubject = (params) =>
  * @returns
  */
 export const notPassSubject = (params) =>
-  get(`eta8/record-review/notPassSubject`, params);
+  get(`eta8/subject-review/notPassSubject`, params);
 
 // =====================================================================> 奖项展示组件 API
 /**

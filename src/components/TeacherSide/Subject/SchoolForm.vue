@@ -245,6 +245,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-divider></el-divider>
+        <h4>预计经费</h4>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
             <el-form-item label="办公、图文制作、邮费" prop="DocumentFund">
@@ -313,8 +315,14 @@
                 :disabled="true"
                 v-model="allScore"
                 style="width:70%;"
-              ></el-input
-            ></el-form-item>
+              ></el-input>
+              <el-button
+                style="margin-top: 12px;"
+                @click="check('FormData')"
+                v-if="active == 2"
+                >核查经费</el-button
+              ></el-form-item
+            >
           </el-col>
         </el-row>
 
@@ -1012,6 +1020,25 @@ export default {
     back(formName) {
       this.active--;
     },
+    //核查经费
+    check(formName) {
+      if (this.FormData.SubjectFund > this.allScore) {
+        this.$message({
+          message: "经费核查通过",
+          type: "success",
+        });
+      } else if (this.FormData.SubjectFund < this.allScore) {
+        this.$message({
+          message: "经费不足，请检查该板块",
+          type: "error",
+        });
+      } else {
+        this.$message({
+          message: "填写为空，请重新填写",
+          type: "success",
+        });
+      }
+    },
     //处理表单提交事件
     submitForm(formName) {
       let _this = this;
@@ -1048,6 +1075,7 @@ export default {
           }
 
           //项目经费
+          data2upload.append("SubjectFund", this.FormData.SubjectFund);
           data2upload.append("DocumentFund", this.FormData.DocumentFund);
           data2upload.append("LaborFund", this.FormData.LaborFund);
           data2upload.append("MaterialFund", this.FormData.MaterialFund);

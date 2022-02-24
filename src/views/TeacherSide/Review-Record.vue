@@ -3,7 +3,7 @@
     <h3 v-show="!ifShowDetail">成果审核</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
-                <el-form-item>
+        <el-form-item>
           <el-select
             v-model="form2Query.typeId"
             placeholder="全部类型"
@@ -33,6 +33,12 @@
               :value="opt.id"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyAwardNum"
+            placeholder="搜索成果号"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-input
@@ -102,7 +108,11 @@
       >
       </el-pagination>
     </div>
-    <PaperDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
+    <PaperDetail
+      :detailData="detailData"
+      :goback="goBack"
+      v-show="ifShowDetail"
+    >
     </PaperDetail>
     <el-row type="flex" justify="center">
       <el-button
@@ -147,6 +157,7 @@ export default {
       ifShowDetail: false,
       // 数据列
       Columns: [
+        { name: "成果号", value: "paperNum", width: "180", ifShow: true },
         { name: "成果名称", value: "paperName", width: "200", ifShow: true },
         { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
         { name: "成果等级", value: "rankName", width: "120", ifShow: true },
@@ -175,8 +186,9 @@ export default {
       form2Query: {
         typeId: "", //成果类型
         rankId: "", //成果记录等级
+        keyAwardNum: "", //成果号
         keyAwardName: "", //成果名
-        keyAwardPlace: "", //期刊名
+        keyAwardPlace: "", //成果单位
       },
       //下拉栏内容列表
       rankList1: [],
@@ -191,6 +203,7 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
       this.Columns = [
+        { name: "成果号", value: "paperNum", width: "180", ifShow: false },
         { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
         { name: "所属单位", value: "paperPlace", width: "200", ifShow: false },
         { name: "成果等级", value: "rankName", width: "120", ifShow: false },
@@ -334,6 +347,7 @@ export default {
       params.append("page", this.currentPage);
       params.append("typeId", this.form2Query.typeId); //成果类型
       params.append("rankId", this.form2Query.rankId); //成果等级
+      params.append("keyPaperNum", this.form2Query.keyAwardNum); //成果名
       params.append("keyPaperName", this.form2Query.keyAwardName); //成果名
       params.append("keyPaperPlace", this.form2Query.keyAwardPlace); //期刊名
       params.append("order", this.orderMode);

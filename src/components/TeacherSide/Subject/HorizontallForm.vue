@@ -222,44 +222,50 @@
             type="text"
             v-model="FormData.SubjectFund"
             @change="Score"
+            style="width:70%;"
             placeholder="请输入项目申请经费"
           ></el-input>
         </el-form-item>
-        <el-form-item label="项目硬件经费" prop="HardwareFund"
-          ><el-input
-            type="text"
-            v-model="FormData.HardwareFund"
-            @change="Score"
-            placeholder="请输入项目硬件经费"
-          ></el-input
-        ></el-form-item>
         <el-form-item label="项目软件经费" prop="SoftwareFund">
           <el-input
             type="text"
             v-model="FormData.SoftwareFund"
             @change="Score"
+            style="width:40%;"
             placeholder="请输入项目软件经费"
           ></el-input
         ></el-form-item>
-        <el-form-item label="留校经费" prop="StaySchoolFund">
-          <el-input
+        <el-form-item label="项目设备经费" prop="HardwareFund"
+          ><el-input
             type="text"
-            v-model="FormData.StaySchoolFund"
+            v-model="FormData.HardwareFund"
             @change="Score"
-            placeholder="请输入留校经费"
+            style="width:40%;"
+            placeholder="请输入项目设备经费"
           ></el-input
         ></el-form-item>
-        <el-form-item label="外拨经费" prop="OutboundFund">
+        <el-form-item label="外协经费" prop="OutboundFund">
           <el-input
             type="text"
             v-model="FormData.OutboundFund"
             @change="Score"
-            placeholder="请输入外拨经费"
+            style="width:40%;"
+            placeholder="请输入外协经费"
           ></el-input
         ></el-form-item>
         <el-form-item label="总经费（自动计算）" prop="allScore">
-          <el-input :disabled="true" v-model="allScore"></el-input
-        ></el-form-item>
+          <el-input
+            :disabled="true"
+            v-model="allScore"
+            style="width:40%;"
+          ></el-input>
+          <el-button
+            style="margin-top: 12px;"
+            @click="check('FormData')"
+            v-if="active == 2"
+            >核查经费</el-button
+          >
+        </el-form-item>
 
         <el-divider></el-divider>
         <h3>项目描述</h3>
@@ -454,14 +460,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="合同金额（元）" prop="ContractFund">
-              <el-input
-                v-model="FormData.ContractFund"
-                placeholder="请输入合同金额（元）"
-              ></el-input>
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -472,6 +470,38 @@
               ></el-input>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item label="课题组/校内人员费" prop="ResearchFund">
+            <el-input
+              type="text"
+              v-model="FormData.ResearchFund"
+              @change="Score"
+              placeholder="请输入课题组/校内人员费"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="劳务费（学生/临聘）" prop="ServiceFund">
+            <el-input
+              type="text"
+              v-model="FormData.ServiceFund"
+              @change="Score"
+              placeholder="请输入劳务费（学生/临聘）"
+            ></el-input
+          ></el-form-item>
+          <el-form-item label="其他支出" prop="OtherFund"
+            ><el-input
+              type="text"
+              v-model="FormData.OtherFund"
+              @change="Score"
+              placeholder="请输入其他支出"
+            ></el-input
+          ></el-form-item>
+          <el-form-item
+            label="合同预算经费（元）（自动计算）"
+            prop="ContractFund"
+          >
+            <el-input :disabled="true" v-model="ContractFund"></el-input
+          ></el-form-item>
         </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -1003,7 +1033,6 @@ export default {
         SubjectFund: "",
         HardwareFund: "",
         SoftwareFund: "",
-        StaySchoolFund: "",
         OutboundFund: "",
 
         //项目描述
@@ -1017,12 +1046,16 @@ export default {
 
         //合作单位
         CooperateId: "",
-        ContractNum: "",
+
         FundNum: "",
         ContractName: "",
         ContractId: "",
         ContractFund: "",
         CooperatePrincipal: "",
+        ResearchFund: "",
+        ServiceFund: "",
+        OtherFund: "",
+        ContractNum: "",
         BankName: "",
         BankAccount: "",
         isDutyFree: "",
@@ -1089,19 +1122,16 @@ export default {
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         HardwareFund: [
-          { required: false, message: "请输入项目硬件经费", trigger: "blur" },
+          { required: false, message: "请输入项目设备经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        StaySchoolFund: [
-          { required: false, message: "请输入留校经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
+
         OutboundFund: [
-          { required: false, message: "请输入外拨经费", trigger: "blur" },
+          { required: false, message: "请输入外协经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
 
@@ -1185,6 +1215,26 @@ export default {
             message: "长度在 2 到 20 个字符",
             trigger: "blur",
           },
+        ],
+        ResearchFund: [
+          {
+            required: true,
+            message: "请输入课题组/校内人员费",
+            trigger: "blur",
+          },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        ServiceFund: [
+          {
+            required: false,
+            message: "请输入劳务费（学生/临聘）",
+            trigger: "blur",
+          },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
+        OtherFund: [
+          { required: false, message: "请输入其他支出", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
         BankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
@@ -1386,12 +1436,18 @@ export default {
   computed: {
     allScore: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.SoftwareFund) || 0;
       let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
-      let sum3 = parseFloat(this.FormData.SoftwareFund) || 0;
-      let sum4 = parseFloat(this.FormData.StaySchoolFund) || 0;
-      let sum5 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum1 + sum2 + sum3 + sum4 + sum5;
+      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
+      sum = sum1 + sum2 + sum3;
+      return sum || 0;
+    },
+    ContractFund: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.ResearchFund) || 0;
+      let sum2 = parseFloat(this.FormData.ServiceFund) || 0;
+      let sum3 = parseFloat(this.FormData.OtherFund) || 0;
+      sum = sum1 + sum2 + sum3;
       return sum || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
@@ -1541,6 +1597,25 @@ export default {
     back(formName) {
       this.active--;
     },
+    //核查经费
+    check(formName) {
+      if (this.FormData.SubjectFund > this.allScore) {
+        this.$message({
+          message: "经费核查通过",
+          type: "success",
+        });
+      } else if (this.FormData.SubjectFund < this.allScore){
+        this.$message({
+          message: "经费不足，请检查该板块",
+          type: "error",
+        });
+      } else{
+        this.$message({
+          message: "填写为空，请重新填写",
+          type: "success",
+        });
+      }
+    },
     //处理表单提交事件
     submitForm(formName) {
       let _this = this;
@@ -1573,7 +1648,6 @@ export default {
           data2upload.append("SubjectFund", this.FormData.SubjectFund);
           data2upload.append("HardwareFund", this.FormData.HardwareFund);
           data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
-          data2upload.append("StaySchoolFund", this.FormData.StaySchoolFund);
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
 
           //项目描述
@@ -1600,8 +1674,12 @@ export default {
             "CooperatePrincipal",
             this.FormData.CooperatePrincipal
           );
-          data2upload.append("BankName", this.FormData.BankName);
+
           data2upload.append("BankAccount", this.FormData.BankAccount);
+          data2upload.append("ResearchFund", this.FormData.ResearchFund);
+          data2upload.append("ServiceFund", this.FormData.ServiceFund);
+          data2upload.append("BankName", this.FormData.BankName);
+          data2upload.append("OtherFund", this.FormData.OtherFund);
           data2upload.append("isDutyFree", this.FormData.isDutyFree);
           data2upload.append("DutyFreeId", this.FormData.DutyFreeId);
           data2upload.append("isPromote", this.FormData.isPromote);

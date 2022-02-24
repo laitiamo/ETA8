@@ -14,26 +14,111 @@
       </el-carousel-item>
     </el-carousel>
     <el-card class="box-card">
-      <el-divider content-position="left"><span class="div-font">第一教师信息</span></el-divider>
+      <el-divider content-position="left"
+        ><span class="div-font">第一教师信息</span></el-divider
+      >
       <el-row :gutter="20">
-        <el-col class="detail-info" :span="12" :xs="24">教职工号：{{detailData.username}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">姓名：{{detailData.name}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">性别：{{detailData.gender}}</el-col>
+        <el-col class="detail-info" :span="12" :xs="24"
+          >教职工号：{{ detailData.username }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >姓名：{{ detailData.name }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >性别：{{ detailData.gender }}</el-col
+        >
       </el-row>
-      <el-divider content-position="left"><span class="div-font">成果信息</span></el-divider>
+      <template v-if="detailData.typeId === 1">
+        <el-divider content-position="left"
+          ><span class="div-font">成果信息</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >期卷号：{{ detailData.num }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >论文名称：{{ detailData.award }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >论文作者：{{ detailData.writer }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >论文类型：{{ detailData.type }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >论文级别：{{ detailData.rank }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >刊物单位：{{ detailData.place }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >论文日期：{{ detailData.time }}</el-col
+          >
+        </el-row>
+      </template>
+      <template v-if="detailData.typeId === 2">
+        <el-divider content-position="left"
+          ><span class="div-font">论文信息</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >著作号：{{ detailData.num }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >著作名称：{{ detailData.award }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >著作类型：{{ detailData.rank }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >著作作者：{{ detailData.writer }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >出版社名称：{{ detailData.place }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >著作日期：{{ detailData.time }}</el-col
+          >
+        </el-row>
+      </template>
+      <template v-if="detailData.typeId === 3">
+        <el-divider content-position="left"
+          ><span class="div-font">专利信息</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >专利号：{{ detailData.num }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >专利名称：{{ detailData.award }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >专利类型：{{ detailData.rank }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >专利作者：{{ detailData.writer }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >证书号：{{ detailData.place }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >发表日期：{{ detailData.time }}</el-col
+          >
+        </el-row>
+      </template>
+      <el-divider content-position="left"
+        ><span class="div-font">审核信息</span></el-divider
+      >
       <el-row :gutter="20">
-        <el-col class="detail-info" :span="12" :xs="24">成果名称：{{detailData.award}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">成果作者：{{detailData.writer}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">成果类型：{{detailData.type}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">成果级别：{{detailData.rank}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">所属单位：{{detailData.place}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">成果日期：{{detailData.time}}</el-col>
-      </el-row>
-      <el-divider content-position="left"><span class="div-font">审核信息</span></el-divider>
-      <el-row :gutter="20">
-        <el-col class="detail-info" :span="12" :xs="24">上传时间：{{detailData.createAt}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">审核状态：{{detailData.review}}</el-col>
-        <el-col class="detail-info" :span="12" :xs="24">审核时间：{{detailData.reviewAt}}</el-col>
+        <el-col class="detail-info" :span="12" :xs="24"
+          >上传时间：{{ detailData.createAt }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >审核状态：{{ detailData.review }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >审核时间：{{ detailData.reviewAt }}</el-col
+        >
       </el-row>
     </el-card>
   </div>
@@ -49,14 +134,14 @@ export default {
 };
 </script>
 <style>
-.div-font{
+.div-font {
   font-size: 1.1em;
   font-weight: bold;
   color: black;
 }
 .detail-info {
   margin: 5px 0 10px 0;
-  font-weight:normal;
+  font-weight: normal;
   font-size: 0.9em;
 }
 .image-row {
