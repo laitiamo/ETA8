@@ -21,10 +21,10 @@
         <el-form-item>
           <el-select
             v-model="form2Query.levelId"
-            placeholder="全部等级"
+            placeholder="全部类型"
             style="width: 140px"
           >
-            <el-option label="全部等级" value=""></el-option>
+            <el-option label="全部类型" value=""></el-option>
             <el-option
               v-for="opt in rankList2"
               :key="opt.id"

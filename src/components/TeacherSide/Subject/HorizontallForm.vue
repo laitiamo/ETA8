@@ -90,38 +90,36 @@
         <h3>参与者选择</h3>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="项目负责人">
-              <el-input
-                v-model="name"
-                style="width:140px"
-                placeholder="请输入项目第一参与者"
-                readonly
-              ></el-input>
-              <el-input
-                v-model="username"
-                style="width:140px"
-                placeholder="请输入项目第一参与者"
-                readonly
-              ></el-input>
-              <el-input
-                v-model="role"
-                style="width:140px"
-                placeholder="请输入项目第一参与者"
-                readonly
-              ></el-input>
-              <el-input
-                v-model="college"
-                style="width:200px"
-                placeholder="请输入项目第一参与者"
-                readonly
-              ></el-input>
-              <el-input
-                v-model="t_sector"
-                style="width:140px"
-                placeholder="请输入项目第一参与者"
-                readonly
-              ></el-input>
-            </el-form-item>
+            <el-input
+              v-model="name"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
+            <el-input
+              v-model="username"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
+            <el-input
+              v-model="role"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
+            <el-input
+              v-model="college"
+              style="width:200px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
+            <el-input
+              v-model="t_sector"
+              style="width:140px"
+              placeholder="请输入项目第一参与者"
+              readonly
+            ></el-input>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -221,7 +219,6 @@
           <el-input
             type="text"
             v-model="FormData.SubjectFund"
-            @change="Score"
             style="width:70%;"
             placeholder="请输入项目申请经费"
           ></el-input>
@@ -230,7 +227,6 @@
           <el-input
             type="text"
             v-model="FormData.SoftwareFund"
-            @change="Score"
             style="width:40%;"
             placeholder="请输入项目软件经费"
           ></el-input
@@ -239,7 +235,6 @@
           ><el-input
             type="text"
             v-model="FormData.HardwareFund"
-            @change="Score"
             style="width:40%;"
             placeholder="请输入项目设备经费"
           ></el-input
@@ -248,7 +243,6 @@
           <el-input
             type="text"
             v-model="FormData.OutboundFund"
-            @change="Score"
             style="width:40%;"
             placeholder="请输入外协经费"
           ></el-input
@@ -471,37 +465,45 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-form-item label="课题组/校内人员费" prop="ResearchFund">
-            <el-input
-              type="text"
-              v-model="FormData.ResearchFund"
-              @change="Score"
-              placeholder="请输入课题组/校内人员费"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="劳务费（学生/临聘）" prop="ServiceFund">
-            <el-input
-              type="text"
-              v-model="FormData.ServiceFund"
-              @change="Score"
-              placeholder="请输入劳务费（学生/临聘）"
-            ></el-input
-          ></el-form-item>
-          <el-form-item label="其他支出" prop="OtherFund"
-            ><el-input
-              type="text"
-              v-model="FormData.OtherFund"
-              @change="Score"
-              placeholder="请输入其他支出"
-            ></el-input
-          ></el-form-item>
-          <el-form-item
-            label="合同预算经费（元）（自动计算）"
-            prop="ContractFund"
-          >
-            <el-input :disabled="true" v-model="ContractFund"></el-input
-          ></el-form-item>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="合同金额" prop="ContractFund">
+              <el-input
+                v-model="FormData.ContractFund"
+                placeholder="请输入合同金额"
+              ></el-input>
+            </el-form-item> </el-col
+          ><el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="课题组/校内人员费" prop="ResearchFund">
+              <el-input
+                type="text"
+                v-model="FormData.ResearchFund"
+                placeholder="请输入课题组/校内人员费"
+              ></el-input> </el-form-item></el-col
+          ><el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="劳务费（学生/临聘）" prop="ServiceFund">
+              <el-input
+                type="text"
+                v-model="FormData.ServiceFund"
+                placeholder="请输入劳务费（学生/临聘）"
+              ></el-input></el-form-item></el-col
+          ><el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="其他支出" prop="OtherFund"
+              ><el-input
+                type="text"
+                v-model="FormData.OtherFund"
+                placeholder="请输入其他支出"
+              ></el-input></el-form-item></el-col
+          ><el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item
+              label="合同预算经费（元）（自动计算）"
+              prop="Contract"
+            >
+              <el-input
+                :disabled="true"
+                v-model="Contract"
+              ></el-input></el-form-item
+          ></el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -576,6 +578,14 @@
     </template>
 
     <template v-if="active > 3">
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 4"
+          >上一步</el-button
+        >
+      </el-row>
       <el-divider></el-divider>
       <el-form
         :model="FormData"
@@ -658,7 +668,11 @@
 
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="BuyerCity" v-if="FormData.BuyerProvince !== ''">
+            <el-form-item
+              label="买方地市"
+              prop="BuyerCity"
+              v-if="FormData.BuyerProvince !== ''"
+            >
               <el-select
                 v-model="FormData.BuyerCity"
                 placeholder="请选择买方地市"
@@ -679,7 +693,11 @@
 
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="BuyerCounty" v-if="FormData.BuyerCity !== ''">
+            <el-form-item
+              label="买方县区"
+              prop="BuyerCounty"
+              v-if="FormData.BuyerCity !== ''"
+            >
               <el-select
                 v-model="FormData.BuyerCounty"
                 placeholder="请选择买方县区"
@@ -1050,7 +1068,7 @@ export default {
         FundNum: "",
         ContractName: "",
         ContractId: "",
-        ContractFund: "",
+
         CooperatePrincipal: "",
         ResearchFund: "",
         ServiceFund: "",
@@ -1062,6 +1080,7 @@ export default {
         DutyFreeId: "",
         isPromote: "",
         ContractDuty: "",
+        ContractFund: "",
 
         //买方信息
         BuyerName: "",
@@ -1121,15 +1140,14 @@ export default {
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-        HardwareFund: [
-          { required: false, message: "请输入项目设备经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
         SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
         ],
-
+        HardwareFund: [
+          { required: false, message: "请输入项目设备经费", trigger: "blur" },
+          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+        ],
         OutboundFund: [
           { required: false, message: "请输入外协经费", trigger: "blur" },
           { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
@@ -1203,10 +1221,6 @@ export default {
         ContractId: [
           { required: true, message: "请选择合同类型", trigger: "blur" },
         ],
-        ContractFund: [
-          { required: true, message: "请输入合同经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
-        ],
         CooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },
           {
@@ -1268,7 +1282,15 @@ export default {
           },
         ],
         ContractDuty: [
-          { required: true, message: "请输入违约金", trigger: "blur" },
+          { required: true, message: "请输入双方违约责任", trigger: "blur" },
+          {
+            min: 2,
+            message: "至少输入 2 个字符",
+            trigger: "blur",
+          },
+        ],
+        ContractFund: [
+          { required: true, message: "请输入合同金额", trigger: "blur" },
           {
             min: 2,
             max: 8,
@@ -1442,7 +1464,7 @@ export default {
       sum = sum1 + sum2 + sum3;
       return sum || 0;
     },
-    ContractFund: function() {
+    Contract: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.ResearchFund) || 0;
       let sum2 = parseFloat(this.FormData.ServiceFund) || 0;
@@ -1604,12 +1626,12 @@ export default {
           message: "经费核查通过",
           type: "success",
         });
-      } else if (this.FormData.SubjectFund < this.allScore){
+      } else if (this.FormData.SubjectFund < this.allScore) {
         this.$message({
           message: "经费不足，请检查该板块",
           type: "error",
         });
-      } else{
+      } else {
         this.$message({
           message: "填写为空，请重新填写",
           type: "success",
@@ -1732,15 +1754,16 @@ export default {
               if (res.code === 0) {
                 _this.$message.closeAll();
                 _this.submitButton = false;
+                _this.$router.push({
+                  path: "/eta/ok",
+                });
                 _this.$message({
                   message: res.msg,
                   type: "success",
                 });
-                _this.cancelUpload("FormData");
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;
-                _this.active == 0;
                 _this.$message({
                   message: res.msg,
                   type: "error",
@@ -1767,7 +1790,7 @@ export default {
           _this.$message.closeAll();
           _this.submitButton = false;
           this.$message({
-            message: "填写的信息有误",
+            message: "信息有遗漏，请检查全部表单",
             type: "error",
           });
           return false;

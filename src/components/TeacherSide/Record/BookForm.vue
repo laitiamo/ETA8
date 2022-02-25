@@ -300,6 +300,7 @@ export default {
           //获取实际input组件的文件
           let filesList = this.FormData.paperPicList;
           data2upload.append("typeId", this.typeId);
+          data2upload.append("paperType", this.paperType);
           data2upload.append("paperNum", this.FormData.paperNum);
           data2upload.append("paperName", this.FormData.paperName);
           data2upload.append("paperTime", this.FormData.paperTime);

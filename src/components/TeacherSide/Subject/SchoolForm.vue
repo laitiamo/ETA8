@@ -1103,12 +1103,13 @@ export default {
               if (res.code === 0) {
                 _this.$message.closeAll();
                 _this.submitButton = false;
+                _this.$router.push({
+                  path: "/eta/ok",
+                });
                 _this.$message({
                   message: res.msg,
                   type: "success",
                 });
-                _this.cancelUpload("FormData");
-                // _this.goback();
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;

@@ -973,13 +973,7 @@
             :loading="submitButton"
             >立即提交</el-button
           >
-          <el-button
-            @click="
-              cancelUpload('FormData');
-              goback();
-            "
-            >重置</el-button
-          >
+          <el-button @click="cancelUpload('FormData')">重置</el-button>
         </el-form-item>
       </el-form>
     </template>
@@ -1642,11 +1636,13 @@ export default {
               if (res.code === 0) {
                 _this.$message.closeAll();
                 _this.submitButton = false;
+                _this.$router.push({
+                  path: "/eta/ok",
+                });
                 _this.$message({
                   message: res.msg,
                   type: "success",
                 });
-                _this.cancelUpload("FormData");
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;

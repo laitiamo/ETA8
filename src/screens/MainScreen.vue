@@ -40,7 +40,7 @@
               <span slot="title" class="menu-title">审核记录</span>
             </template>
             <el-menu-item index="/eta/award-review">奖项审核</el-menu-item>
-            <template v-if="roleId !== 6">
+            <template v-if="roleId !== 3 && roleId !== 6">
               <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
               <el-menu-item index="/eta/subject-review">项目审核</el-menu-item>
             </template>
@@ -52,12 +52,10 @@
             <span slot="title" class="menu-title">奖项记录</span>
           </template>
           <el-menu-item index="/eta/mine">奖项记录</el-menu-item>
-          <el-menu-item index="/eta/mine-paper" v-if="roleId !== 6"
-            >成果记录</el-menu-item
-          >
-          <el-menu-item index="/eta/mine-subject" v-if="roleId !== 6"
-            >项目记录</el-menu-item
-          >
+          <template v-if="roleId !== 5 && roleId !== 6">
+            <el-menu-item index="/eta/mine-paper">成果记录</el-menu-item>
+            <el-menu-item index="/eta/mine-subject">项目记录</el-menu-item>
+          </template>
         </el-submenu>
         <template
           v-if="roleId == 1 || roleId == 2 || roleId == 3 || roleId === 7"
@@ -235,7 +233,7 @@
                   <span slot="title" class="menu-title">审核记录</span>
                 </template>
                 <el-menu-item index="/eta/award-review">奖项审核</el-menu-item>
-                <template v-if="roleId !== 6">
+                <template v-if="roleId !== 3 && roleId !== 6">
                   <el-menu-item index="/eta/record-review"
                     >成果审核</el-menu-item
                   >
@@ -416,14 +414,14 @@ export default {
               reviewer: obj.l_name, //审阅人姓名
               username: obj.l_username, //用户编号
               role: obj.l_role, //用户角色
-              college:obj.l_college, //学院
+              college: obj.l_college, //学院
               //如果是学生的话还有以下参数
               grade: obj.l_grade, //年级
               major: obj.l_major, //专业
               l_genderId: obj.l_genderId, //性别
               l_class: obj.l_class, //班级
               //如果是教师的话设置所属部门
-              t_sector: obj.t_sector,//所属部门
+              t_sector: obj.t_sector, //所属部门
             });
           } else {
             _this.$notify({

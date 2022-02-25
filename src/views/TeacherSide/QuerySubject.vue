@@ -6,10 +6,10 @@
         <el-form-item>
           <el-select
             v-model="form2Query.rankId"
-            placeholder="全部类型"
+            placeholder="全部等级"
             style="width: 140px"
           >
-            <el-option label="全部类型" value=""></el-option>
+            <el-option label="全部等级" value=""></el-option>
             <el-option
               v-for="opt in rankList1"
               :key="opt.id"
@@ -21,10 +21,10 @@
         <el-form-item>
           <el-select
             v-model="form2Query.levelId"
-            placeholder="全部等级"
+            placeholder="全部类型"
             style="width: 140px"
           >
-            <el-option label="全部等级" value=""></el-option>
+            <el-option label="全部类型" value=""></el-option>
             <el-option
               v-for="opt in rankList2"
               :key="opt.id"
@@ -434,61 +434,75 @@ export default {
     onExportXLS() {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
-      let params = new URLSearchParams();
-      params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
-      params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
-      params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
-      params.append("rankId", this.form2Query.rankId); //项目记录等级
-      params.append("levelId", this.form2Query.levelId); //项目记录等级
-      exportTeaSubjectXLS(params)
-        .then((res) => {
-          //closeDebug console.log("-----------导出教师项目表格文件---------------");
-          //closeDebug console.log(res);
-          const blob = new Blob([res.data]);
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          downloadElement.href = href;
-          //new一个时间对象
-          var nowDate = new Date().toLocaleDateString();
-          downloadElement.download = decodeURIComponent(
-            nowDate + "_教师项目.xls"
-          );
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(href);
-        })
-        .catch((failResponse) => {});
+      if (this.form2Query.levelId == "") {
+        this.$message({
+          message: "请选择项目类型",
+          type: 'warning'
+        });
+      } else {
+        let params = new URLSearchParams();
+        params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+        params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+        params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+        params.append("rankId", this.form2Query.rankId); //项目记录等级
+        params.append("levelId", this.form2Query.levelId); //项目记录等级
+        exportTeaSubjectXLS(params)
+          .then((res) => {
+            //closeDebug console.log("-----------导出教师项目表格文件---------------");
+            //closeDebug console.log(res);
+            const blob = new Blob([res.data]);
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
+            //new一个时间对象
+            var nowDate = new Date().toLocaleDateString();
+            downloadElement.download = decodeURIComponent(
+              nowDate + "_教师项目.xls"
+            );
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          })
+          .catch((failResponse) => {});
+      }
     },
     //处理导出教师项目表格文件
     onExportZIP() {
       //closeDebug console.log("export ZIP:", this.form2Query);
       //参数绑定「筛选参数」
-      let params = new URLSearchParams();
-      params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
-      params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
-      params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
-      params.append("rankId", this.form2Query.rankId); //项目记录等级
-      params.append("levelId", this.form2Query.levelId); //项目记录等级
-      exportTeaSubjectZIP(params)
-        .then((res) => {
-          //closeDebug console.log("-----------导出教师项目表格文件---------------");
-          //closeDebug console.log(res);
-          const blob = new Blob([res.data]);
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          downloadElement.href = href;
-          //new一个时间对象
-          var nowDate = new Date().toLocaleDateString();
-          downloadElement.download = decodeURIComponent(
-            nowDate + "_教师项目图片.zip"
-          );
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(href);
-        })
-        .catch((failResponse) => {});
+      if (this.form2Query.levelId == "") {
+        this.$message({
+          message: "请选择项目类型",
+          type: 'warning'
+        });
+      } else {
+        let params = new URLSearchParams();
+        params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+        params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+        params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+        params.append("rankId", this.form2Query.rankId); //项目记录等级
+        params.append("levelId", this.form2Query.levelId); //项目记录等级
+        exportTeaSubjectZIP(params)
+          .then((res) => {
+            //closeDebug console.log("-----------导出教师项目表格文件---------------");
+            //closeDebug console.log(res);
+            const blob = new Blob([res.data]);
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
+            //new一个时间对象
+            var nowDate = new Date().toLocaleDateString();
+            downloadElement.download = decodeURIComponent(
+              nowDate + "_教师项目图片.zip"
+            );
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          })
+          .catch((failResponse) => {});
+      }
     },
   },
 };

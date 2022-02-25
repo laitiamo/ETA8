@@ -172,8 +172,8 @@ const routes = [
         component: () => import("../views/import/ImportAward"),
       },
       {
-        path: "/403",
-        component: () => import("../views/403.vue"),
+        path: "ok",
+        component: () => import("../components/TeacherSide/Subject/Finish"),
       },
     ],
   },
