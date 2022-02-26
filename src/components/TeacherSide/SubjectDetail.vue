@@ -329,7 +329,7 @@
       </template>
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24">
-          <el-button type="primary" @click="onExportFile"
+          <el-button type="primary" @click="onExportFile" :loading="loading"
             >导出附件</el-button
           ></el-col
         >
@@ -342,6 +342,11 @@
 import { exportTeaSubjectPDF } from "../../api";
 export default {
   name: "SubjectDetail",
+  data(){
+    return{
+      loading:false,
+    }
+  },
   props: {
     detailData: {},
     goback: { type: Function },
@@ -351,6 +356,7 @@ export default {
     onExportFile() {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
+      this.loading = true;
       let params = new URLSearchParams();
       params.append("id", this.detailData.id); //年级
       exportTeaSubjectPDF(params)
@@ -370,6 +376,7 @@ export default {
           downloadElement.click();
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(href);
+          this.loading = false;
         })
         .catch((failResponse) => {});
     },
