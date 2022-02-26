@@ -120,7 +120,18 @@ export const getMyAwardList = (params) => get(`eta8/mine/list`, params);
  * @param {URLSearchParams} params
  * @returns
  */
-export const getMyPaperList = (params) => get(`eta8/mine/listpaper`, params);
+export const getMyPaperList = (params) => get(`eta8/mine/listPaper`, params);
+
+/**
+ * 获取个人成果列表（GET）
+ * 需传入的参数
+ * limit：每页的记录条数
+ * page：当前页码
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getPaperSelectList = (params) =>
+  get(`eta8/mine/listPerPaper`, params);
 
 /**
  * 获取个人项目列表（GET）
@@ -168,6 +179,18 @@ export const getPaperDetail = (params) => get(`eta8/detail-paper`, params);
  * @returns
  */
 export const getSubjectDetail = (params) => get(`eta8/detail-subject`, params);
+
+/**
+ * 更新项目成果列表
+ * @returns
+ */
+export const updateSubjectPaper = (params) => get(`eta8/subject/updatePaper`, params);
+
+/**
+ * 申请结题
+ * @returns
+ */
+ export const ApplyFinishSubject = (params) => get(`eta8/subject/applyFinish`, params);
 
 /**
  * 导出教师项目文件（GET）
@@ -235,8 +258,7 @@ export const getFirstSubjectList = (params) =>
  * @param {URLSearchParams} params
  * @returns
  */
-export const getTeacherDetail = (params) =>
-  get(`eta8/subject/getRole`, params);
+export const getTeacherDetail = (params) => get(`eta8/subject/getRole`, params);
 
 /**
  * 获取项目资源列表
@@ -753,6 +775,21 @@ export const getReviewSubjectList = (params) =>
   get(`eta8/subject-review/listSubject`, params);
 
 /**
+ * 获取未结题的项目列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 学号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getFinishSubjectList = (params) =>
+  get(`eta8/subject-finish/listSubject`, params);
+
+/**
  * 审核通过学生奖项（GET）
  * 需传入的参数
  * id：奖项id
@@ -791,7 +828,7 @@ export const notPassRecord = (params) =>
   get(`eta8/record-review/notPassPaper`, params);
 
 /**
- * 审核通过教师项目（GET）
+ * 审核通过项目（GET）
  * 需传入的参数
  * id：奖项id
  * @param {URLSearchParams} params
@@ -801,7 +838,7 @@ export const passSubject = (params) =>
   get(`eta8/subject-review/passSubject`, params);
 
 /**
- * 审核驳回学生项目（GET）
+ * 审核驳回项目（GET）
  * 需传入的参数
  * id：奖项id
  * @param {URLSearchParams} params
@@ -809,6 +846,26 @@ export const passSubject = (params) =>
  */
 export const notPassSubject = (params) =>
   get(`eta8/subject-review/notPassSubject`, params);
+
+/**
+ * 审核通过教师项目（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const FinishSubject = (params) =>
+  get(`eta8/subject-finish/passSubject`, params);
+
+/**
+ * 审核驳回项目（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const notFinishSubject = (params) =>
+  get(`eta8/subject-finish/notPassSubject`, params);
 
 // =====================================================================> 奖项展示组件 API
 /**

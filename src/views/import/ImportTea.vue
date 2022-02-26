@@ -14,6 +14,41 @@
       </h3>
     </el-card>
     <el-divider></el-divider>
+    <el-form :inline="true" class="demo-form-inline">
+      <el-form-item>
+        <span class="head-title">选择要导入的教师信息</span>
+      </el-form-item>
+      <el-form-item>
+        <el-select
+          v-model="form2Query.collegeId"
+          placeholder="全部二级学院"
+          style="width:140px"
+        >
+          <el-option label="全部二级学院" value=""></el-option>
+          <el-option
+            v-for="opt in collegeList"
+            :key="opt.id"
+            :label="opt.collegeName"
+            :value="opt.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select
+          v-model="form2Query.sectorId"
+          placeholder="全部部门"
+          style="width:160px"
+        >
+          <el-option label="全部部门" value=""></el-option>
+          <el-option
+            v-for="opt in sectorList"
+            :key="opt.id"
+            :label="opt.sectorName"
+            :value="opt.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
     <el-upload
       ref="upload"
       class="upload-card"
@@ -34,15 +69,38 @@
 </template>
 
 <script>
-import { getTeaTemplate, uploadTeaTemplate } from "../../api";
+import { initManageTea, getTeaTemplate, uploadTeaTemplate } from "../../api";
 export default {
   name: "ImportTea",
   components: {},
   computed: {},
   data() {
-    return {};
+    return {
+      //用于筛选的表单
+      form2Query: {
+        collegeId: "",
+        sectorId: "",
+      },
+      //下拉栏内容列表
+      collegeList: [],
+      sectorList: [],
+    };
+  },
+  mounted() {
+    this.initQueryList();
   },
   methods: {
+    initQueryList() {
+      initManageTea()
+        .then((res) => {
+          //closeDebug console.log("-----------初始化查询参数---------------");
+          let obj = JSON.parse(res.msg);
+          //closeDebug console.log(obj);
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
+        })
+        .catch((failResponse) => {});
+    },
     //处理下载模板表格
     handleDownload() {
       getTeaTemplate()
@@ -69,6 +127,8 @@ export default {
       // 通过 FormData 对象上传文件
       var formData = new FormData();
       formData.append("file", _file);
+      formData.append("collegeId", this.form2Query.collegeId);
+      formData.append("sectorId", this.form2Query.sectorId);
       uploadTeaTemplate(formData)
         .then((res) => {
           //closeDebug console.log("-----------模板上传---------------");
@@ -80,6 +140,8 @@ export default {
               type: "success",
               duration: 0,
             });
+            _this.form2Query.collegeId = "";
+            _this.form2Query.sectorId = "";
           } else {
             _this.$notify.error({
               title: "教师数据导入失败",

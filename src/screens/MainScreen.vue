@@ -43,6 +43,7 @@
             <template v-if="roleId !== 3 && roleId !== 6">
               <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
               <el-menu-item index="/eta/subject-review">项目审核</el-menu-item>
+              <el-menu-item index="/eta/subject-finish">项目结题</el-menu-item>
             </template>
           </el-submenu>
         </template>
@@ -239,6 +240,9 @@
                   >
                   <el-menu-item index="/eta/subject-review"
                     >项目审核</el-menu-item
+                  >
+                  <el-menu-item index="/eta/subject-finish"
+                    >项目结题</el-menu-item
                   >
                 </template>
               </el-submenu>

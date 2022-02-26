@@ -193,7 +193,7 @@ export default {
             _this.form2Query.classId = "";
           } else {
             _this.$notify.error({
-              title: this.currentClass,
+              title: "学生数据导入失败",
               message: res.msg,
               duration: 0,
             });

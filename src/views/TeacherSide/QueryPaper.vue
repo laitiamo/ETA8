@@ -19,7 +19,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="form2Query.typeId !=''">
           <el-select
             v-model="form2Query.rankId"
             placeholder="全部等级"

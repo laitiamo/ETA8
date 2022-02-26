@@ -132,6 +132,11 @@ const routes = [
         component: () => import("../views/TeacherSide/Review-Subject"),
       },
       {
+        path: "subject-finish",
+        name: "项目结题",
+        component: () => import("../views/TeacherSide/Finish-Subject"),
+      },
+      {
         path: "log",
         name: "查看日志",
         component: () => import("../views/Log"),

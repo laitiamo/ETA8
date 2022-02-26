@@ -51,6 +51,11 @@
                 v-if="scope.row[col.value] == '未结项'"
               ></i>
               <i
+                class="el-icon-question"
+                style="color: #e6a23c; margin-right: 4px"
+                v-if="scope.row[col.value] == '等待结项'"
+              ></i>
+              <i
                 class="el-icon-warning"
                 style="color: #f56c6c; margin-right: 4px"
                 v-if="scope.row[col.value] == '未通过'"
@@ -88,41 +93,61 @@
     </SubjectDetail>
     <el-dialog title="成果选择" :visible.sync="ifShowDialog" width="90%">
       <el-table :data="PaperData" style="margin-top:10px">
-        <el-table-column
-          property="PaperType"
-          label="简述"
-          width="200"
-        ></el-table-column>
-        <el-table-column
-          property="imagePath"
-          label="图片地址"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <template v-for="col in PaperColumns">
+          <el-table-column
+            v-if="col.ifShow"
+            :prop="col.value"
+            :width="col.width"
+            :label="col.name"
+            sortable="custom"
+            :key="col.value"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+        </template>
+        <el-table-column label="操作" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
-              type="danger"
-              @click="handleDel(scope.$index, scope.row)"
-              >删除</el-button
+              @click="handleSelect(scope.$index, scope.row)"
+              style="margin-right: 10px"
+              >选择</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-row type="flex" justify="center">
-      <el-button
-        v-show="ifShowDetail"
-        @click="onSelectPaper"
-        style="margin:10px"
-        >上传成果</el-button
-      >
+    <el-row :gutter="16" type="flex" class="row-bg" justify="center">
+      <el-col :span="2" :xs="6">
+        <el-button
+          v-show="ifShowDetail"
+          v-if="detailData.reviewId === 4"
+          @click="onSelectPaper"
+          style="margin:10px 20px 0 0"
+          >上传成果</el-button
+        >
+      </el-col>
+      <el-col :span="2" :xs="6">
+        <el-button
+          v-show="ifShowDetail"
+          v-if="detailData.reviewId === 4"
+          @click="handleFinish"
+          style="margin:10px 0 0 20px"
+          >申请结题</el-button
+        >
+      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { getMySubjectList, getSubjectDetail, getMyPaperList } from "../../api";
+import {
+  getMySubjectList,
+  getSubjectDetail,
+  getPaperSelectList,
+  updateSubjectPaper,
+  ApplyFinishSubject,
+} from "../../api";
 import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
@@ -157,6 +182,16 @@ export default {
         {
           name: "项目发表时间",
           value: "subjectTime",
+          width: "200",
+          ifShow: true,
+        },
+      ],
+      PaperColumns: [
+        { name: "成果类型", value: "typeName", width: "130", ifShow: true },
+        { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
+        {
+          name: "记录上传时间",
+          value: "createAt",
           width: "200",
           ifShow: true,
         },
@@ -210,14 +245,12 @@ export default {
       let _this = this;
       //参数绑定「分页大小、页码」
       let params = new URLSearchParams();
-      params.append("limit", this.pageSize);
-      params.append("page", this.currentPage);
-      params.append("typeId",this.detailData.PaperType)
-      getMyPaperList(params)
+      params.append("typeId", this.detailData.PaperTypeId);
+      getPaperSelectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人成果列表---------------");
           //closeDebug console.log(res.data);
-          (this.PaperData = res.data), (this.dataCount = res.count);
+          (_this.PaperData = res), (_this.dataCount = res.count);
         })
         .catch((failResponse) => {});
     },
@@ -253,6 +286,55 @@ export default {
         .catch((failResponse) => {});
 
       this.ifShowDetail = true;
+    },
+    handleSelect(index, row) {
+      let _this = this;
+      //closeDebug console.log("点击查看", index, row);
+      let params = new URLSearchParams();
+      params.append("SubjectId", this.detailData.id);
+      params.append("PaperId", row.id);
+      updateSubjectPaper(params)
+        .then((res) => {
+          //closeDebug console.log("-----------删除奖项---------------");
+          if (res.code === 0) {
+            _this.ifShowDialog = false;
+            _this.$message({
+              message: res.msg,
+              type: "success",
+            });
+            _this.getTableData();
+          } else {
+            _this.$message({
+              message: res.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch((failResponse) => {});
+    },
+    handleFinish(index) {
+      let _this = this;
+      //closeDebug console.log("点击查看", index, row);
+      let params = new URLSearchParams();
+      params.append("SubjectId", this.detailData.id);
+      ApplyFinishSubject(params)
+        .then((res) => {
+          //closeDebug console.log("-----------删除奖项---------------");
+          if (res.code === 0) {
+            _this.$message({
+              message: res.msg,
+              type: "success",
+            });
+            _this.goBack();
+            _this.getTableData();
+          } else {
+            _this.$message({
+              message: res.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch((failResponse) => {});
     },
     //返回重选奖项
     goBack() {

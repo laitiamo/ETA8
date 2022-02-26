@@ -77,7 +77,6 @@
           <RecordCounter
             :paperNum="teaPaperNum"
             :bookNum="teaBookNum"
-            :cultivateNum="teaCultivateNum"
             :patentNum="teaPatentNum"
             :subjectNum="teaSubjectNum"
           />
@@ -121,7 +120,6 @@ export default {
       stuProvinceNum: 0,
       stuSchoolNum: 0,
       teaSubjectNum: 0,
-      teaCultivateNum: 0,
       teaPatentNum: 0,
       teaBookNum: 0,
       teaPaperNum: 0,
@@ -173,7 +171,6 @@ export default {
             this.teaPatentNum = obj.l_patent; //教师专利数
             this.teaSubjectNum = obj.l_subject; //教师项目数
             this.teaBookNum = obj.l_book; //教师著作数
-            this.teaCultivateNum = obj.l_cultivate; //教师培训数
             this.l_number = obj.l_number; //个人奖状数
             this.l_instructor = obj.l_instructor; //辅导员所管辖班级奖项数
             this.l_unmanage = obj.l_unmanage; //未审核奖项数

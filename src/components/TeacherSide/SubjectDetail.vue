@@ -291,23 +291,6 @@
         </el-row>
       </template>
       <el-divider content-position="left"
-        ><span class="div-font">成果信息</span></el-divider
-      >
-      <el-row :gutter="20">
-        <el-col class="detail-info" :span="12" :xs="24"
-          >成果形式：{{ detailData.PaperType }}</el-col
-        >
-        <el-col class="detail-info" :span="12" :xs="24"
-          >成果名称：{{ detailData.Paper }}</el-col
-        >
-        <el-col class="detail-info" :span="12" :xs="24"
-          >成果审核状态：{{ detailData.PaperReview }}</el-col
-        >
-        <el-col class="detail-info" :span="12" :xs="24"
-          >成果审核时间：{{ detailData.PaperReviewAt }}</el-col
-        >
-      </el-row>
-      <el-divider content-position="left"
         ><span class="div-font">审核信息</span></el-divider
       >
 
@@ -324,14 +307,26 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >审核时间：{{ detailData.reviewAt }}</el-col
         >
-        <el-col
-          class="detail-info"
-          :span="16"
-          :xs="24"
-          v-if="detailData.review == '未结项'"
-          >项目成果：</el-col
-        >
       </el-row>
+      <template v-if="detailData.reviewId !== 1">
+        <el-divider content-position="left"
+          ><span class="div-font">成果信息</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果形式：{{ detailData.PaperType }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果名称：{{ detailData.Paper }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果审核状态：{{ detailData.PaperReview }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果审核时间：{{ detailData.PaperReviewAt }}</el-col
+          >
+        </el-row>
+      </template>
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24">
           <el-button type="primary" @click="onExportFile"
