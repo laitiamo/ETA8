@@ -1,56 +1,34 @@
 <template>
   <div class="review">
-    <h3 v-show="!ifShowDetail">学生奖项审核</h3>
+    <h3 v-show="!ifShowDetail">教师奖项审核</h3>
     <div v-show="!ifShowDetail">
-      <el-form
-        :inline="true"
-        class="demo-form-inline"
-        size="mini"
-        v-if="roleId !== 6"
-      >
+      <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-select
-            v-model="form2Query.gradeId"
-            placeholder="全部年级"
-            @change="QueryClass"
+            v-model="form2Query.collegeId"
+            placeholder="全部学院"
             style="width:140px"
           >
-            <el-option label="全部年级" value=""></el-option>
+            <el-option label="全部学院" value=""></el-option>
             <el-option
-              v-for="opt in gradeList"
+              v-for="opt in collegeList"
               :key="opt.id"
-              :label="opt.gradeName"
+              :label="opt.collegeName"
               :value="opt.id"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-select
-            v-model="form2Query.majorId"
-            placeholder="全部专业"
-            @change="QueryClass"
+            v-model="form2Query.sectorId"
+            placeholder="全部部门"
             style="width:160px"
           >
-            <el-option label="全部专业" value=""></el-option>
+            <el-option label="全部部门" value=""></el-option>
             <el-option
-              v-for="opt in majorList"
+              v-for="opt in sectorList"
               :key="opt.id"
-              :label="opt.majorName"
-              :value="opt.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-select
-            v-model="form2Query.classId"
-            placeholder=""
-            style="width:180px"
-          >
-            <el-option label="全部班级" value=""></el-option>
-            <el-option
-              v-for="opt in classList"
-              :key="opt.id"
-              :label="opt.className"
+              :label="opt.sectorName"
               :value="opt.id"
             ></el-option>
           </el-select>
@@ -58,7 +36,7 @@
         <el-form-item>
           <el-input
             v-model="form2Query.keyUsername"
-            placeholder="搜索学号"
+            placeholder="搜索教职工号"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -146,8 +124,8 @@
       >
       </el-pagination>
     </div>
-    <StuDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
-    </StuDetail>
+    <TeaDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
+    </TeaDetail>
     <el-row type="flex" justify="center">
       <el-button
         v-show="ifShowDetail"
@@ -169,18 +147,17 @@
 
 <script>
 import {
-  getReviewAwardList,
-  getStuDetail,
-  getClassList,
-  initReview,
+  getReviewTeacherAwardList,
+  getTeaDetail,
+  initQueryTea,
   passAward,
   notPassAward,
-} from "../api";
-import StuDetail from "../components/StuDetail.vue";
+} from "../../api";
+import TeaDetail from "../../components/TeaDetail.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Review",
-  components: { StuDetail },
+  components: { TeaDetail },
   computed: {},
   data() {
     return {
@@ -191,14 +168,15 @@ export default {
       ifShowDetail: false,
       // 数据列
       Columns: [
-        { name: "学号", value: "username", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: true },
         { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "180", ifShow: true },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: true },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "", ifShow: true },
+        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: true },
+        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
         { name: "获奖时间", value: "awardTime", width: "200", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: true },
       ],
       detailData: {},
       currentPage: 1,
@@ -209,18 +187,16 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
-        gradeId: "", //年级
-        majorId: "", //专业
-        classId: "", //班级
+        collegeId: "",
+        sectorId: "",
         keyUsername: "", //用户id
         keyName: "", //姓名
         rankId: "", //获奖等级
         keyAwardName: "", //奖项名
       },
       //下拉栏内容列表
-      gradeList: [],
-      majorList: [],
-      classList: [],
+      collegeList: [],
+      sectorList: [],
       rankList: [],
     };
   },
@@ -232,47 +208,31 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
       this.Columns = [
-        { name: "学号", value: "username", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "班级", value: "className", width: "200", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "120", ifShow: false },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
         { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "奖项名称", value: "awardName", width: "", ifShow: true },
         { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initReview()
+      initQueryTea()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.gradeList = obj.grade;
-          this.majorList = obj.major;
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
           this.rankList = obj.rank;
         })
         .catch((failResponse) => {});
       this.ifButtonTrue = false;
-    },
-    //更新可供筛选的班级列表
-    QueryClass() {
-      let _this = this;
-      _this.form2Query.classId = "";
-      //closeDebug console.log("选中的筛选值","年级：",this.form2Query.gradeId,"专业",this.form2Query.majorId,"班级",this.form2Query.classId);
-      let params = new URLSearchParams();
-      params.append("gradeId", this.form2Query.gradeId);
-      params.append("majorId", this.form2Query.majorId);
-      getClassList(params)
-        .then((res) => {
-          //closeDebug console.log("-----------获取班级列表---------------");
-          //closeDebug console.log(res);
-          _this.classList = res;
-        })
-        .catch((failResponse) => {});
     },
     //数据格式化(还没用到)
     formatter(row, column) {
@@ -297,7 +257,7 @@ export default {
       params.append("id", row.id);
       this.reviewId = row.id;
       //console.log(this.reviewId, this.reviewer);
-      getStuDetail(params)
+      getTeaDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人奖项详情---------------");
           let obj = JSON.parse(res.msg);
@@ -375,16 +335,15 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("gradeId", this.form2Query.gradeId); //年级
-      params.append("majorId", this.form2Query.majorId); //专业
-      params.append("classId", this.form2Query.classId); //班级
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
       params.append("order", this.orderMode); //奖项名
       params.append("field", this.orderField); //奖项名
-      getReviewAwardList(params)
+      getReviewTeacherAwardList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

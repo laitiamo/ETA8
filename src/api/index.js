@@ -134,6 +134,16 @@ export const getPaperSelectList = (params) =>
   get(`eta8/mine/listPerPaper`, params);
 
 /**
+ * 获取项目已绑定的成果列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getSubjectPaperList = (params) => get(`eta8/detail-subject/paperlist`, params);
+
+/**
  * 获取个人项目列表（GET）
  * 需传入的参数
  * limit：每页的记录条数
@@ -184,13 +194,15 @@ export const getSubjectDetail = (params) => get(`eta8/detail-subject`, params);
  * 更新项目成果列表
  * @returns
  */
-export const updateSubjectPaper = (params) => get(`eta8/subject/updatePaper`, params);
+export const updateSubjectPaper = (params) =>
+  get(`eta8/subject/updatePaper`, params);
 
 /**
  * 申请结题
  * @returns
  */
- export const ApplyFinishSubject = (params) => get(`eta8/subject/applyFinish`, params);
+export const ApplyFinishSubject = (params) =>
+  get(`eta8/subject/applyFinish`, params);
 
 /**
  * 导出教师项目文件（GET）
@@ -743,6 +755,23 @@ export const initRecordReview = () => get(`eta8/record-review`);
  * @returns
  */
 export const getReviewAwardList = (params) => get(`eta8/review/list`, params);
+
+/**
+ * 获取未审核的教师奖项列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * collegeId: 年级id（可选）
+ * sectorId: 部门id（可选）
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 教职工号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getReviewTeacherAwardList = (params) =>
+  get(`eta8/review/listTea`, params);
 
 /**
  * 获取未审核的成果列表（GET）

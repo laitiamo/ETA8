@@ -3,6 +3,36 @@
     <h3>教师管理</h3>
     <el-form :inline="true" class="demo-form-inline" size="mini">
       <el-form-item>
+        <el-select
+          v-model="form2Query.collegeId"
+          placeholder="全部学院"
+          style="width:140px"
+        >
+          <el-option label="全部学院" value=""></el-option>
+          <el-option
+            v-for="opt in collegeList"
+            :key="opt.id"
+            :label="opt.collegeName"
+            :value="opt.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select
+          v-model="form2Query.sectorId"
+          placeholder="全部部门"
+          style="width:160px"
+        >
+          <el-option label="全部部门" value=""></el-option>
+          <el-option
+            v-for="opt in sectorList"
+            :key="opt.id"
+            :label="opt.sectorName"
+            :value="opt.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-input
           v-model="form2Query.keyUsername"
           placeholder="搜索教职工号"
@@ -224,6 +254,8 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
+        collegeId: "",
+        sectorId: "",
         keyUsername: "", //教职工
         keyName: "", //姓名
       },
@@ -234,6 +266,8 @@ export default {
         classId: "",
       },
       //下拉栏内容列表
+      collegeList: [],
+      sectorList: [],
       gradeList: [],
       majorList: [],
       classList: [],
@@ -257,6 +291,7 @@ export default {
         { name: "性别", value: "genderName", width: "80", ifShow: false },
         { name: "角色", value: "roleName", width: "auto", ifShow: true },
         { name: "学院", value: "collegeName", width: "120", ifShow: false },
+        { name: "部门", value: "sectorName", width: "120", ifShow: false },
       ];
     }
   },
@@ -271,6 +306,8 @@ export default {
           this.gradeList = obj.grade;
           this.majorList = obj.major;
           this.roleList = obj.role;
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
         })
         .catch((failResponse) => {});
     },
@@ -434,6 +471,8 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("order", this.orderMode); //排序方式

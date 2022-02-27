@@ -21,10 +21,10 @@
       <el-form-item>
         <el-select
           v-model="form2Query.collegeId"
-          placeholder="全部二级学院"
+          placeholder="全部学院"
           style="width:140px"
         >
-          <el-option label="全部二级学院" value=""></el-option>
+          <el-option label="全部学院" value=""></el-option>
           <el-option
             v-for="opt in collegeList"
             :key="opt.id"

@@ -19,6 +19,8 @@
         <el-col class="detail-info" :span="12" :xs="24">教职工号：{{detailData.username}}</el-col>
         <el-col class="detail-info" :span="12" :xs="24">姓名：{{detailData.name}}</el-col>
         <el-col class="detail-info" :span="12" :xs="24">性别：{{detailData.gender}}</el-col>
+        <el-col class="detail-info" :span="12" :xs="24">部门：{{detailData.sector}}</el-col>
+        <el-col class="detail-info" :span="12" :xs="24">学院：{{detailData.college}}</el-col>
       </el-row>
       <el-divider content-position="left"><span class="div-font">奖项信息</span></el-divider>
       <el-row :gutter="20">

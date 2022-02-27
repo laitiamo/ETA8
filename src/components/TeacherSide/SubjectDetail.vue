@@ -308,50 +308,110 @@
           >审核时间：{{ detailData.reviewAt }}</el-col
         >
       </el-row>
-      <template v-if="detailData.reviewId !== 1">
-        <el-divider content-position="left"
-          ><span class="div-font">成果信息</span></el-divider
-        >
-        <el-row :gutter="20">
-          <el-col class="detail-info" :span="12" :xs="24"
-            >成果形式：{{ detailData.PaperType }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >成果名称：{{ detailData.Paper }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >成果审核状态：{{ detailData.PaperReview }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >成果审核时间：{{ detailData.PaperReviewAt }}</el-col
-          >
-        </el-row>
-      </template>
+      <el-dialog title="已上传成果" :visible.sync="ifShowDialog" width="90%">
+        <el-table :data="PaperList" style="margin-top:10px">
+          <template v-for="col in PaperColumns">
+            <el-table-column
+              v-if="col.ifShow"
+              :prop="col.value"
+              :width="col.width"
+              :label="col.name"
+              sortable="custom"
+              :key="col.value"
+              show-overflow-tooltip
+            >
+            </el-table-column>
+          </template>
+          <!-- <el-table-column label="操作" width="80" fixed="right" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleSelect(scope.$index, scope.row)"
+                style="margin-right: 10px"
+                >选择</el-button
+              >
+            </template>
+          </el-table-column> -->
+        </el-table>
+      </el-dialog>
+      <el-divider content-position="left"
+        ><span class="div-font">拓展信息</span></el-divider
+      >
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24">
           <el-button type="primary" @click="onExportFile" :loading="loading"
             >导出附件</el-button
           ></el-col
         >
+        <el-col class="detail-info" :span="12" :xs="24">
+          <el-button
+            type="primary"
+            @click="onSelectPaper"
+            v-if="detailData.reviewId !== 1"
+            >查看成果</el-button
+          >
+        </el-col>
       </el-row>
     </el-card>
   </div>
 </template>
 
 <script>
-import { exportTeaSubjectPDF } from "../../api";
+import { getSubjectPaperList, exportTeaSubjectPDF } from "../../api";
 export default {
   name: "SubjectDetail",
-  data(){
-    return{
-      loading:false,
-    }
+  data() {
+    return {
+      loading: false,
+      PaperList: [{}],
+      ifShowDialog: false,
+      PaperColumns: [
+        {
+          name: "成果类型",
+          value: "PaperTypeName",
+          width: "130",
+          ifShow: true,
+        },
+        { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
+        { name: "成果单位", value: "paperPlace", width: "auto", ifShow: true },
+        {
+          name: "记录上传时间",
+          value: "PaperCreateAt",
+          width: "200",
+          ifShow: true,
+        },
+        {
+          name: "记录审核时间",
+          value: "PaperReviewAt",
+          width: "200",
+          ifShow: true,
+        },
+      ],
+    };
   },
   props: {
     detailData: {},
     goback: { type: Function },
   },
   methods: {
+    //展示成果页
+    onSelectPaper() {
+      this.ifShowDialog = true;
+      this.getPaperList();
+    },
+    getPaperList() {
+      let _this = this;
+      //参数绑定「分页大小、页码」
+      let params = new URLSearchParams();
+      params.append("id", this.detailData.id);
+      getSubjectPaperList(params)
+        .then((res) => {
+          //closeDebug console.log("-----------获取个人成果列表---------------");
+          //closeDebug console.log(res.data);
+          (_this.PaperList = res), (_this.dataCount = res.count);
+        })
+        .catch((failResponse) => {});
+    },
     //处理导出附件
     onExportFile() {
       //closeDebug console.log("export XLS:", this.form2Query);

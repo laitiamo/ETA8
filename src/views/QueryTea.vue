@@ -4,6 +4,36 @@
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
+          <el-select
+            v-model="form2Query.collegeId"
+            placeholder="全部学院"
+            style="width:140px"
+          >
+            <el-option label="全部学院" value=""></el-option>
+            <el-option
+              v-for="opt in collegeList"
+              :key="opt.id"
+              :label="opt.collegeName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.sectorId"
+            placeholder="全部部门"
+            style="width:160px"
+          >
+            <el-option label="全部部门" value=""></el-option>
+            <el-option
+              v-for="opt in sectorList"
+              :key="opt.id"
+              :label="opt.sectorName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-input
             v-model="form2Query.keyUsername"
             placeholder="搜索教职工号"
@@ -179,6 +209,8 @@ export default {
       Columns: [
         { name: "教职工号", value: "username", width: "120", ifShow: true },
         { name: "姓名", value: "name", width: "80", ifShow: true },
+        { name: "学院名称", value: "collegeName", width: "120", ifShow: true },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: true },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
         { name: "获奖名次", value: "awardPlace", width: "120", ifShow: true },
         { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
@@ -194,12 +226,16 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
+        collegeId: "",
+        sectorId: "",
         keyUsername: "", //用户id
         keyName: "", //姓名
         rankId: "", //获奖等级
         keyAwardName: "", //奖项名
       },
       //下拉栏内容列表
+      collegeList: [],
+      sectorList: [],
       rankList: [],
     };
   },
@@ -220,6 +256,8 @@ export default {
       this.Columns = [
         { name: "教职工号", value: "username", width: "120", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
+        { name: "学院名称", value: "collegeName", width: "120", ifShow: false },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
         { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
         { name: "奖项名称", value: "awardName", width: "", ifShow: true },
@@ -235,6 +273,8 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
           this.rankList = obj.rank;
         })
         .catch((failResponse) => {});
@@ -333,6 +373,8 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级
@@ -366,6 +408,8 @@ export default {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级
@@ -395,6 +439,8 @@ export default {
       //closeDebug console.log("export ZIP:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级

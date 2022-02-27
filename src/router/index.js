@@ -122,6 +122,11 @@ const routes = [
         component: () => import("../views/Review"),
       },
       {
+        path: "review-tea",
+        name: "教师奖项审核",
+        component: () => import("../views/TeacherSide/Review-Teacher"),
+      },
+      {
         path: "record-review",
         name: "成果审核",
         component: () => import("../views/TeacherSide/Review-Record"),

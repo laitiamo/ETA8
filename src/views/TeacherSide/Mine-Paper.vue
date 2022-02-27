@@ -103,8 +103,8 @@ export default {
         { name: "审核状态", value: "reviewName", width: "130", ifShow: true },
         { name: "成果名称", value: "paperName", width: "200", ifShow: true },
         { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
+        { name: "成果类型", value: "typeName", width: "120", ifShow: true },
         { name: "期刊等级", value: "rankName", width: "120", ifShow: true },
-
         {
           name: "成果上传时间",
           value: "createAt",
@@ -138,6 +138,7 @@ export default {
         { name: "状态", value: "reviewName", width: "85", ifShow: true },
         { name: "名称", value: "paperName", width: "auto", ifShow: true },
         { name: "期刊", value: "paperPlace", width: "200", ifShow: false },
+        { name: "类型", value: "typeName", width: "120", ifShow: false },
         { name: "等级", value: "rankName", width: "120", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
       ];

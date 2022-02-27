@@ -4,7 +4,7 @@
       <el-step title="项目申报"></el-step>
       <el-step title="参与者选择"></el-step>
       <el-step title="项目信息"></el-step>
-      <el-step title="合作信息"></el-step>
+      <el-step title="拓展信息"></el-step>
     </el-steps>
     <template v-if="active == 0">
       <el-divider></el-divider>
@@ -232,7 +232,7 @@
         <h4>预计经费</h4>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="资料费" prop="DocumentFund">
+            <el-form-item label="资料费（万）" prop="DocumentFund">
               <el-input
                 type="text"
                 v-model="FormData.DocumentFund"
@@ -242,7 +242,7 @@
             </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="资料费" prop="DataFund">
+            <el-form-item label="数据采集费（万）" prop="DataFund">
               <el-input
                 type="text"
                 v-model="FormData.DataFund"
@@ -252,7 +252,7 @@
             </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="差旅费" prop="OutboundFund">
+            <el-form-item label="差旅费（万）" prop="OutboundFund">
               <el-input
                 type="text"
                 v-model="FormData.OutboundFund"
@@ -262,7 +262,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="会议费" prop="MeetingFund"
+            <el-form-item label="会议费（万）" prop="MeetingFund"
               ><el-input
                 type="text"
                 v-model="FormData.MeetingFund"
@@ -272,7 +272,9 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="国际合作与交流" prop="InternationalFund"
+            <el-form-item
+              label="国际合作与交流费（万）"
+              prop="InternationalFund"
               ><el-input
                 type="text"
                 v-model="FormData.InternationalFund"
@@ -282,7 +284,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="设备购置费" prop="HardwareFund">
+            <el-form-item label="设备购置费（万）" prop="HardwareFund">
               <el-input
                 type="text"
                 v-model="FormData.HardwareFund"
@@ -292,7 +294,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="专家咨询费" prop="ConsultFund">
+            <el-form-item label="专家咨询费（万）" prop="ConsultFund">
               <el-input
                 type="text"
                 v-model="FormData.ConsultFund"
@@ -302,7 +304,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="劳务费" prop="LaborFund"
+            <el-form-item label="劳务费（万）" prop="LaborFund"
               ><el-input
                 type="text"
                 v-model="FormData.LaborFund"
@@ -312,7 +314,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="印刷费" prop="MaterialFund">
+            <el-form-item label="印刷费（万）" prop="MaterialFund">
               <el-input
                 type="text"
                 v-model="FormData.MaterialFund"
@@ -322,7 +324,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="管理费" prop="PatentFund">
+            <el-form-item label="管理费（万）" prop="PatentFund">
               <el-input
                 type="text"
                 v-model="FormData.PatentFund"
@@ -495,35 +497,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-button
-            style="margin-top: 12px;"
-            @click="next('FormData')"
-            v-if="active == 2"
-            >下一步</el-button
-          >
-        </el-row>
-      </el-form>
-    </template>
 
-    <template v-if="active == 3">
-      <el-divider></el-divider>
-      <el-row :gutter="20">
-        <el-button
-          style="margin-top: 12px;"
-          @click="back('FormData')"
-          v-if="active == 3"
-          >上一步</el-button
-        >
-      </el-row>
-      <el-form
-        :model="FormData"
-        :rules="rules"
-        label-position="top"
-        ref="FormData"
-        size="medium"
-        class="demo-FormData"
-      >
+        <el-divider></el-divider>
         <h3>教育部统计信息</h3>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -638,7 +613,34 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-button
+            style="margin-top: 12px;"
+            @click="next('FormData')"
+            v-if="active == 2"
+            >下一步</el-button
+          >
+        </el-row>
+      </el-form>
+    </template>
 
+    <template v-if="active == 3">
+      <el-row :gutter="20">
+        <el-button
+          style="margin-top: 12px;"
+          @click="back('FormData')"
+          v-if="active == 3"
+          >上一步</el-button
+        >
+      </el-row>
+      <el-form
+        :model="FormData"
+        :rules="rules"
+        label-position="top"
+        ref="FormData"
+        size="medium"
+        class="demo-FormData"
+      >
         <el-divider></el-divider>
         <h3>合作单位</h3>
         <el-row :gutter="20">
@@ -749,35 +751,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-button
-            style="margin-top: 12px;"
-            @click="next('FormData')"
-            v-if="active == 3"
-            >下一步</el-button
-          >
-        </el-row>
-      </el-form>
-    </template>
 
-    <template v-if="active == 4">
-      <el-divider></el-divider>
-      <el-row :gutter="20">
-        <el-button
-          style="margin-top: 12px;"
-          @click="back('FormData')"
-          v-if="active == 4"
-          >上一步</el-button
-        >
-      </el-row>
-      <el-form
-        :model="FormData"
-        :rules="rules"
-        label-position="top"
-        ref="FormData"
-        size="medium"
-        class="demo-FormData"
-      >
+        <el-divider></el-divider>
         <h4>技术市场信息</h4>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -1130,27 +1105,31 @@ export default {
         ],
         DocumentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
+        ],
+        DataFund: [
+          { required: false, message: "请输入项目经费", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         LaborFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         MaterialFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         HardwareFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         OutboundFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         PatentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
 
         //项目描述
@@ -1225,7 +1204,7 @@ export default {
         ],
         MainProjectName: [
           { required: false, message: "请输入主项目名称", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
+          { message: "长度在 3 位数以上", trigger: "blur" },
         ],
         ApplicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
@@ -1276,7 +1255,7 @@ export default {
         ],
         ContractFund: [
           { required: true, message: "请输入合同经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         CooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },

@@ -34,6 +34,9 @@
         >
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
+            >成果类型：{{ detailData.type }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
             >期卷号：{{ detailData.num }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
@@ -41,9 +44,6 @@
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >论文作者：{{ detailData.writer }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >论文类型：{{ detailData.type }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >论文级别：{{ detailData.rank }}</el-col
@@ -61,6 +61,9 @@
           ><span class="div-font">论文信息</span></el-divider
         >
         <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果类型：{{ detailData.type }}</el-col
+          >
           <el-col class="detail-info" :span="12" :xs="24"
             >著作号：{{ detailData.num }}</el-col
           >
@@ -86,6 +89,9 @@
           ><span class="div-font">专利信息</span></el-divider
         >
         <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >成果类型：{{ detailData.type }}</el-col
+          >
           <el-col class="detail-info" :span="12" :xs="24"
             >专利号：{{ detailData.num }}</el-col
           >
