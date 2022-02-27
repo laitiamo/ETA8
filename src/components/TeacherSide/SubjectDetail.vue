@@ -322,11 +322,17 @@
             >
             </el-table-column>
           </template>
-          <el-table-column label="操作" width="80" fixed="right" align="center">
+          <el-table-column
+            label="操作"
+            width="80"
+            fixed="right"
+            align="center"
+            v-if="detailData.reviewId !== 5 && detailData.reviewId !== 6"
+          >
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleSelect(scope.$index, scope.row)"
+                @click="handleDelete(scope.$index, scope.row)"
                 style="margin-right: 10px"
                 >解绑</el-button
               >
@@ -357,7 +363,11 @@
 </template>
 
 <script>
-import { getSubjectPaperList, exportTeaSubjectPDF } from "../../api";
+import {
+  getSubjectPaperList,
+  deleteSubjectPaper,
+  exportTeaSubjectPDF,
+} from "../../api";
 export default {
   name: "SubjectDetail",
   data() {
@@ -398,6 +408,28 @@ export default {
     onSelectPaper() {
       this.ifShowDialog = true;
       this.getPaperList();
+    },
+    handleDelete(index, row) {
+      let _this = this;
+      let params = new URLSearchParams();
+      params.append("SubjectId", this.detailData.id);
+      params.append("PaperId", row.PaperId);
+      deleteSubjectPaper(params)
+        .then((res) => {
+          if (res.code === 0) {
+            _this.$message({
+              message: res.msg,
+              type: "success",
+            });
+            _this.getPaperList();
+          } else {
+            _this.$message({
+              message: res.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch((failResponse) => {});
     },
     getPaperList() {
       let _this = this;

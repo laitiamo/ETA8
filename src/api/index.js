@@ -192,11 +192,18 @@ export const getPaperDetail = (params) => get(`eta8/detail-paper`, params);
 export const getSubjectDetail = (params) => get(`eta8/detail-subject`, params);
 
 /**
- * 更新项目成果列表
+ * 更新项目成果列表（增加）
  * @returns
  */
 export const updateSubjectPaper = (params) =>
   get(`eta8/detail-subject/updatePaper`, params);
+
+/**
+ * 更新项目成果列表（删除）
+ * @returns
+ */
+export const deleteSubjectPaper = (params) =>
+  get(`eta8/detail-subject/deletePaper`, params);
 
 /**
  * 申请结题
