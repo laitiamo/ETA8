@@ -322,16 +322,16 @@
             >
             </el-table-column>
           </template>
-          <!-- <el-table-column label="操作" width="80" fixed="right" align="center">
+          <el-table-column label="操作" width="80" fixed="right" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 @click="handleSelect(scope.$index, scope.row)"
                 style="margin-right: 10px"
-                >选择</el-button
+                >解绑</el-button
               >
             </template>
-          </el-table-column> -->
+          </el-table-column>
         </el-table>
       </el-dialog>
       <el-divider content-position="left"

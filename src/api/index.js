@@ -141,7 +141,8 @@ export const getPaperSelectList = (params) =>
  * @param {URLSearchParams} params
  * @returns
  */
-export const getSubjectPaperList = (params) => get(`eta8/detail-subject/paperlist`, params);
+export const getSubjectPaperList = (params) =>
+  get(`eta8/detail-subject/paperlist`, params);
 
 /**
  * 获取个人项目列表（GET）
@@ -195,14 +196,14 @@ export const getSubjectDetail = (params) => get(`eta8/detail-subject`, params);
  * @returns
  */
 export const updateSubjectPaper = (params) =>
-  get(`eta8/subject/updatePaper`, params);
+  get(`eta8/detail-subject/updatePaper`, params);
 
 /**
  * 申请结题
  * @returns
  */
 export const ApplyFinishSubject = (params) =>
-  get(`eta8/subject/applyFinish`, params);
+  get(`eta8/detail-subject/applyFinish`, params);
 
 /**
  * 导出教师项目文件（GET）
