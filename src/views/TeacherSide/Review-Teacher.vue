@@ -168,7 +168,7 @@ export default {
       ifShowDetail: false,
       // 数据列
       Columns: [
-        { name: "教职工号", value: "username", width: "120", ifShow: true },
+        { name: "教职工号", value: "username", width: "120", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
         { name: "学院名称", value: "collegeName", width: "180", ifShow: true },
         { name: "部门名称", value: "sectorName", width: "120", ifShow: true },

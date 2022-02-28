@@ -235,7 +235,7 @@
         <h3>项目经费</h3>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="项目获批经费" prop="SubjectFund">
+            <el-form-item label="项目获批经费（万）" prop="SubjectFund">
               <el-input
                 type="text"
                 v-model="FormData.SubjectFund"
@@ -249,7 +249,7 @@
         <h4>预计经费</h4>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="办公、图文制作、邮费" prop="DocumentFund">
+            <el-form-item label="办公、图文制作、邮费（万）" prop="DocumentFund">
               <el-input
                 type="text"
                 v-model="FormData.DocumentFund"
@@ -259,7 +259,7 @@
             </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="学生劳务费" prop="LaborFund"
+            <el-form-item label="学生劳务费（万）" prop="LaborFund"
               ><el-input
                 type="text"
                 v-model="FormData.LaborFund"
@@ -269,7 +269,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="材料、测试加工、维修费" prop="MaterialFund">
+            <el-form-item label="材料、测试加工、维修费（万）" prop="MaterialFund">
               <el-input
                 type="text"
                 v-model="FormData.MaterialFund"
@@ -279,7 +279,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="设备购置" prop="HardwareFund">
+            <el-form-item label="设备购置（万）" prop="HardwareFund">
               <el-input
                 type="text"
                 v-model="FormData.HardwareFund"
@@ -289,7 +289,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="差旅、会议、国际合作交流" prop="OutboundFund">
+            <el-form-item label="差旅、会议、国际合作交流（万）" prop="OutboundFund">
               <el-input
                 type="text"
                 v-model="FormData.OutboundFund"
@@ -299,7 +299,7 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="资料费、版面费、知识产权等" prop="PatentFund">
+            <el-form-item label="资料费、版面费、知识产权等（万）" prop="PatentFund">
               <el-input
                 type="text"
                 v-model="FormData.PatentFund"
@@ -788,27 +788,27 @@ export default {
         ],
         DocumentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
         LaborFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
         MaterialFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
         HardwareFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
         OutboundFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
         PatentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          { max: 3, message: "金额最高 3 位数", trigger: "blur" },
         ],
 
         RankId: [

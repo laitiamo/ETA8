@@ -34,7 +34,7 @@
           >项目类型：{{ detailData.rank }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >项目经费：{{ detailData.fund }}</el-col
+          >项目批准经费（万）：{{ detailData.fund }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
           >项目级别：{{ detailData.level }}</el-col
@@ -45,6 +45,29 @@
       </el-row>
 
       <template v-if="detailData.levelId == 3">
+        <el-divider content-position="left"
+          ><span class="div-font">预计经费</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >办公、图文制作、邮费（万）：{{ detailData.DocumentFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >学生劳务费（万）：{{ detailData.LaborFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >材料、测试加工、维修费（万）：{{ detailData.MaterialFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >设备购置（万）：{{ detailData.HardwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >差旅、会议、国际合作交流（万）：{{ detailData.OutboundFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >资料费、版面费、知识产权等（万）：{{ detailData.PatentFund }}</el-col
+          >
+        </el-row>
         <el-divider content-position="left"
           ><span class="div-font">校级项目</span></el-divider
         >
@@ -67,10 +90,25 @@
         </el-row>
       </template>
       <template v-if="detailData.levelId == 2">
+        <el-divider content-position="left"
+          ><span class="div-font">预计经费</span></el-divider
+        >
         <el-row :gutter="20">
-          <el-divider content-position="left"
-            ><span class="div-font">项目描述</span>
-          </el-divider>
+          <el-col class="detail-info" :span="12" :xs="24"
+            >软件经费（万）：{{ detailData.SoftwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >设备经费（万）：{{ detailData.HardwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >外协经费（万）：{{ detailData.OutboundFund }}</el-col
+          >
+        </el-row>
+
+        <el-divider content-position="left"
+          ><span class="div-font">项目描述</span>
+        </el-divider>
+        <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
             >项目简介：{{ detailData.Introduction }}</el-col
           >
@@ -133,6 +171,73 @@
           >
         </el-row>
         <el-divider content-position="left"
+          ><span class="div-font">合作经费</span></el-divider
+        ><el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            合同金额（万）：{{ detailData.ContractFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            课题组/校内人员费（万）：{{ detailData.ResearchFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            劳务费（万）：{{ detailData.ServiceFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            其他支出（万）：{{ detailData.OtherFund }}
+          </el-col>
+        </el-row>
+        <el-divider content-position="left"
+          ><span class="div-font">买方信息</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方名称：{{ detailData.BuyerName }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方性质：{{ detailData.BuyerType }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方邮编：{{ detailData.BuyerPostCode }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方联系人：{{ detailData.BuyerContact }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方联系方式：{{ detailData.BuyerTel }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            法定代表人：{{ detailData.BuyerLegalPerson }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            法人代码：{{ detailData.BuyerLegalEntityCode }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            电子邮件：{{ detailData.BuyerEmail }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            注册地址：{{ detailData.BuyerRegisteredAddress }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            通信地址：{{ detailData.BuyerMailingAddress }}
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            买方国家：{{ detailData.BuyerCountry }}
+          </el-col>
+          <template v-if="detailData.BuyerCountry == 13">
+            <el-col class="detail-info" :span="12" :xs="24">
+              买方省份：{{ detailData.BuyerProvince }}
+            </el-col>
+            <el-col class="detail-info" :span="12" :xs="24">
+              买方地市：{{ detailData.BuyerCity }}
+            </el-col>
+            <el-col class="detail-info" :span="12" :xs="24">
+              买方县区：{{ detailData.BuyerCounty }}
+            </el-col>
+          </template>
+        </el-row>
+        <el-divider content-position="left"
           ><span class="div-font">技术市场信息</span></el-divider
         >
         <el-row :gutter="20">
@@ -157,11 +262,46 @@
         </el-row>
       </template>
       <template v-if="detailData.levelId == 1">
-        <!-- <el-divider> -->
+        <el-divider content-position="left"
+          ><span class="div-font">预计经费</span></el-divider
+        >
         <el-row :gutter="20">
-          <el-divider content-position="left"
-            ><span class="div-font">项目描述</span></el-divider
+          <el-col class="detail-info" :span="12" :xs="24"
+            >资料费（万）：{{ detailData.DocumentFund }}</el-col
           >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >数据采集费（万）：{{ detailData.DataFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >差旅费（万）：{{ detailData.OutboundFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >会议费（万）：{{ detailData.MeetingFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >国际合作与交流费（万）：{{ detailData.InternationalFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >设备购置费（万）：{{ detailData.HardwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >专家咨询费（万）：{{ detailData.ConsultFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >劳务费（万）：{{ detailData.LaborFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >印刷费（万）：{{ detailData.MaterialFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >管理费（万）：{{ detailData.PatentFund }}</el-col
+          >
+        </el-row>
+
+        <el-divider content-position="left"
+          ><span class="div-font">项目描述</span></el-divider
+        >
+        <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
             >研究类别：{{ detailData.ResearchName }}</el-col
           >

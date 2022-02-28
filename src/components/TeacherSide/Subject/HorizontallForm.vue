@@ -4,7 +4,7 @@
       <el-step title="项目申报"></el-step>
       <el-step title="参与者选择"></el-step>
       <el-step title="项目信息"></el-step>
-      <el-step title="合作信息"></el-step>
+      <el-step title="拓展信息"></el-step>
     </el-steps>
     <template v-if="active == 0">
       <el-divider></el-divider>
@@ -215,7 +215,7 @@
         class="demo-FormData"
       >
         <h3>项目经费</h3>
-        <el-form-item label="项目申请经费" prop="SubjectFund">
+        <el-form-item label="项目申请经费（万）" prop="SubjectFund">
           <el-input
             type="text"
             v-model="FormData.SubjectFund"
@@ -223,7 +223,7 @@
             placeholder="请输入项目申请经费"
           ></el-input>
         </el-form-item>
-        <el-form-item label="项目软件经费" prop="SoftwareFund">
+        <el-form-item label="项目软件经费（万）" prop="SoftwareFund">
           <el-input
             type="text"
             v-model="FormData.SoftwareFund"
@@ -231,7 +231,7 @@
             placeholder="请输入项目软件经费"
           ></el-input
         ></el-form-item>
-        <el-form-item label="项目设备经费" prop="HardwareFund"
+        <el-form-item label="项目设备经费（万）" prop="HardwareFund"
           ><el-input
             type="text"
             v-model="FormData.HardwareFund"
@@ -239,7 +239,7 @@
             placeholder="请输入项目设备经费"
           ></el-input
         ></el-form-item>
-        <el-form-item label="外协经费" prop="OutboundFund">
+        <el-form-item label="外协经费（万）" prop="OutboundFund">
           <el-input
             type="text"
             v-model="FormData.OutboundFund"
@@ -467,28 +467,28 @@
         </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="合同金额" prop="ContractFund">
+            <el-form-item label="合同金额（万）" prop="ContractFund">
               <el-input
                 v-model="FormData.ContractFund"
                 placeholder="请输入合同金额"
               ></el-input>
             </el-form-item> </el-col
           ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="课题组/校内人员费" prop="ResearchFund">
+            <el-form-item label="课题组/校内人员费（万）" prop="ResearchFund">
               <el-input
                 type="text"
                 v-model="FormData.ResearchFund"
                 placeholder="请输入课题组/校内人员费"
               ></el-input> </el-form-item></el-col
           ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="劳务费（学生/临聘）" prop="ServiceFund">
+            <el-form-item label="劳务费（学生/临聘） （万）" prop="ServiceFund">
               <el-input
                 type="text"
                 v-model="FormData.ServiceFund"
                 placeholder="请输入劳务费（学生/临聘）"
               ></el-input></el-form-item></el-col
           ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="其他支出" prop="OtherFund"
+            <el-form-item label="其他支出（万）" prop="OtherFund"
               ><el-input
                 type="text"
                 v-model="FormData.OtherFund"
@@ -496,7 +496,7 @@
               ></el-input></el-form-item></el-col
           ><el-col class="subject-info" :span="12" :xs="24">
             <el-form-item
-              label="合同预算经费（元）（自动计算）"
+              label="合同预算经费（万）（自动计算）"
               prop="Contract"
             >
               <el-input
@@ -724,7 +724,7 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="联系人" prop="BuyerContact">
+            <el-form-item label="买方联系人" prop="BuyerContact">
               <el-input
                 v-model="FormData.BuyerContact"
                 placeholder="请输入买方联系人"
@@ -732,10 +732,10 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="联系人手机" prop="BuyerTel">
+            <el-form-item label="买方联系方式" prop="BuyerTel">
               <el-input
                 v-model="FormData.BuyerTel"
-                placeholder="请输入买方联系人手机"
+                placeholder="请输入买方联系方式"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -1064,7 +1064,6 @@ export default {
 
         //合作单位
         CooperateId: "",
-
         FundNum: "",
         ContractName: "",
         ContractId: "",
@@ -1138,19 +1137,35 @@ export default {
         //项目经费
         SubjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         HardwareFund: [
           { required: false, message: "请输入项目设备经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         OutboundFund: [
           { required: false, message: "请输入外协经费", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
 
         //项目描述
@@ -1230,13 +1245,25 @@ export default {
             trigger: "blur",
           },
         ],
+        ContractFund: [
+          { required: true, message: "请输入合同金额", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
+        ],
         ResearchFund: [
           {
-            required: true,
+            required: false,
             message: "请输入课题组/校内人员费",
             trigger: "blur",
           },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         ServiceFund: [
           {
@@ -1244,11 +1271,19 @@ export default {
             message: "请输入劳务费（学生/临聘）",
             trigger: "blur",
           },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         OtherFund: [
           { required: false, message: "请输入其他支出", trigger: "blur" },
-          { min: 3, max: 6, message: "金额在 3 到 6 位数", trigger: "blur" },
+          {
+            max: 3,
+            message: "金额最高 3 位数",
+            trigger: "blur",
+          },
         ],
         BankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
@@ -1286,15 +1321,6 @@ export default {
           {
             min: 2,
             message: "至少输入 2 个字符",
-            trigger: "blur",
-          },
-        ],
-        ContractFund: [
-          { required: true, message: "请输入合同金额", trigger: "blur" },
-          {
-            min: 2,
-            max: 8,
-            message: "金额在 2 到 8 位数",
             trigger: "blur",
           },
         ],
@@ -1466,10 +1492,11 @@ export default {
     },
     Contract: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.ResearchFund) || 0;
-      let sum2 = parseFloat(this.FormData.ServiceFund) || 0;
-      let sum3 = parseFloat(this.FormData.OtherFund) || 0;
-      sum = sum1 + sum2 + sum3;
+      let sum1 = parseFloat(this.FormData.ContractFund) || 0;
+      let sum2 = parseFloat(this.FormData.ResearchFund) || 0;
+      let sum3 = parseFloat(this.FormData.ServiceFund) || 0;
+      let sum4 = parseFloat(this.FormData.OtherFund) || 0;
+      sum = sum1 + sum2 + sum3 + sum4;
       return sum || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
@@ -1711,6 +1738,7 @@ export default {
           data2upload.append("BuyerName", this.FormData.BuyerName);
           data2upload.append("BuyerType", this.FormData.BuyerType);
           data2upload.append("BuyerProvince", this.FormData.BuyerProvince);
+          data2upload.append("BuyerCountry", this.FormData.BuyerCountry);
           data2upload.append("BuyerCity", this.FormData.BuyerCity);
           data2upload.append("BuyerCounty", this.FormData.BuyerCounty);
           data2upload.append("BuyerPostCode", this.FormData.BuyerPostCode);

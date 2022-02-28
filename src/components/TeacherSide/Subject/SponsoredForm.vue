@@ -218,7 +218,7 @@
         <h3>项目经费</h3>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="项目获批经费" prop="SubjectFund">
+            <el-form-item label="项目获批经费（万）" prop="SubjectFund">
               <el-input
                 type="text"
                 v-model="FormData.SubjectFund"
@@ -1551,10 +1551,18 @@ export default {
           //项目经费
           data2upload.append("SubjectFund", this.FormData.SubjectFund);
           data2upload.append("DocumentFund", this.FormData.DocumentFund);
+          data2upload.append("DataFund", this.FormData.DataFund);
+          data2upload.append("OutboundFund", this.FormData.OutboundFund);
+          data2upload.append("MeetingFund", this.FormData.MeetingFund);
+          data2upload.append(
+            "InternationalFund",
+            this.FormData.InternationalFund
+          );
+          data2upload.append("HardwareFund", this.FormData.HardwareFund);
+          data2upload.append("ConsultFund", this.FormData.ConsultFund);
           data2upload.append("LaborFund", this.FormData.LaborFund);
           data2upload.append("MaterialFund", this.FormData.MaterialFund);
-          data2upload.append("HardwareFund", this.FormData.HardwareFund);
-          data2upload.append("OutboundFund", this.FormData.OutboundFund);
+          data2upload.append("PatentFund", this.FormData.PatentFund);
 
           //项目描述
           data2upload.append("SubjectPlace", this.t_sector);
