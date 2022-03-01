@@ -73,6 +73,14 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="成果形式" prop="SubjectPaper">
+              <el-input
+                v-model="FormData.SubjectPaper"
+                placeholder="请输入成果形式"
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-button
@@ -249,7 +257,10 @@
         <h4>预计经费</h4>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="办公、图文制作、邮费（万）" prop="DocumentFund">
+            <el-form-item
+              label="办公、图文制作、邮费（万）"
+              prop="DocumentFund"
+            >
               <el-input
                 type="text"
                 v-model="FormData.DocumentFund"
@@ -269,7 +280,10 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="材料、测试加工、维修费（万）" prop="MaterialFund">
+            <el-form-item
+              label="材料、测试加工、维修费（万）"
+              prop="MaterialFund"
+            >
               <el-input
                 type="text"
                 v-model="FormData.MaterialFund"
@@ -289,7 +303,10 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="差旅、会议、国际合作交流（万）" prop="OutboundFund">
+            <el-form-item
+              label="差旅、会议、国际合作交流（万）"
+              prop="OutboundFund"
+            >
               <el-input
                 type="text"
                 v-model="FormData.OutboundFund"
@@ -299,7 +316,10 @@
             ></el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="资料费、版面费、知识产权等（万）" prop="PatentFund">
+            <el-form-item
+              label="资料费、版面费、知识产权等（万）"
+              prop="PatentFund"
+            >
               <el-input
                 type="text"
                 v-model="FormData.PatentFund"
@@ -336,23 +356,6 @@
                 placeholder="请输入项目所属单位"
                 readonly
               ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="成果形式" prop="SubjectPaper">
-              <el-select
-                v-model="FormData.SubjectPaper"
-                placeholder="请选择项目成果形式"
-                style="display: block"
-              >
-                <template v-for="rankEach in PaperList">
-                  <el-option
-                    :label="rankEach.typeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
@@ -767,11 +770,8 @@ export default {
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
         SubjectPaper: [
-          {
-            required: true,
-            message: "请选择成果形式",
-            trigger: "blur",
-          },
+          { required: true, message: "请输入成果形式", trigger: "blur" },
+          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         CategoryId: [
           {

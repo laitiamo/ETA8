@@ -245,7 +245,6 @@ export default {
       let _this = this;
       //参数绑定「分页大小、页码」
       let params = new URLSearchParams();
-      params.append("typeId", this.detailData.PaperTypeId);
       getPaperSelectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人成果列表---------------");

@@ -42,6 +42,9 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >发表时间：{{ detailData.time }}</el-col
         >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >成果形式：{{ detailData.PaperType }}</el-col
+        >
       </el-row>
 
       <template v-if="detailData.levelId == 3">
@@ -62,10 +65,14 @@
             >设备购置（万）：{{ detailData.HardwareFund }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >差旅、会议、国际合作交流（万）：{{ detailData.OutboundFund }}</el-col
+            >差旅、会议、国际合作交流（万）：{{
+              detailData.OutboundFund
+            }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >资料费、版面费、知识产权等（万）：{{ detailData.PatentFund }}</el-col
+            >资料费、版面费、知识产权等（万）：{{
+              detailData.PatentFund
+            }}</el-col
           >
         </el-row>
         <el-divider content-position="left"

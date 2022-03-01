@@ -57,6 +57,14 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="成果形式" prop="SubjectPaper">
+              <el-input
+                v-model="FormData.SubjectPaper"
+                placeholder="请输入成果形式"
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-button
@@ -271,23 +279,6 @@
                 placeholder="请输入项目所属单位"
                 readonly
               ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="成果形式" prop="SubjectPaper">
-              <el-select
-                v-model="FormData.SubjectPaper"
-                placeholder="请选择项目成果形式"
-                style="display: block"
-              >
-                <template v-for="rankEach in PaperList">
-                  <el-option
-                    :label="rankEach.typeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
@@ -1170,11 +1161,8 @@ export default {
 
         //项目描述
         SubjectPaper: [
-          {
-            required: true,
-            message: "请选择成果形式",
-            trigger: "blur",
-          },
+          { required: true, message: "请输入成果形式", trigger: "blur" },
+          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         Introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },

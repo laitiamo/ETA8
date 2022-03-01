@@ -56,6 +56,14 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="成果形式" prop="SubjectPaper">
+              <el-input
+                v-model="FormData.SubjectPaper"
+                placeholder="请输入成果形式"
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-button
@@ -364,37 +372,11 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="成果形式" prop="SubjectPaper">
-              <el-select
-                v-model="FormData.SubjectPaper"
-                placeholder="请选择项目成果形式"
-                style="display: block"
-              >
-                <template v-for="rankEach in PaperList">
-                  <el-option
-                    :label="rankEach.typeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="研究类别" prop="ResearchId">
-              <el-select
-                v-model="FormData.ResearchId"
-                placeholder="请选择项目来源"
-                style="display: block"
-              >
-                <template v-for="rankEach in ResearchList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
+            <el-form-item label="委托单位" prop="EntrustPlace">
+              <el-input
+                v-model="FormData.EntrustPlace"
+                placeholder="请输入项目委托单位"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
@@ -540,25 +522,27 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
+          </el-row>
+          <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="委托单位性质" prop="EntrustPlaceId">
+            <el-form-item label="研究类别" prop="ResearchId">
               <el-select
-                v-model="FormData.EntrustPlaceId"
-                placeholder="请选择委托单位性质"
+                v-model="FormData.ResearchId"
+                placeholder="请选择项目来源"
                 style="display: block"
               >
-                <template v-for="rankEach in EntrustList">
+                <template v-for="rankEach in ResearchList">
                   <el-option
-                    :key="rankEach.id"
-                    :label="rankEach.entrustName"
+                    :label="rankEach.TypeName"
                     :value="rankEach.id"
+                    :key="rankEach.id"
                   ></el-option>
                 </template>
               </el-select>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="课题类型" prop="TopicId">
               <el-select
@@ -979,13 +963,11 @@ export default {
       FileList: [], //已上传的文件列表
       RankList: [], //项目类别的列表「从后端取得」
 
-      PaperList: [], //成果形式的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       ResearchList: [], //研究方向列表「从后端取得」
       BelongList: [], //统计归属列表「从后端取得」
       TypeList: [], //一级学科列表「从后端取得」
 
-      EntrustList: [], //委托单位列表「从后端取得」
       TopicList: [], //课题类型
       CooperateList: [], //合作单位列表「从后端取得」
       ContractList: [], //合同列表「从后端取得」
@@ -1043,7 +1025,7 @@ export default {
         //教育部统计信息
         BelongId: "", //统计归属
         TypeId: "", //一级学科
-        EntrustPlaceId: "", //委托单位性质
+        EntrustPlace: "", //委托单位性质
         TopicId: "", //课题类型
         MainProjectName: "", //主项目名称
         ApplicationCode: "", //申请代码
@@ -1134,11 +1116,8 @@ export default {
 
         //项目描述
         SubjectPaper: [
-          {
-            required: true,
-            message: "请选择成果形式",
-            trigger: "blur",
-          },
+          { required: true, message: "请输入成果形式", trigger: "blur" },
+          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         ResearchId: [
           { required: true, message: "请选择研究方向", trigger: "blur" },
@@ -1196,8 +1175,9 @@ export default {
         TypeId: [
           { required: true, message: "请选择一级学科", trigger: "blur" },
         ],
-        EntrustPlaceId: [
-          { required: true, message: "请选择委托单位", trigger: "blur" },
+        EntrustPlace: [
+          { required: true, message: "请输入委托单位", trigger: "blur" },
+          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         TopicId: [
           { required: true, message: "请选择课题类型", trigger: "blur" },
@@ -1396,7 +1376,6 @@ export default {
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;
           this.BelongList = obj2.belong;
-          this.PaperList = obj2.paper;
         })
         .catch((failResponse) => {});
       initSponsored()
@@ -1405,7 +1384,6 @@ export default {
           //closeDebug console.log("CooperateList初始化", obj);
           this.CooperateList = obj3.cooperate;
           this.ContractList = obj3.contract;
-          this.EntrustList = obj3.entrust;
           this.ResearchList = obj3.research;
           this.PropertyList = obj3.property;
           this.TechnicalList = obj3.technical;
@@ -1581,7 +1559,7 @@ export default {
           //教育部统计信息
           data2upload.append("BelongId", this.FormData.BelongId);
           data2upload.append("TypeId", this.FormData.TypeId);
-          data2upload.append("EntrustPlaceId", this.FormData.EntrustPlaceId);
+          data2upload.append("EntrustPlace", this.FormData.EntrustPlace);
           data2upload.append("TopicId", this.FormData.TopicId);
           data2upload.append("MainProjectName", this.FormData.MainProjectName);
           data2upload.append("ApplicationCode", this.FormData.ApplicationCode);

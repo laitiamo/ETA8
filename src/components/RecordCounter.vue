@@ -17,13 +17,6 @@
       <el-divider direction="vertical"></el-divider>
       <el-col :span="5" :xs="7"
         ><div class="item-container">
-          <div class="item-title">培训</div>
-          <div class="item-content">{{ cultivateNum }}</div>
-        </div></el-col
-      >
-      <el-divider direction="vertical"></el-divider>
-      <el-col :span="5" :xs="7"
-        ><div class="item-container">
           <div class="item-title">专利</div>
           <div class="item-content">{{ patentNum }}</div>
         </div></el-col
