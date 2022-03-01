@@ -247,6 +247,12 @@
                 style="width:40%;"
                 placeholder="请输入项目经费"
               ></el-input>
+              <el-input
+                type="text"
+                v-model="Function1"
+                style="width:15%;"
+                placeholder="经费比重"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
@@ -257,6 +263,12 @@
                 style="width:40%;"
                 placeholder="请输入项目经费"
               ></el-input>
+              <el-input
+                type="text"
+                v-model="Function2"
+                style="width:15%;"
+                placeholder="经费比重"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
@@ -266,6 +278,12 @@
                 v-model="FormData.OutboundFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function3"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
           </el-col>
@@ -276,6 +294,12 @@
                 v-model="FormData.MeetingFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function4"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
           </el-col>
@@ -288,8 +312,14 @@
                 v-model="FormData.InternationalFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
-              ></el-input
-            ></el-form-item>
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function5"
+                style="width:15%;"
+                placeholder="经费比重"
+              ></el-input>
+            </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
             <el-form-item label="设备购置费（万）" prop="HardwareFund">
@@ -298,8 +328,14 @@
                 v-model="FormData.HardwareFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
-              ></el-input
-            ></el-form-item>
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function6"
+                style="width:15%;"
+                placeholder="经费比重"
+              ></el-input>
+            </el-form-item>
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
             <el-form-item label="专家咨询费（万）" prop="ConsultFund">
@@ -308,6 +344,12 @@
                 v-model="FormData.ConsultFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function7"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
           </el-col>
@@ -318,6 +360,12 @@
                 v-model="FormData.LaborFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function8"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
           </el-col>
@@ -328,6 +376,12 @@
                 v-model="FormData.MaterialFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function9"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
           </el-col>
@@ -338,24 +392,14 @@
                 v-model="FormData.PatentFund"
                 style="width:40%;"
                 placeholder="请输入项目经费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function10"
+                style="width:15%;"
+                placeholder="经费比重"
               ></el-input
             ></el-form-item>
-          </el-col> </el-row
-        ><el-row :gutter="20">
-          <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="总经费（自动计算）" prop="allScore">
-              <el-input
-                :disabled="true"
-                v-model="allScore"
-                style="width:70%;"
-              ></el-input>
-              <el-button
-                style="margin-top: 12px;"
-                @click="check('FormData')"
-                v-if="active == 2"
-                >核查经费</el-button
-              ></el-form-item
-            >
           </el-col>
         </el-row>
 
@@ -522,8 +566,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          </el-row>
-          <el-row :gutter="20">
+        </el-row>
+        <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="研究类别" prop="ResearchId">
               <el-select
@@ -1061,11 +1105,6 @@ export default {
         //项目申报基础信息
         SubjectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
-          {
-            min: 2,
-            message: "长度在 2 个字符以上",
-            trigger: "blur",
-          },
         ],
         SubjectNum: [
           { required: true, message: "请输入项目编号", trigger: "blur" },
@@ -1083,41 +1122,32 @@ export default {
         //项目经费
         SubjectFund: [
           { required: true, message: "请输入项目经费", trigger: "blur" },
-          { min: 1, message: "项目经费不能为空", trigger: "blur" },
         ],
         DocumentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         DataFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         LaborFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         MaterialFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         HardwareFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         OutboundFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         PatentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
 
         //项目描述
         SubjectPaper: [
           { required: true, message: "请输入成果形式", trigger: "blur" },
-          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         ResearchId: [
           { required: true, message: "请选择研究方向", trigger: "blur" },
@@ -1151,12 +1181,6 @@ export default {
         ],
         DutyFreeId: [
           { required: false, message: "请输入减免税号", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         SubjectTime: [
           { required: true, message: "请选择日期", trigger: "change" },
@@ -1177,27 +1201,20 @@ export default {
         ],
         EntrustPlace: [
           { required: true, message: "请输入委托单位", trigger: "blur" },
-          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
         ],
         TopicId: [
           { required: true, message: "请选择课题类型", trigger: "blur" },
         ],
         MainProjectName: [
           { required: false, message: "请输入主项目名称", trigger: "blur" },
-          { message: "长度在 3 位数以上", trigger: "blur" },
         ],
         ApplicationCode: [
           { required: false, message: "请输入申请代码", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
         Introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
         ],
-        Remarks: [
-          { required: false, message: "请输入备注", trigger: "blur" },
-          { min: 3, message: "长度在 3 位数以上", trigger: "blur" },
-        ],
+        Remarks: [{ required: false, message: "请输入备注", trigger: "blur" }],
 
         //合作单位
         CooperateId: [
@@ -1205,73 +1222,30 @@ export default {
         ],
         ContractNum: [
           { required: true, message: "请输入合同编号", trigger: "blur" },
-          {
-            min: 2,
-            max: 10,
-            message: "长度在 2 到 10 个字符",
-            trigger: "blur",
-          },
         ],
         FundNum: [
           { required: true, message: "请输入经费编号", trigger: "blur" },
-          {
-            min: 2,
-            max: 10,
-            message: "长度在 2 到 10 个字符",
-            trigger: "blur",
-          },
         ],
         ContractName: [
           { required: true, message: "请输入合同名称", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         ContractId: [
           { required: true, message: "请选择合同类型", trigger: "blur" },
         ],
         ContractFund: [
           { required: true, message: "请输入合同经费", trigger: "blur" },
-          { max: 3, message: "最高输入 3 位数", trigger: "blur" },
         ],
         CooperatePrincipal: [
           { required: true, message: "请输入合作单位负责人", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         BankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
-          {
-            min: 5,
-            max: 20,
-            message: "长度在 5 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         BankAccount: [
           { required: true, message: "请输入银行账号", trigger: "blur" },
-          {
-            min: 15,
-            max: 20,
-            message: "长度在 15 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         ContractDuty: [
           { required: true, message: "请输入违约金", trigger: "blur" },
-          {
-            min: 2,
-            max: 8,
-            message: "金额在 2 到 8 位数",
-            trigger: "blur",
-          },
         ],
 
         //技术市场信息
@@ -1333,22 +1307,77 @@ export default {
     };
   },
   computed: {
-    allScore: function() {
+    Function1: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.DocumentFund) || 0;
-      let sum2 = parseFloat(this.FormData.DataFund) || 0;
-      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
-      let sum4 = parseFloat(this.FormData.MeetingFund) || 0;
-      let sum5 = parseFloat(this.FormData.InternationalFund) || 0;
-      let sum6 = parseFloat(this.FormData.HardwareFund) || 0;
-      let sum7 = parseFloat(this.FormData.ConsultFund) || 0;
-      let sum8 = parseFloat(this.FormData.LaborFund) || 0;
-      let sum9 = parseFloat(this.FormData.MaterialFund) || 0;
-      let sum10 = parseFloat(this.FormData.PatentFund) || 0;
-      sum =
-        sum1 + sum2 + sum3 + sum4 + sum5 + sum6 + sum7 + sum8 + sum9 + sum10;
-      return sum || 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum2 = parseFloat(this.FormData.DocumentFund) || 0;
+      sum = sum2 / sum1;
+      return (sum*100).toFixed(2) || 0;
     },
+    Function2: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum2 = parseFloat(this.FormData.DataFund) || 0;
+      sum = sum2 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function3: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
+      sum = sum3 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function4: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum4 = parseFloat(this.FormData.MeetingFund) || 0;
+      sum = sum4 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function5: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum5 = parseFloat(this.FormData.InternationalFund) || 0;
+      sum = sum5 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function6: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum6 = parseFloat(this.FormData.HardwareFund) || 0;
+      sum = sum6 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function7: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum7 = parseFloat(this.FormData.ConsultFund) || 0;
+      sum = sum7 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function8: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum8 = parseFloat(this.FormData.LaborFund) || 0;
+      sum = sum8 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function9: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum9 = parseFloat(this.FormData.MaterialFund) || 0;
+      sum = sum9 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+    Function10: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum10 = parseFloat(this.FormData.PatentFund) || 0;
+      sum = sum10 / sum1;
+      return (sum*100).toFixed(2) || 0;
+    },
+
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
   mounted() {
@@ -1478,25 +1507,6 @@ export default {
     //上一步
     back(formName) {
       this.active--;
-    },
-    //核查经费
-    check(formName) {
-      if (this.FormData.SubjectFund > this.allScore) {
-        this.$message({
-          message: "经费核查通过",
-          type: "success",
-        });
-      } else if (this.FormData.SubjectFund < this.allScore) {
-        this.$message({
-          message: "经费不足，请检查该板块",
-          type: "error",
-        });
-      } else {
-        this.$message({
-          message: "填写为空，请重新填写",
-          type: "success",
-        });
-      }
     },
     //处理表单提交事件
     submitForm(formName) {
