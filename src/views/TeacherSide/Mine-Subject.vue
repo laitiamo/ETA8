@@ -189,9 +189,22 @@ export default {
       PaperColumns: [
         { name: "成果类型", value: "typeName", width: "130", ifShow: true },
         { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
+        { name: "成果单位", value: "paperPlace", width: "auto", ifShow: true },
+        {
+          name: "成果审核状态",
+          value: "reviewName",
+          width: "auto",
+          ifShow: true,
+        },
         {
           name: "记录上传时间",
           value: "createAt",
+          width: "200",
+          ifShow: true,
+        },
+        {
+          name: "记录审核时间",
+          value: "reviewAt",
           width: "200",
           ifShow: true,
         },

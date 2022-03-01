@@ -145,6 +145,21 @@
           </template>
         </el-select>
       </el-form-item>
+      <el-form-item label="归属项目（非必填）" prop="SubjectId">
+        <el-select
+          v-model="FormData.SubjectId"
+          placeholder="请选择归属项目"
+          style="display: block"
+        >
+          <template v-for="rankEach in SubjectList">
+            <el-option
+              :label="rankEach.subjectName"
+              :value="rankEach.id"
+              :key="rankEach.id"
+            ></el-option>
+          </template>
+        </el-select>
+      </el-form-item>
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
@@ -196,6 +211,7 @@ import {
   getPaperList,
   uploadPaper,
   getTeacherDetail,
+  listPerSubject,
 } from "../../../api";
 export default {
   name: "BookForm",
@@ -208,6 +224,7 @@ export default {
       fileList: [], //已上传的文件列表
       BookList: [], //奖项等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
+      SubjectList: [],
       //表单数据
       FormData: {
         domains: [
@@ -222,6 +239,7 @@ export default {
         paperNum: "",
         paperName: "",
         rankId: "",
+        SubjectId: "",
         paperTime: "",
         paperPlace: "",
         paperPicList: [],
@@ -248,6 +266,9 @@ export default {
         paperPlace: [
           { required: true, message: "请输入出版社名称", trigger: "blur" },
           { min: 2, message: "长度需大于两个字符", trigger: "blur" },
+        ],
+        SubjectId: [
+          { required: false, message: "请选择归属项目", trigger: "change" },
         ],
         paperPicList: [
           { required: true, message: "请选择著作图片", trigger: "blur" },
@@ -280,6 +301,12 @@ export default {
           this.TeacherList = obj2.teacher;
         })
         .catch((failResponse) => {});
+      listPerSubject()
+        .then((res) => {
+          //closeDebug console.log("SubjectList初始化", obj);
+          this.SubjectList = res;
+        })
+        .catch((failResponse) => {});
     },
     //处理表单提交事件
     submitForm(formName) {
@@ -305,6 +332,7 @@ export default {
           data2upload.append("paperName", this.FormData.paperName);
           data2upload.append("paperTime", this.FormData.paperTime);
           data2upload.append("paperPlace", this.FormData.paperPlace);
+          data2upload.append("SubjectId", this.FormData.SubjectId);
           data2upload.append("rankId", this.FormData.rankId);
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {

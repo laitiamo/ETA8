@@ -156,6 +156,13 @@ export const getMySubjectList = (params) =>
   get(`eta8/mine/listsubject`, params);
 
 /**
+ * 获取个人项目列表（GET）
+ * @returns
+ */
+export const listPerSubject = () =>
+  get(`eta8/mine/listPerSubject`);
+
+/**
  * 获取学生个人奖项详情（GET）
  * 需传入的参数
  * id: 奖项ID

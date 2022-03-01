@@ -57,11 +57,21 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="成果形式" prop="SubjectPaper">
-              <el-input
+            <el-form-item label="成果形式（可多选）" prop="SubjectPaper">
+              <el-select
                 v-model="FormData.SubjectPaper"
-                placeholder="请输入成果形式"
-              ></el-input>
+                placeholder="请选择项目成果形式"
+                style="display: block"
+                multiple
+              >
+                <template v-for="rankEach in PaperList">
+                  <el-option
+                    :label="rankEach.typeName"
+                    :value="rankEach.typeName"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -523,69 +533,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-        <el-divider></el-divider>
-        <h3>教育部统计信息</h3>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="统计归属" prop="BelongId">
-              <el-select
-                v-model="FormData.BelongId"
-                placeholder="请选择统计归属"
-                @change="QuerySubject"
-                style="display: block"
-              >
-                <template v-for="rankEach in BelongList">
-                  <el-option
-                    :label="rankEach.BelongName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              label="一级学科"
-              prop="TypeId"
-              v-if="FormData.BelongId !== ''"
-            >
-              <el-select
-                v-model="FormData.TypeId"
-                placeholder="请选择一级学科"
-                style="display: block"
-              >
-                <template v-for="rankEach in TypeList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="研究类别" prop="ResearchId">
-              <el-select
-                v-model="FormData.ResearchId"
-                placeholder="请选择项目来源"
-                style="display: block"
-              >
-                <template v-for="rankEach in ResearchList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="课题类型" prop="TopicId">
@@ -669,6 +616,167 @@
         size="medium"
         class="demo-FormData"
       >
+        <el-divider></el-divider>
+        <h3>教育部统计信息</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="统计归属" prop="BelongId">
+              <el-select
+                v-model="FormData.BelongId"
+                placeholder="请选择统计归属"
+                @change="QuerySubject"
+                style="display: block"
+              >
+                <template v-for="rankEach in BelongList">
+                  <el-option
+                    :label="rankEach.BelongName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item
+              label="一级学科"
+              prop="TypeId"
+              v-if="FormData.BelongId !== ''"
+            >
+              <el-select
+                v-model="FormData.TypeId"
+                placeholder="请选择一级学科"
+                style="display: block"
+              >
+                <template v-for="rankEach in TypeList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="国民经济行业" prop="EcoFirstId">
+              <el-select
+                v-model="FormData.EcoFirstId"
+                placeholder="请选择国民经济行业一级目录"
+                @change="QuerySecondEco"
+                style="display: block"
+              >
+                <template v-for="rankEach in EcoFirstList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
+              <el-select
+                v-model="FormData.EcoSecondId"
+                placeholder="请选择国民经济行业二级目录"
+                @change="QueryEconomic"
+                style="display: block"
+              >
+                <template v-for="rankEach in EcoSecondList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
+              <el-select
+                v-model="FormData.EconomicId"
+                placeholder="请选择国民经济行业三级目录"
+                style="display: block"
+              >
+                <template v-for="rankEach in EconomicList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="社会经济服务目标" prop="SocFirstId">
+              <el-select
+                v-model="FormData.SocFirstId"
+                placeholder="请选择社会经济服务目标一级目录"
+                @change="QuerySociety"
+                style="display: block"
+              >
+                <template v-for="rankEach in SocFirstList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
+              <el-select
+                v-model="FormData.SocietyId"
+                placeholder="请选择社会经济服务目标二级目录"
+                style="display: block"
+              >
+                <template v-for="rankEach in SocietyList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="研究类别" prop="ResearchId">
+              <el-select
+                v-model="FormData.ResearchId"
+                placeholder="请选择项目来源"
+                style="display: block"
+              >
+                <template v-for="rankEach in ResearchList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-divider></el-divider>
         <h3>合作单位</h3>
         <el-row :gutter="20">
@@ -794,104 +902,6 @@
         </el-row>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="国民经济行业" prop="EcoFirstId">
-              <el-select
-                v-model="FormData.EcoFirstId"
-                placeholder="请选择国民经济行业一级目录"
-                @change="QuerySecondEco"
-                style="display: block"
-              >
-                <template v-for="rankEach in EcoFirstList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
-              <el-select
-                v-model="FormData.EcoSecondId"
-                placeholder="请选择国民经济行业二级目录"
-                @change="QueryEconomic"
-                style="display: block"
-              >
-                <template v-for="rankEach in EcoSecondList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
-              <el-select
-                v-model="FormData.EconomicId"
-                placeholder="请选择国民经济行业三级目录"
-                style="display: block"
-              >
-                <template v-for="rankEach in EconomicList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="社会经济服务目标" prop="SocFirstId">
-              <el-select
-                v-model="FormData.SocFirstId"
-                placeholder="请选择社会经济服务目标一级目录"
-                @change="QuerySociety"
-                style="display: block"
-              >
-                <template v-for="rankEach in SocFirstList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
-              <el-select
-                v-model="FormData.SocietyId"
-                placeholder="请选择社会经济服务目标二级目录"
-                style="display: block"
-              >
-                <template v-for="rankEach in SocietyList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="计划来源一级" prop="SourceId">
               <el-select
                 v-model="FormData.SourceId"
@@ -1006,6 +1016,7 @@ export default {
       RankName: "纵向项目",
       FileList: [], //已上传的文件列表
       RankList: [], //项目类别的列表「从后端取得」
+      PaperList: [], //成果形式的列表「从后端取得」
 
       TeacherList: [], //教师列表「从后端取得」
       ResearchList: [], //研究方向列表「从后端取得」
@@ -1147,7 +1158,11 @@ export default {
 
         //项目描述
         SubjectPaper: [
-          { required: true, message: "请输入成果形式", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择成果形式",
+            trigger: "blur",
+          },
         ],
         ResearchId: [
           { required: true, message: "请选择研究方向", trigger: "blur" },
@@ -1311,73 +1326,72 @@ export default {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum2 = parseFloat(this.FormData.DocumentFund) || 0;
-      sum = sum2 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum2 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function2: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum2 = parseFloat(this.FormData.DataFund) || 0;
-      sum = sum2 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum2 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function3: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum3 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum3 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function4: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum4 = parseFloat(this.FormData.MeetingFund) || 0;
-      sum = sum4 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum4 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function5: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum5 = parseFloat(this.FormData.InternationalFund) || 0;
-      sum = sum5 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum5 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function6: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum6 = parseFloat(this.FormData.HardwareFund) || 0;
-      sum = sum6 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum6 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function7: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum7 = parseFloat(this.FormData.ConsultFund) || 0;
-      sum = sum7 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum7 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function8: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum8 = parseFloat(this.FormData.LaborFund) || 0;
-      sum = sum8 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum8 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function9: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum9 = parseFloat(this.FormData.MaterialFund) || 0;
-      sum = sum9 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum9 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
     Function10: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
       let sum10 = parseFloat(this.FormData.PatentFund) || 0;
-      sum = sum10 / sum1;
-      return (sum*100).toFixed(2) || 0;
+      sum = sum10 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
     },
-
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
   mounted() {
@@ -1405,6 +1419,7 @@ export default {
           this.EcoFirstList = obj2.ecofirst;
           this.SocFirstList = obj2.socfirst;
           this.BelongList = obj2.belong;
+          this.PaperList = obj2.paper;
         })
         .catch((failResponse) => {});
       initSponsored()
@@ -1554,7 +1569,6 @@ export default {
 
           //项目描述
           data2upload.append("SubjectPlace", this.t_sector);
-          data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
           data2upload.append("ResearchId", this.FormData.ResearchId);
           data2upload.append("isSecrecy", this.FormData.isSecrecy);
           data2upload.append("isVoucher", this.FormData.isVoucher);
@@ -1565,6 +1579,11 @@ export default {
           data2upload.append("SubjectTime", this.FormData.SubjectTime);
           data2upload.append("StartTime", this.FormData.StartTime);
           data2upload.append("FinishTime", this.FormData.FinishTime);
+          let SubjectPaper = "";
+          for (let item in this.FormData.SubjectPaper) {
+            SubjectPaper += this.FormData.SubjectPaper[item] + " ";
+          }
+          data2upload.append("SubjectPaper", SubjectPaper);
 
           //教育部统计信息
           data2upload.append("BelongId", this.FormData.BelongId);

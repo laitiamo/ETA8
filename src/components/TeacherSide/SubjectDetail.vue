@@ -43,7 +43,7 @@
           >发表时间：{{ detailData.time }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >成果形式：{{ detailData.PaperType }}</el-col
+          >成果形式：{{ detailData.SubjectPaper }}</el-col
         >
       </el-row>
 
@@ -525,12 +525,13 @@ export default {
       PaperColumns: [
         {
           name: "成果类型",
-          value: "PaperTypeName",
+          value: "typeName",
           width: "130",
           ifShow: true,
         },
         { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
         { name: "成果单位", value: "paperPlace", width: "auto", ifShow: true },
+        { name: "成果审核状态", value: "PaperReviewName", width: "auto", ifShow: true },
         {
           name: "记录上传时间",
           value: "PaperCreateAt",

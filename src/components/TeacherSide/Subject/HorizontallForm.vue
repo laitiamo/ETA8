@@ -3,7 +3,7 @@
     <el-steps :active="active" finish-status="success">
       <el-step title="项目申报"></el-step>
       <el-step title="参与者选择"></el-step>
-      <el-step title="项目信息"></el-step>
+      <el-step title="基本信息"></el-step>
       <el-step title="拓展信息"></el-step>
     </el-steps>
     <template v-if="active == 0">
@@ -58,11 +58,21 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="成果形式" prop="SubjectPaper">
-              <el-input
+            <el-form-item label="成果形式（可多选）" prop="SubjectPaper">
+              <el-select
                 v-model="FormData.SubjectPaper"
-                placeholder="请输入成果形式"
-              ></el-input>
+                placeholder="请选择项目成果形式"
+                style="display: block"
+                multiple
+              >
+                <template v-for="rankEach in PaperList">
+                  <el-option
+                    :label="rankEach.typeName"
+                    :value="rankEach.typeName"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -101,31 +111,31 @@
             <el-input
               v-model="name"
               style="width:140px"
-              placeholder="请输入项目第一参与者"
+              placeholder="教师姓名"
               readonly
             ></el-input>
             <el-input
               v-model="username"
               style="width:140px"
-              placeholder="请输入项目第一参与者"
+              placeholder="教职工号"
               readonly
             ></el-input>
             <el-input
               v-model="role"
               style="width:140px"
-              placeholder="请输入项目第一参与者"
+              placeholder="教师角色"
               readonly
             ></el-input>
             <el-input
               v-model="college"
               style="width:200px"
-              placeholder="请输入项目第一参与者"
+              placeholder="所属学院"
               readonly
             ></el-input>
             <el-input
               v-model="t_sector"
               style="width:140px"
-              placeholder="请输入项目第一参与者"
+              placeholder="所属部门"
               readonly
             ></el-input>
           </el-col>
@@ -161,7 +171,7 @@
               <el-input
                 v-model="domain.teaNo"
                 style="width:140px"
-                placeholder="工号"
+                placeholder="教职工号"
                 filterable
                 readonly
               ></el-input>
@@ -231,12 +241,21 @@
             placeholder="请输入项目申请经费"
           ></el-input>
         </el-form-item>
+        <el-divider></el-divider>
+        <h4>预计经费</h4>
         <el-form-item label="项目软件经费（万）" prop="SoftwareFund">
           <el-input
             type="text"
             v-model="FormData.SoftwareFund"
             style="width:40%;"
             placeholder="请输入项目软件经费"
+          ></el-input>
+          <el-input
+            type="text"
+            v-model="Function1"
+            style="width:15%;"
+            placeholder="经费比重"
+            readonly
           ></el-input
         ></el-form-item>
         <el-form-item label="项目设备经费（万）" prop="HardwareFund"
@@ -245,6 +264,13 @@
             v-model="FormData.HardwareFund"
             style="width:40%;"
             placeholder="请输入项目设备经费"
+          ></el-input>
+          <el-input
+            type="text"
+            v-model="Function2"
+            style="width:15%;"
+            placeholder="经费比重"
+            readonly
           ></el-input
         ></el-form-item>
         <el-form-item label="外协经费（万）" prop="OutboundFund">
@@ -253,20 +279,28 @@
             v-model="FormData.OutboundFund"
             style="width:40%;"
             placeholder="请输入外协经费"
+          ></el-input>
+          <el-input
+            type="text"
+            v-model="Function3"
+            style="width:15%;"
+            placeholder="经费比重"
+            readonly
           ></el-input
         ></el-form-item>
-        <el-form-item label="总经费（自动计算）" prop="allScore">
+        <el-form-item label="技术开发费（万）" prop="DevelopFund">
           <el-input
-            :disabled="true"
-            v-model="allScore"
+            type="text"
+            v-model="DevelopFund"
             style="width:40%;"
+            placeholder="请输入技术开发费"
           ></el-input>
-          <el-button
-            style="margin-top: 12px;"
-            @click="check('FormData')"
-            v-if="active == 2"
-            >核查经费</el-button
-          >
+        </el-form-item>
+        <el-form-item label="合同金额（万）" prop="DevelopFund">
+          <el-input
+            v-model="DevelopFund"
+            placeholder="请输入合同金额"
+          ></el-input>
         </el-form-item>
 
         <el-divider></el-divider>
@@ -295,7 +329,7 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="开始时间" prop="StartTime">
+            <el-form-item label="预计开始时间" prop="StartTime">
               <el-date-picker
                 v-model="FormData.StartTime"
                 type="date"
@@ -308,7 +342,7 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="预计完成时间" prop="FinishTime">
+            <el-form-item label="预计结束时间" prop="FinishTime">
               <el-date-picker
                 v-model="FormData.FinishTime"
                 type="date"
@@ -321,15 +355,7 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="依托中心项目" prop="RelyCenterSubject">
-              <el-input
-                v-model="FormData.RelyCenterSubject"
-                placeholder="请输入依托中心项目"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="委托单位性质" prop="EntrustPlaceId">
+            <el-form-item label="委托单位" prop="EntrustPlaceId">
               <el-select
                 v-model="FormData.EntrustPlaceId"
                 placeholder="请选择委托单位性质"
@@ -345,6 +371,62 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="依托中心项目" prop="RelyCenterSubject">
+              <el-input
+                v-model="FormData.RelyCenterSubject"
+                placeholder="请输入依托中心项目"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="双方违约责任" prop="ContractDuty">
+              <el-input
+                type="textarea"
+                v-model="FormData.ContractDuty"
+                placeholder="请输入双方违约责任"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item
+              label="此合同是否可以进行技术认证并免税"
+              prop="isDutyFree"
+            >
+              <el-radio-group v-model="FormData.isDutyFree">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="2">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item
+              label="减免税号"
+              prop="DutyFreeId"
+              v-if="FormData.isDutyFree == 1"
+            >
+              <el-input
+                v-model="FormData.DutyFreeId"
+                placeholder="请输入减免税号"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="是否希望科技处推广" prop="isPromote">
+              <el-radio-group v-model="FormData.isPromote">
+                <el-radio label="1">是</el-radio>
+                <el-radio label="2">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="项目简介" prop="Introduction">
               <el-input
@@ -403,12 +485,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="经费号" prop="FundNum">
+            <el-form-item label="合同名称" prop="ContractName">
               <el-input
-                v-model="FormData.FundNum"
-                placeholder="请输入经费号"
+                v-model="FormData.ContractName"
+                placeholder="请输入合同名称"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -421,10 +502,10 @@
             </el-form-item>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="合同名称" prop="ContractName">
+            <el-form-item label="经费号" prop="FundNum">
               <el-input
-                v-model="FormData.ContractName"
-                placeholder="请输入合同名称"
+                v-model="FormData.FundNum"
+                placeholder="请输入经费号"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -456,15 +537,10 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-divider></el-divider>
+        <h3>合同预算</h3>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="合同金额（万）" prop="ContractFund">
-              <el-input
-                v-model="FormData.ContractFund"
-                placeholder="请输入合同金额"
-              ></el-input>
-            </el-form-item> </el-col
-          ><el-col class="subject-info" :span="12" :xs="24">
             <el-form-item label="课题组/校内人员费（万）" prop="ResearchFund">
               <el-input
                 type="text"
@@ -484,15 +560,6 @@
                 type="text"
                 v-model="FormData.OtherFund"
                 placeholder="请输入其他支出"
-              ></el-input></el-form-item></el-col
-          ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              label="合同预算经费（万）（自动计算）"
-              prop="Contract"
-            >
-              <el-input
-                :disabled="true"
-                v-model="Contract"
               ></el-input></el-form-item
           ></el-col>
         </el-row>
@@ -511,52 +578,6 @@
                 v-model="FormData.BankAccount"
                 placeholder="请输入银行账号"
               ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="双方违约责任" prop="ContractDuty">
-              <el-input
-                type="textarea"
-                v-model="FormData.ContractDuty"
-                placeholder="请输入双方违约责任"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              label="此合同是否可以进行技术认证并免税"
-              prop="isDutyFree"
-            >
-              <el-radio-group v-model="FormData.isDutyFree">
-                <el-radio label="1">是</el-radio>
-                <el-radio label="2">否</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item
-              label="减免税号"
-              prop="DutyFreeId"
-              v-if="FormData.isDutyFree == 1"
-            >
-              <el-input
-                v-model="FormData.DutyFreeId"
-                placeholder="请输入减免税号"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="是否希望科技处推广" prop="isPromote">
-              <el-radio-group v-model="FormData.isPromote">
-                <el-radio label="1">是</el-radio>
-                <el-radio label="2">否</el-radio>
-              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -586,6 +607,169 @@
         size="medium"
         class="demo-FormData"
       >
+        <h3>技术市场信息</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="请选择支付方式" prop="PayId">
+              <el-radio-group v-model="FormData.PayId">
+                <el-radio label="1">一次支付</el-radio>
+                <el-radio label="2">分期支付</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="国民经济行业" prop="EcoFirstId">
+              <el-select
+                v-model="FormData.EcoFirstId"
+                placeholder="请选择国民经济行业一级目录"
+                @change="QuerySecondEco"
+                style="display: block"
+              >
+                <template v-for="rankEach in EcoFirstList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
+              <el-select
+                v-model="FormData.EcoSecondId"
+                placeholder="请选择国民经济行业二级目录"
+                @change="QueryEconomic"
+                style="display: block"
+              >
+                <template v-for="rankEach in EcoSecondList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
+              <el-select
+                v-model="FormData.EconomicId"
+                placeholder="请选择国民经济行业三级目录"
+                style="display: block"
+              >
+                <template v-for="rankEach in EconomicList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="社会经济服务目标" prop="SocFirstId">
+              <el-select
+                v-model="FormData.SocFirstId"
+                placeholder="请选择社会经济服务目标一级目录"
+                @change="QuerySociety"
+                style="display: block"
+              >
+                <template v-for="rankEach in SocFirstList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
+              <el-select
+                v-model="FormData.SocietyId"
+                placeholder="请选择社会经济服务目标二级目录"
+                style="display: block"
+              >
+                <template v-for="rankEach in SocietyList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="计划来源一级" prop="SourceId">
+              <el-select
+                v-model="FormData.SourceId"
+                placeholder="请选择计划来源一级"
+                style="display: block"
+              >
+                <template v-for="rankEach in SourceList">
+                  <el-option
+                    :label="rankEach.SourceName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="技术邻域分类一级" prop="TechnicalId">
+              <el-select
+                v-model="FormData.TechnicalId"
+                placeholder="请选择技术邻域分类一级"
+                style="display: block"
+              >
+                <template v-for="rankEach in TechnicalList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="知识产权类别一级" prop="PropertyId">
+              <el-select
+                v-model="FormData.PropertyId"
+                placeholder="请选择技术邻域分类一级"
+                style="display: block"
+              >
+                <template v-for="rankEach in PropertyList">
+                  <el-option
+                    :label="rankEach.TypeName"
+                    :value="rankEach.id"
+                    :key="rankEach.id"
+                  ></el-option>
+                </template>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <h4>买方信息</h4>
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -771,169 +955,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-divider></el-divider>
-        <h4>技术市场信息</h4>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="请选择支付方式" prop="PayId">
-              <el-radio-group v-model="FormData.PayId">
-                <el-radio label="1">一次支付</el-radio>
-                <el-radio label="2">分期支付</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="国民经济行业" prop="EcoFirstId">
-              <el-select
-                v-model="FormData.EcoFirstId"
-                placeholder="请选择国民经济行业一级目录"
-                @change="QuerySecondEco"
-                style="display: block"
-              >
-                <template v-for="rankEach in EcoFirstList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="EcoSecondId" v-if="FormData.EcoFirstId !== ''">
-              <el-select
-                v-model="FormData.EcoSecondId"
-                placeholder="请选择国民经济行业二级目录"
-                @change="QueryEconomic"
-                style="display: block"
-              >
-                <template v-for="rankEach in EcoSecondList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="EconomicId" v-if="FormData.EcoSecondId !== ''">
-              <el-select
-                v-model="FormData.EconomicId"
-                placeholder="请选择国民经济行业三级目录"
-                style="display: block"
-              >
-                <template v-for="rankEach in EconomicList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="社会经济服务目标" prop="SocFirstId">
-              <el-select
-                v-model="FormData.SocFirstId"
-                placeholder="请选择社会经济服务目标一级目录"
-                @change="QuerySociety"
-                style="display: block"
-              >
-                <template v-for="rankEach in SocFirstList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item prop="SocietyId" v-if="FormData.SocFirstId !== ''">
-              <el-select
-                v-model="FormData.SocietyId"
-                placeholder="请选择社会经济服务目标二级目录"
-                style="display: block"
-              >
-                <template v-for="rankEach in SocietyList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="计划来源一级" prop="SourceId">
-              <el-select
-                v-model="FormData.SourceId"
-                placeholder="请选择计划来源一级"
-                style="display: block"
-              >
-                <template v-for="rankEach in SourceList">
-                  <el-option
-                    :label="rankEach.SourceName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="技术邻域分类一级" prop="TechnicalId">
-              <el-select
-                v-model="FormData.TechnicalId"
-                placeholder="请选择技术邻域分类一级"
-                style="display: block"
-              >
-                <template v-for="rankEach in TechnicalList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="知识产权类别一级" prop="PropertyId">
-              <el-select
-                v-model="FormData.PropertyId"
-                placeholder="请选择技术邻域分类一级"
-                style="display: block"
-              >
-                <template v-for="rankEach in PropertyList">
-                  <el-option
-                    :label="rankEach.TypeName"
-                    :value="rankEach.id"
-                    :key="rankEach.id"
-                  ></el-option>
-                </template>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
 
         <el-dialog :visible.sync="dialogVisible" width="90%">
           <img width="100%" :src="dialogImageUrl" alt="" />
@@ -1070,7 +1091,6 @@ export default {
         DutyFreeId: "",
         isPromote: "",
         ContractDuty: "",
-        ContractFund: "",
 
         //买方信息
         BuyerName: "",
@@ -1128,41 +1148,24 @@ export default {
         //项目经费
         SubjectFund: [
           { required: true, message: "请输入项目申请经费", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
         SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
         HardwareFund: [
           { required: false, message: "请输入项目设备经费", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
         OutboundFund: [
           { required: false, message: "请输入外协经费", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
 
         //项目描述
         SubjectPaper: [
-          { required: true, message: "请输入成果形式", trigger: "blur" },
-          { min: 2, message: "长度在 2 个字符以上", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择成果形式",
+            trigger: "blur",
+          },
         ],
         Introduction: [
           { required: true, message: "请输入项目简介", trigger: "blur" },
@@ -1233,23 +1236,10 @@ export default {
             trigger: "blur",
           },
         ],
-        ContractFund: [
-          { required: true, message: "请输入合同金额", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
-        ],
         ResearchFund: [
           {
             required: false,
             message: "请输入课题组/校内人员费",
-            trigger: "blur",
-          },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
             trigger: "blur",
           },
         ],
@@ -1259,37 +1249,15 @@ export default {
             message: "请输入劳务费（学生/临聘）",
             trigger: "blur",
           },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
         OtherFund: [
           { required: false, message: "请输入其他支出", trigger: "blur" },
-          {
-            max: 3,
-            message: "金额最高 3 位数",
-            trigger: "blur",
-          },
         ],
         BankName: [
           { required: true, message: "请输入开户银行", trigger: "blur" },
-          {
-            min: 5,
-            max: 20,
-            message: "长度在 5 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         BankAccount: [
           { required: true, message: "请输入银行账号", trigger: "blur" },
-          {
-            min: 15,
-            max: 20,
-            message: "长度在 15 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         isDutyFree: [
           { required: true, message: "请选择是否减免税", trigger: "blur" },
@@ -1306,22 +1274,11 @@ export default {
         ],
         ContractDuty: [
           { required: true, message: "请输入双方违约责任", trigger: "blur" },
-          {
-            min: 2,
-            message: "至少输入 2 个字符",
-            trigger: "blur",
-          },
         ],
 
         //买方信息
         BuyerName: [
           { required: true, message: "请输入买方名称", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
         ],
         BuyerCountry: [
           { required: true, message: "请选择买方国家", trigger: "blur" },
@@ -1340,75 +1297,27 @@ export default {
         ],
         BuyerPostCode: [
           { required: true, message: "请输入买方邮编", trigger: "blur" },
-          {
-            min: 6,
-            max: 6,
-            message: "请输入正确邮编",
-            trigger: "blur",
-          },
         ],
         BuyerContact: [
           { required: true, message: "请输入联系人", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "联系人名字在 2 到 20 位数",
-            trigger: "blur",
-          },
         ],
         BuyerTel: [
           { required: true, message: "请输入联系人手机", trigger: "blur" },
-          {
-            min: 3,
-            max: 12,
-            message: "电话在 3 到 12 位数",
-            trigger: "blur",
-          },
         ],
         BuyerLegalPerson: [
           { required: true, message: "买方法定代表人", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "法定代表人名字在 2 到 20 位数",
-            trigger: "blur",
-          },
         ],
         BuyerLegalEntityCode: [
           { required: false, message: "请输入法人代码", trigger: "blur" },
-          {
-            min: 9,
-            max: 9,
-            message: "法人代码为 9 位数",
-            trigger: "blur",
-          },
         ],
         BuyerEmail: [
           { required: true, message: "请输入电子邮件", trigger: "blur" },
-          {
-            min: 2,
-            max: 320,
-            message: "电子邮件在 2 到 320 位数",
-            trigger: "blur",
-          },
         ],
         BuyerRegisteredAddress: [
           { required: true, message: "请输入注册地址", trigger: "blur" },
-          {
-            min: 2,
-            max: 30,
-            message: "注册地址在 2 到 30 位数",
-            trigger: "blur",
-          },
         ],
         BuyerMailingAddress: [
           { required: true, message: "请输入买方通信地址", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "买方通信地址在 2 到 20 位数",
-            trigger: "blur",
-          },
         ],
 
         //技术市场信息
@@ -1470,22 +1379,34 @@ export default {
     };
   },
   computed: {
-    allScore: function() {
+    Function1: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum2 = parseFloat(this.FormData.SoftwareFund) || 0;
+      sum = sum2 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
+    },
+    Function2: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
+      sum = sum2 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
+    },
+    Function3: function() {
+      let sum = 0;
+      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
+      sum = sum3 / sum1 || 0;
+      return (sum * 100).toFixed(2) || 0;
+    },
+    DevelopFund: function() {
       let sum = 0;
       let sum1 = parseFloat(this.FormData.SoftwareFund) || 0;
       let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
       let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
       sum = sum1 + sum2 + sum3;
-      return sum || 0;
-    },
-    Contract: function() {
-      let sum = 0;
-      let sum1 = parseFloat(this.FormData.ContractFund) || 0;
-      let sum2 = parseFloat(this.FormData.ResearchFund) || 0;
-      let sum3 = parseFloat(this.FormData.ServiceFund) || 0;
-      let sum4 = parseFloat(this.FormData.OtherFund) || 0;
-      sum = sum1 + sum2 + sum3 + sum4;
-      return sum || 0;
+      return sum.toFixed(5) || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
@@ -1686,10 +1607,10 @@ export default {
           data2upload.append("HardwareFund", this.FormData.HardwareFund);
           data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
+          data2upload.append("DevelopFund", this.DevelopFund);
 
           //项目描述
           data2upload.append("SubjectPlace", this.t_sector);
-          data2upload.append("SubjectPaper", this.FormData.SubjectPaper);
           data2upload.append("Introduction", this.FormData.Introduction);
           data2upload.append("SubjectTime", this.FormData.SubjectTime);
           data2upload.append("StartTime", this.FormData.StartTime);
@@ -1699,6 +1620,11 @@ export default {
             this.FormData.RelyCenterSubject
           );
           data2upload.append("EntrustPlaceId", this.FormData.EntrustPlaceId);
+          let SubjectPaper = "";
+          for (let item in this.FormData.SubjectPaper) {
+            SubjectPaper += this.FormData.SubjectPaper[item] + " ";
+          }
+          data2upload.append("SubjectPaper", SubjectPaper);
 
           //合作单位表单
           data2upload.append("CooperateId", this.FormData.CooperateId);
@@ -1706,7 +1632,6 @@ export default {
           data2upload.append("FundNum", this.FormData.FundNum);
           data2upload.append("ContractName", this.FormData.ContractName);
           data2upload.append("ContractId", this.FormData.ContractId);
-          data2upload.append("ContractFund", this.FormData.ContractFund);
           data2upload.append(
             "CooperatePrincipal",
             this.FormData.CooperatePrincipal
