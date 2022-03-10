@@ -1,41 +1,60 @@
 <template>
-  <div class="manage-tea">
-    <h3>教师管理</h3>
+  <div class="manage-stu">
+    <h3>学生管理</h3>
     <el-form :inline="true" class="demo-form-inline" size="mini">
-      <el-form-item>
-        <el-select
-          v-model="form2Query.collegeId"
-          placeholder="全部学院"
-          style="width:140px"
-        >
-          <el-option label="全部学院" value=""></el-option>
-          <el-option
-            v-for="opt in collegeList"
-            :key="opt.id"
-            :label="opt.collegeName"
-            :value="opt.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-select
-          v-model="form2Query.sectorId"
-          placeholder="全部部门"
-          style="width:160px"
-        >
-          <el-option label="全部部门" value=""></el-option>
-          <el-option
-            v-for="opt in sectorList"
-            :key="opt.id"
-            :label="opt.sectorName"
-            :value="opt.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
+      <template>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.gradeId"
+            placeholder="全部年级"
+            @change="QueryClass"
+            style="width: 140px"
+          >
+            <el-option label="全部年级" value=""></el-option>
+            <el-option
+              v-for="opt in gradeList"
+              :key="opt.id"
+              :label="opt.gradeName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.majorId"
+            placeholder="全部专业"
+            @change="QueryClass"
+            style="width: 160px"
+          >
+            <el-option label="全部专业" value=""></el-option>
+            <el-option
+              v-for="opt in majorList"
+              :key="opt.id"
+              :label="opt.majorName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.classId"
+            placeholder=""
+            style="width: 180px"
+          >
+            <el-option label="全部班级" value=""></el-option>
+            <el-option
+              v-for="opt in classList"
+              :key="opt.id"
+              :label="opt.className"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </template>
       <el-form-item>
         <el-input
           v-model="form2Query.keyUsername"
-          placeholder="搜索教职工号"
+          placeholder="搜索学号"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -74,7 +93,7 @@
         v-model="col.ifShow"
         :key="col.value"
         size="small"
-        style="margin-right:10px"
+        style="margin-right: 10px"
         >{{ col.name }}</el-checkbox
       >
     </div>
@@ -97,6 +116,7 @@
           :label="col.name"
           sortable="custom"
           :key="col.value"
+          show-overflow-tooltip
         >
         </el-table-column>
       </template>
@@ -126,13 +146,37 @@
       width="80%"
     >
       <h4>在输入栏按下回车进行提交修改</h4>
-      <el-form label-position="left" label-width="50px" @submit.native.prevent>
+      <el-form label-position="left" label-width="50px">
         <el-form-item label="姓名">
           <el-input
-            v-model="selectTea.name"
+            v-model="selectStu.name"
+            @focus="focusField"
             @change="handleChange"
             name="name"
-            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="年级">
+          <el-input
+            v-model="selectStu.gradeId"
+            @focus="focusField"
+            @change="handleChange"
+            name="gradeId"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="专业">
+          <el-input
+            v-model="selectStu.majorName"
+            @focus="focusField"
+            @change="handleChange"
+            name="majorName"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="班级">
+          <el-input
+            v-model="selectStu.classNo"
+            @focus="focusField"
+            @change="handleChange"
+            name="classNo"
           ></el-input>
         </el-form-item>
         <el-collapse>
@@ -141,7 +185,7 @@
               <el-form-item>
                 <el-select
                   v-model="newRoleId"
-                  style="width:120px"
+                  style="width: 120px"
                   size="mini"
                   placeholder="请选择角色"
                 >
@@ -154,78 +198,30 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <template v-if="newRoleId === 3">
-                <el-form-item>
-                  <el-select
-                    v-model="form2Search.gradeId"
-                    placeholder="全部年级"
-                    @change="QueryClass"
-                    style="width:140px"
-                  >
-                    <el-option label="全部年级" value=""></el-option>
-                    <el-option
-                      v-for="opt in gradeList"
-                      :key="opt.id"
-                      :label="opt.gradeName"
-                      :value="opt.id"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item>
-                  <el-select
-                    v-model="form2Search.majorId"
-                    placeholder="全部专业"
-                    @change="QueryClass"
-                    style="width:160px"
-                  >
-                    <el-option label="全部专业" value=""></el-option>
-                    <el-option
-                      v-for="opt in majorList"
-                      :key="opt.id"
-                      :label="opt.majorName"
-                      :value="opt.id"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item>
-                  <el-select
-                    v-model="form2Search.classId"
-                    placeholder="请选择管理的班级"
-                    style="width:180px"
-                    multiple
-                  >
-                    <el-option
-                      v-for="opt in classList"
-                      :key="opt.id"
-                      :label="opt.className"
-                      :value="opt.id"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template>
             </el-form>
-            <el-button type="primary" @click="onSetRole" style="width:100%"
-              >设置</el-button
-            >
           </el-collapse-item>
         </el-collapse>
       </el-form>
+      <el-button type="primary" @click="onSetRole" style="width: 100%"
+        >设置</el-button
+      >
     </el-dialog>
   </div>
 </template>
 
 <script>
 import {
-  getTeaList,
-  initManageTea,
+  getStuList,
+  initManageStu,
   getClassList,
-  delTea,
-  resetTeaPass,
-  updateTea,
-  setRole,
-} from "../api";
+  delStu,
+  resetStuPass,
+  updateStu,
+  setAssistant,
+} from "../../api";
+import { mapGetters } from "vuex";
 export default {
-  name: "ManageTea",
+  name: "ManageStu",
   components: {},
   computed: {},
   data() {
@@ -233,18 +229,21 @@ export default {
       ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowUpdateDialog: false, //修改弹窗
-      selectTea: {}, //选中的教师
+      selectStu: {}, //选中的学生
+      selectField: "", //正在修改的表单域
       oldRoleId: "",
       newRoleId: "",
       // 数据列
       Columns: [
-        { name: "ID", value: "userId", width: "100", ifShow: true },
-        { name: "教职工号", value: "username", width: "150", ifShow: true },
+        { name: "编号", value: "userId", width: "100", ifShow: false },
+        { name: "学号", value: "username", width: "120", ifShow: true },
         { name: "姓名", value: "name", width: "120", ifShow: true },
         { name: "性别", value: "genderName", width: "80", ifShow: false },
+        { name: "年级", value: "gradeName", width: "100", ifShow: true },
+        { name: "专业", value: "majorName", width: "auto", ifShow: true },
         { name: "学院", value: "collegeName", width: "auto", ifShow: true },
-        { name: "部门", value: "sectorName", width: "180", ifShow: true },
-        { name: "角色", value: "roleName", width: "180", ifShow: true },
+        { name: "班号", value: "classNo", width: "100", ifShow: true },
+        { name: "角色", value: "roleName", width: "110", ifShow: true },
       ],
       currentPage: 1,
       pageSize: 10,
@@ -254,20 +253,13 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
-        collegeId: "",
-        sectorId: "",
-        keyUsername: "", //教职工
+        gradeId: "", //年级
+        majorId: "", //专业
+        classId: "", //班级
+        keyUsername: "", //用户id
         keyName: "", //姓名
       },
-      //用于筛选的表单
-      form2Search: {
-        gradeId: "",
-        majorId: "",
-        classId: "",
-      },
       //下拉栏内容列表
-      collegeList: [],
-      sectorList: [],
       gradeList: [],
       majorList: [],
       classList: [],
@@ -276,29 +268,51 @@ export default {
       multipleSelection: [],
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["roleId"]),
+  },
   mounted() {
     this.initQueryList();
     this.onQuery();
-    if (document.documentElement.clientWidth < 720) {
+    if (document.documentElement.clientWidth < 720 && this.roleId == 3) {
       //closeDebug console.log("触发移动端布局");
       this.ifSmall = true;
       this.paginationLayout = "prev, pager,next, ->, total";
       this.Columns = [
-        { name: "ID", value: "userId", width: "100", ifShow: false },
-        { name: "教职工号", value: "username", width: "150", ifShow: false },
+        { name: "编号", value: "userId", width: "100", ifShow: false },
+        { name: "学号", value: "username", width: "120", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
         { name: "性别", value: "genderName", width: "80", ifShow: false },
-        { name: "角色", value: "roleName", width: "auto", ifShow: true },
-        { name: "学院", value: "collegeName", width: "120", ifShow: false },
-        { name: "部门", value: "sectorName", width: "120", ifShow: false },
+        { name: "年级", value: "gradeName", width: "100", ifShow: false },
+        { name: "专业", value: "majorName", width: "auto", ifShow: false },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: false },
+        { name: "班号", value: "classNo", width: "100", ifShow: true },
+        { name: "角色", value: "roleName", width: "auto", ifShow: false },
+      ];
+    } else if (
+      document.documentElement.clientWidth < 720 &&
+      this.roleId !== 3
+    ) {
+      //closeDebug console.log("触发移动端布局");
+      this.ifSmall = true;
+      this.paginationLayout = "prev, pager,next, ->, total";
+      this.Columns = [
+        { name: "编号", value: "userId", width: "100", ifShow: false },
+        { name: "学号", value: "username", width: "120", ifShow: false },
+        { name: "姓名", value: "name", width: "80", ifShow: true },
+        { name: "性别", value: "genderName", width: "80", ifShow: false },
+        { name: "年级", value: "gradeName", width: "100", ifShow: false },
+        { name: "专业", value: "majorName", width: "auto", ifShow: true },
+        { name: "学院", value: "collegeName", width: "auto", ifShow: false },
+        { name: "班号", value: "classNo", width: "100", ifShow: false },
+        { name: "角色", value: "roleName", width: "auto", ifShow: false },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initManageTea()
+      initManageStu()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
@@ -306,18 +320,16 @@ export default {
           this.gradeList = obj.grade;
           this.majorList = obj.major;
           this.roleList = obj.role;
-          this.collegeList = obj.college;
-          this.sectorList = obj.sector;
         })
         .catch((failResponse) => {});
     },
     //更新可供筛选的班级列表
     QueryClass() {
       let _this = this;
-      //closeDebug console.log("选中的筛选值","年级：",this.form2Search.gradeId,"专业",this.form2Search.majorId);
+      //closeDebug console.log("选中的筛选值","年级：",this.form2Query.gradeId,"专业",this.form2Query.majorId,"班级",this.form2Query.classId);
       let params = new URLSearchParams();
-      params.append("gradeId", this.form2Search.gradeId);
-      params.append("majorId", this.form2Search.majorId);
+      params.append("gradeId", this.form2Query.gradeId);
+      params.append("majorId", this.form2Query.majorId);
       getClassList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取班级列表---------------");
@@ -326,7 +338,6 @@ export default {
         })
         .catch((failResponse) => {});
     },
-
     //处理多选框变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -335,11 +346,11 @@ export default {
     //处理重置用户密码
     handleResetPass() {
       let params = new URLSearchParams();
-      for (let tea in this.multipleSelection) {
-        params.append("ids[]", this.multipleSelection[tea].userId);
+      for (let stu in this.multipleSelection) {
+        params.append("ids[]", this.multipleSelection[stu].userId);
       }
       let _this = this;
-      resetTeaPass(params)
+      resetStuPass(params)
         .then((res) => {
           //closeDebug console.log("-----------重置用户密码---------------");
           if (res.code === 0) {
@@ -357,14 +368,14 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    //处理删除教师
+    //处理删除学生
     handleDel() {
       let params = new URLSearchParams();
-      for (let tea in this.multipleSelection) {
-        params.append("teacherNos[]", this.multipleSelection[tea].teaNo);
+      for (let stu in this.multipleSelection) {
+        params.append("studentNos[]", this.multipleSelection[stu].stuNo);
       }
       let _this = this;
-      delTea(params)
+      delStu(params)
         .then((res) => {
           //closeDebug console.log("-----------删除用户---------------");
           if (res.code === 0) {
@@ -401,20 +412,28 @@ export default {
     //处理修改信息
     select2Change(index, row) {
       //closeDebug console.log("点击编辑", index, row);
-      this.selectTea = row;
+      this.selectStu = row;
       this.oldRoleId = row.roleId;
       this.newRoleId = row.roleId;
       this.ifShowUpdateDialog = true;
     },
+    focusField(field) {
+      //closeDebug console.log("正在修改：",field)
+      this.selectField = field.target.name;
+    },
     handleChange(val) {
-      //closeDebug console.log("onchange:", val);
+      //closeDebug console.log("onchange:",val)
       let params = new URLSearchParams();
-      params.append("username", this.selectTea.username);
-      params.append("newName", this.selectTea.name);
+      params.append("modifiedField", this.selectField);
+      params.append("stuNo", this.selectStu.stuNo);
+      params.append("newName", this.selectStu.name);
+      params.append("newGradeId", this.selectStu.gradeId);
+      params.append("newMajorName", this.selectStu.majorName);
+      params.append("newClassNo", this.selectStu.classNo);
       let _this = this;
-      updateTea(params)
+      updateStu(params)
         .then((res) => {
-          //closeDebug console.log("-----------更新教师信息---------------");
+          //closeDebug console.log("-----------删除用户---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -432,28 +451,24 @@ export default {
     },
     onSetRole() {
       let params = new URLSearchParams();
-      params.append("ids[]", this.selectTea.userId);
-      params.append("usernames[]", this.selectTea.username);
+      params.append("ids[]", this.selectStu.userId);
+      params.append("usernames[]", this.selectStu.username);
       params.append("roleId", this.newRoleId);
       params.append("oldroleIds[]", this.oldRoleId);
-      if (this.newRoleId === 3) {
-        for (let item in this.form2Search.classId) {
-          params.append("classIds[]", this.form2Search.classId[item]);
-        }
+      if (this.newRoleId === 6) {
+        params.append("classIds[]", this.selectStu.classId);
       }
+      //当设置的角色为学生助理时，添加其对应的班级id并与之绑定
       let _this = this;
-      setRole(params)
+      setAssistant(params)
         .then((res) => {
-          //closeDebug console.log("-----------设置教师角色---------------");
+          //closeDebug console.log("-----------设置学生角色---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
               type: "success",
             });
             _this.onQuery();
-            _this.form2Search.gradeId = "";
-            _this.form2Search.majorId = "";
-            _this.form2Search.classId = "";
             _this.ifShowUpdateDialog = false;
           } else {
             _this.$message({
@@ -471,13 +486,14 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("collegeId", this.form2Query.collegeId);
-      params.append("sectorId", this.form2Query.sectorId);
+      params.append("gradeId", this.form2Query.gradeId); //年级
+      params.append("majorId", this.form2Query.majorId); //专业
+      params.append("classId", this.form2Query.classId); //班级
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("order", this.orderMode); //排序方式
       params.append("field", this.orderField); //排序字段
-      getTeaList(params)
+      getStuList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

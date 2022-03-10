@@ -184,7 +184,7 @@ import {
   getNewClassList,
   initManageClass,
   delClass,
-} from "../api";
+} from "../../api";
 export default {
   name: "ManageClass",
   components: {},

@@ -1,6 +1,6 @@
 <template>
-  <div class="review">
-    <h3 v-show="!ifShowDetail">教师奖项审核</h3>
+  <div class="query-tea">
+    <h3 v-show="!ifShowDetail">管理教师获奖</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
@@ -71,6 +71,16 @@
         <el-form-item>
           <el-button type="primary" @click="onQuery">筛选</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onExportXLS"
+            >导出获奖信息(XLS)</el-button
+          >
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onExportZIP"
+            >导出获奖图片(ZIP)</el-button
+          >
+        </el-form-item>
       </el-form>
       <div class="check-group">
         <span>显示列：</span>
@@ -97,17 +107,38 @@
             :label="col.name"
             sortable="custom"
             :key="col.value"
+            show-overflow-tooltip
           >
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="80" fixed="right" align="center">
+        <el-table-column
+          label="操作"
+          :width="teaWidth"
+          fixed="right"
+          align="center"
+        >
           <template slot-scope="scope">
             <el-button
               size="mini"
               @click="handleShow(scope.$index, scope.row)"
-              :disabled="ifButtonTrue"
+              style="margin-right:10px"
               >查看</el-button
             >
+            <el-popconfirm
+              confirm-button-text="确认删除"
+              cancel-button-text="不用了"
+              confirm-button-type="danger"
+              cancel-button-type=""
+              icon="el-icon-info"
+              icon-color="red"
+              title="警告：确认删除？此操作不可逆！"
+              @confirm="handleDel(scope.$index, scope.row)"
+              v-if="windowWidth >= 720"
+            >
+              <el-button size="mini" type="danger" slot="reference"
+                >删除</el-button
+              >
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -127,50 +158,58 @@
     <TeaDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
     </TeaDetail>
     <el-row type="flex" justify="center">
-      <el-button
-        v-show="ifShowDetail"
-        type="danger"
-        style="margin:10px"
-        @click="handleNotPass()"
-        >驳回</el-button
+      <el-popconfirm
+        confirm-button-text="确认删除"
+        cancel-button-text="不用了"
+        confirm-button-type="danger"
+        cancel-button-type=""
+        icon="el-icon-info"
+        icon-color="red"
+        title="警告：确认删除？此操作不可逆！"
+        @confirm="handleInDel()"
+        v-if="windowWidth <= 720"
       >
-      <el-button
-        v-show="ifShowDetail"
-        type="success"
-        style="margin:10px"
-        @click="handlePass()"
-        >通过</el-button
-      >
+        <el-button
+          v-show="ifShowDetail"
+          style="margin:10px"
+          type="primary"
+          slot="reference"
+          v-if="roleId === 1"
+          >删除记录</el-button
+        >
+      </el-popconfirm>
     </el-row>
   </div>
 </template>
 
 <script>
 import {
-  getReviewTeacherAwardList,
+  getTeaAwardList,
   getTeaDetail,
   initQueryTea,
-  passAward,
-  notPassAward,
+  delTeaAward,
+  exportTeaAwardXLS,
+  exportTeaAwardZIP,
 } from "../../api";
 import TeaDetail from "../../components/TeaDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review",
+  name: "QueryTea",
   components: { TeaDetail },
   computed: {},
   data() {
     return {
-      reviewId: 0,
+      windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
+      selectId: 0,
       ifSmall: false,
-      ifButtonTrue: true,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowDetail: false,
+      teaWidth: 150,
       // 数据列
       Columns: [
-        { name: "教职工号", value: "username", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: true },
         { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "学院名称", value: "collegeName", width: "180", ifShow: true },
+        { name: "学院名称", value: "collegeName", width: "120", ifShow: true },
         { name: "部门名称", value: "sectorName", width: "120", ifShow: true },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
         { name: "获奖名次", value: "awardPlace", width: "120", ifShow: true },
@@ -200,17 +239,24 @@ export default {
       rankList: [],
     };
   },
+  watch: {
+    windowWidth(val) {},
+  },
+  computed: {
+    ...mapGetters(["roleId"]),
+  },
   mounted() {
     this.initQueryList();
     this.onQuery();
     if (document.documentElement.clientWidth < 720) {
       //closeDebug console.log("触发移动端布局");
-      this.paginationLayout = "prev, pager,next, ->, total";
       this.ifSmall = true;
+      this.paginationLayout = "prev, pager,next, ->, total";
+      this.teaWidth = 80;
       this.Columns = [
         { name: "教职工号", value: "username", width: "120", ifShow: false },
         { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "学院名称", value: "collegeName", width: "120", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "240", ifShow: false },
         { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
         { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
         { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
@@ -232,8 +278,8 @@ export default {
           this.rankList = obj.rank;
         })
         .catch((failResponse) => {});
-      this.ifButtonTrue = false;
     },
+
     //数据格式化(还没用到)
     formatter(row, column) {
       return row.address;
@@ -255,8 +301,7 @@ export default {
       //closeDebug console.log("点击查看", index, row);
       let params = new URLSearchParams();
       params.append("id", row.id);
-      this.reviewId = row.id;
-      //console.log(this.reviewId, this.reviewer);
+      this.selectId = row.id;
       getTeaDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人奖项详情---------------");
@@ -266,19 +311,16 @@ export default {
         })
         .catch((failResponse) => {});
       this.ifShowDetail = true;
-      this.ifButtonTrue = true;
     },
-    //处理通过奖项
-    handlePass() {
-      //closeDebug console.log("点击通过");
+    //处理删除奖项
+    handleDel(index, row) {
+      //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
-      params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "1");
+      params.append("id", row.id);
       let _this = this;
-      passAward(params)
+      delTeaAward(params)
         .then((res) => {
-          //closeDebug console.log("-----------通过奖项---------------");
+          //closeDebug console.log("-----------删除奖项---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -293,19 +335,16 @@ export default {
           }
         })
         .catch((failResponse) => {});
-      this.goBack();
     },
-    //处理驳回奖项
-    handleNotPass() {
-      //closeDebug console.log("点击驳回");
+    //奖项详情页面处理删除奖项
+    handleInDel() {
+      //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
-      params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "2");
+      params.append("id", this.selectId);
       let _this = this;
-      notPassAward(params)
+      delTeaAward(params)
         .then((res) => {
-          //closeDebug console.log("-----------驳回奖项---------------");
+          //closeDebug console.log("-----------删除奖项---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -325,8 +364,7 @@ export default {
     //返回重选奖项
     goBack() {
       this.ifShowDetail = false;
-      this.reviewId = 0;
-      this.ifButtonTrue = false;
+      this.selectId = 0;
     },
     //处理数据筛选
     onQuery() {
@@ -343,7 +381,7 @@ export default {
       params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
       params.append("order", this.orderMode); //奖项名
       params.append("field", this.orderField); //奖项名
-      getReviewTeacherAwardList(params)
+      getTeaAwardList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);
@@ -351,7 +389,6 @@ export default {
           this.dataCount = res.count;
         })
         .catch((failResponse) => {});
-      this.ifButtonTrue = false;
     },
     //处理排序后重新获取数据
     onSortChange(res) {
@@ -366,9 +403,68 @@ export default {
       //closeDebug console.log(this.orderMode, this.orderField);
       this.onQuery();
     },
-  },
-  computed: {
-    ...mapGetters(["reviewer", "roleId"]),
+    //处理导出教师奖项表格文件
+    onExportXLS() {
+      //closeDebug console.log("export XLS:", this.form2Query);
+      //参数绑定「筛选参数」
+      let params = new URLSearchParams();
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
+      params.append("keyUsername", this.form2Query.keyUsername); //用户id
+      params.append("keyName", this.form2Query.keyName); //姓名
+      params.append("rankId", this.form2Query.rankId); //获奖等级
+      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
+      exportTeaAwardXLS(params)
+        .then((res) => {
+          //closeDebug console.log("-----------导出教师奖项表格文件---------------");
+          //closeDebug console.log(res);
+          const blob = new Blob([res.data]);
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
+          //new一个时间对象
+          var nowDate = new Date().toLocaleDateString();
+          downloadElement.download = decodeURIComponent(
+            nowDate + "_教师奖项.xls"
+          );
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        })
+        .catch((failResponse) => {});
+    },
+    //处理导出教师奖项表格文件
+    onExportZIP() {
+      //closeDebug console.log("export ZIP:", this.form2Query);
+      //参数绑定「筛选参数」
+      let params = new URLSearchParams();
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
+      params.append("keyUsername", this.form2Query.keyUsername); //用户id
+      params.append("keyName", this.form2Query.keyName); //姓名
+      params.append("rankId", this.form2Query.rankId); //获奖等级
+      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
+      exportTeaAwardZIP(params)
+        .then((res) => {
+          //closeDebug console.log("-----------导出教师奖项表格文件---------------");
+          //closeDebug console.log(res);
+          const blob = new Blob([res.data]);
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
+          //new一个时间对象
+          var nowDate = new Date().toLocaleDateString();
+          downloadElement.download = decodeURIComponent(
+            nowDate + "_教师奖项图片.zip"
+          );
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        })
+        .catch((failResponse) => {});
+    },
   },
 };
 </script>

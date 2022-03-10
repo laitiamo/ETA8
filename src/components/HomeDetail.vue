@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import Inform from "../components/Inform.vue";
+import Inform from "./Inform.vue";
 export default {
-  name: "Welcome",
+  name: "HomeDetail",
   components: { Inform },
   props: [
     "name",

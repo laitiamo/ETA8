@@ -1,7 +1,7 @@
 <template>
   <el-card class="success-box">
     <div class="success-page">
-      <img :class="size" src="../../../assets/img/success.jpg" />
+      <img :class="size" src="../assets/img/success.jpg" />
       <div class="success-desc">上传成功！等待管理员审核中...</div>
       <div class="success-handle">
         <el-row :gutter="20">

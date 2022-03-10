@@ -4,7 +4,7 @@
     <el-divider></el-divider>
     <el-card class="box-card">
       <el-divider content-position="left"
-        ><span class="div-font">负责人教师信息</span></el-divider
+        ><span class="div-font">项目负责人信息</span></el-divider
       >
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24"
@@ -19,6 +19,9 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >单位：{{ detailData.place }}</el-col
         >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >学院：{{ detailData.college }}</el-col
+        >
       </el-row>
       <el-divider content-position="left"
         ><span class="div-font">项目基础信息</span></el-divider
@@ -30,7 +33,11 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >项目参与者：{{ detailData.writer }}</el-col
         >
-        <el-col class="detail-info" :span="12" :xs="24"
+        <el-col
+          class="detail-info"
+          :span="12"
+          :xs="24"
+          v-if="detailData.levelId !== 2"
           >项目类型：{{ detailData.rank }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
@@ -110,49 +117,50 @@
           <el-col class="detail-info" :span="12" :xs="24"
             >外协经费（万）：{{ detailData.OutboundFund }}</el-col
           >
+          <el-col class="detail-info" :span="12" :xs="24">
+            技术开发费（万）：{{ detailData.DevelopFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            其他支出（万）：{{ detailData.OtherFund }}
+          </el-col>
         </el-row>
-
+        <el-divider content-position="left"
+          ><span class="div-font">合同预算</span></el-divider
+        >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24">
+            合同金额（万）：{{ detailData.ContractFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            课题组/校内人员费（万）：{{ detailData.ResearchFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            劳务费（万）：{{ detailData.ServiceFund }}
+          </el-col>
+        </el-row>
         <el-divider content-position="left"
           ><span class="div-font">项目描述</span>
         </el-divider>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >项目简介：{{ detailData.Introduction }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >依托中心项目：{{ detailData.RelyCenterSubject }}</el-col
+            >横向项目性质：{{ detailData.BelongName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >委托单位性质：{{ detailData.EntrustName }}</el-col
           >
-        </el-row>
-        <el-divider content-position="left"
-          ><span class="div-font">合作单位</span></el-divider
-        >
-        <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同名称：{{ detailData.ContractName }}</el-col
+            >合同类别：{{ detailData.SecContractType }}</el-col
+          >
+          <el-col
+            class="detail-info"
+            :span="12"
+            :xs="24"
+            v-if="detailData.SecContractType == '专利技术转让'"
+          >
+            拓展合同类别：{{ detailData.ThirdContractType }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >负责人：{{ detailData.CooperatePrincipal }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同编号：{{ detailData.ContractNum }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >经费号：{{ detailData.FundNum }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合作单位：{{ detailData.CooperateName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同类别：{{ detailData.ContractType }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >银行名称：{{ detailData.BankName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >银行账号：{{ detailData.BankAccount }}</el-col
+            >签订时间：{{ detailData.SignTime }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >双方违约责任：{{ detailData.ContractDuty }}</el-col
@@ -177,21 +185,10 @@
             >减免税号：{{ detailData.DutyFreeId }}</el-col
           >
         </el-row>
-        <el-divider content-position="left"
-          ><span class="div-font">合作经费</span></el-divider
-        ><el-row :gutter="20">
-          <el-col class="detail-info" :span="12" :xs="24">
-            合同金额（万）：{{ detailData.ContractFund }}
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            课题组/校内人员费（万）：{{ detailData.ResearchFund }}
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            劳务费（万）：{{ detailData.ServiceFund }}
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            其他支出（万）：{{ detailData.OtherFund }}
-          </el-col>
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >项目简介：{{ detailData.Introduction }}</el-col
+          >
         </el-row>
         <el-divider content-position="left"
           ><span class="div-font">买方信息</span></el-divider
@@ -289,7 +286,7 @@
             >国际合作与交流费（万）：{{ detailData.InternationalFund }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >设备购置费（万）：{{ detailData.HardwareFund }}</el-col
+            >设备购置费（万）：{{ detailData.DeviceFund }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >专家咨询费（万）：{{ detailData.ConsultFund }}</el-col
@@ -303,6 +300,15 @@
           <el-col class="detail-info" :span="12" :xs="24"
             >管理费（万）：{{ detailData.PatentFund }}</el-col
           >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >硬件费用（万）：{{ detailData.HardwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >留校经费（万）：{{ detailData.StaySchoolFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >外拨费用（万）：{{ detailData.OutboundFund }}</el-col
+          >
         </el-row>
 
         <el-divider content-position="left"
@@ -310,7 +316,34 @@
         >
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >研究类别：{{ detailData.ResearchName }}</el-col
+            >课题类型：{{ detailData.TopicName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >项目分类：{{ detailData.CategoryName }} --
+            {{ detailData.SecCategoryName }}</el-col
+          ></el-row
+        ><el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >主项目名称：{{ detailData.MainProjectName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >主课题名称：{{ detailData.MainSubjectName }}</el-col
+          > </el-row
+        ><el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >委托单位：{{ detailData.EntrustName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >申请代码：{{ detailData.ApplicationCode }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >研究领域：{{ detailData.ResearchAreaName }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >项目简介：{{ detailData.Introduction }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >备注：{{ detailData.Remarks }}</el-col
           >
         </el-row>
         <el-row :gutter="20">
@@ -335,9 +368,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >此合同是否可以进行技术认证并免税：{{
-              detailData.IsDutyFree
-            }}</el-col
+            >是否办理减免税：{{ detailData.IsDutyFree }}</el-col
           >
           <el-col
             class="detail-info"
@@ -353,28 +384,23 @@
         >
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >统计归属：{{ detailData.BelongName }}</el-col
+            >纵向项目性质：{{ detailData.BelongName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >一级学科：{{ detailData.TypeName }}</el-col
+            >项目来源：{{ detailData.SourceName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >委托单位性质：{{ detailData.EntrustName }}</el-col
+            >一级学科：{{ detailData.FirstType }} --
+            {{ detailData.SecondType }} -- {{ detailData.ThirdType }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >课题类型：{{ detailData.TopicName }}</el-col
+            >研究类别：{{ detailData.ResearchName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >主项目名称：{{ detailData.MainProjectName }}</el-col
+            >国民经济行业：{{ detailData.EconomicName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >申请代码：{{ detailData.ApplicationCode }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >项目简介：{{ detailData.Introduction }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >备注：{{ detailData.Remarks }}</el-col
+            >社会经济服务目标：{{ detailData.SocietyName }}</el-col
           >
         </el-row>
 
@@ -383,57 +409,19 @@
         >
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
-            >合作单位：{{ detailData.CooperateName }}</el-col
+            >合作单位名称：{{ detailData.CooperateName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >合同编号：{{ detailData.ContractNum }}</el-col
+            >合作单位类型：{{ detailData.CooperateTypeName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
-            >经费编号：{{ detailData.FundNum }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同名称：{{ detailData.ContractName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同类型：{{ detailData.ContractType }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同经费：{{ detailData.ContractFund }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >合同负责人：{{ detailData.CooperatePrincipal }}</el-col
+            >合同经费（万）：{{ detailData.ContractFund }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >银行名称：{{ detailData.BankName }}</el-col
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >银行账号：{{ detailData.BankAccount }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >双方违约责任：{{ detailData.ContractDuty }}</el-col
-          >
-        </el-row>
-        <el-divider content-position="left"
-          ><span class="div-font">技术市场信息</span></el-divider
-        >
-        <el-row :gutter="20">
-          <el-col class="detail-info" :span="12" :xs="24"
-            >支付方式：{{ detailData.Pay }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >国民经济行业：{{ detailData.EconomicName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >社会经济服务目标：{{ detailData.SocietyName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >计划来源：{{ detailData.SourceName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >技术邻域分类一级：{{ detailData.TechnicalName }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >知识产权类别：{{ detailData.PropertyName }}</el-col
           >
         </el-row>
       </template>
@@ -500,7 +488,7 @@
           <el-button
             type="primary"
             @click="onSelectPaper"
-            v-if="detailData.reviewId !== 1"
+            v-if="detailData.reviewId !== 1 && detailData.reviewId !== 3"
             >查看成果</el-button
           >
         </el-col>
@@ -514,7 +502,7 @@ import {
   getSubjectPaperList,
   deleteSubjectPaper,
   exportTeaSubjectPDF,
-} from "../../api";
+} from "../api";
 export default {
   name: "SubjectDetail",
   data() {
@@ -531,7 +519,12 @@ export default {
         },
         { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
         { name: "成果单位", value: "paperPlace", width: "auto", ifShow: true },
-        { name: "成果审核状态", value: "PaperReviewName", width: "auto", ifShow: true },
+        {
+          name: "成果审核状态",
+          value: "PaperReviewName",
+          width: "auto",
+          ifShow: true,
+        },
         {
           name: "记录上传时间",
           value: "PaperCreateAt",

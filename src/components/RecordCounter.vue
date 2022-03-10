@@ -1,30 +1,30 @@
 <template>
   <el-card class="info-card">
     <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-      <el-col :span="5" :xs="7"
+      <el-col :span="7" :xs="8"
         ><div class="item-container">
-          <div class="item-title">论文</div>
+          <div class="item-title">院计论文</div>
           <div class="item-content">{{ paperNum }}</div>
         </div></el-col
       >
       <el-divider direction="vertical"></el-divider>
-      <el-col :span="5" :xs="7"
+      <el-col :span="7" :xs="8"
         ><div class="item-container">
-          <div class="item-title">著作</div>
+          <div class="item-title">院计著作</div>
           <div class="item-content">{{ bookNum }}</div>
         </div></el-col
       >
       <el-divider direction="vertical"></el-divider>
-      <el-col :span="5" :xs="7"
+      <el-col :span="7" :xs="8"
         ><div class="item-container">
-          <div class="item-title">专利</div>
+          <div class="item-title">院计专利</div>
           <div class="item-content">{{ patentNum }}</div>
         </div></el-col
       >
       <el-divider direction="vertical"></el-divider>
-      <el-col :span="5" :xs="7"
+      <el-col :span="7" :xs="8"
         ><div class="item-container">
-          <div class="item-title">项目</div>
+          <div class="item-title">院计项目</div>
           <div class="item-content">{{ subjectNum }}</div>
         </div></el-col
       >

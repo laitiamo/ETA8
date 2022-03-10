@@ -1,7 +1,51 @@
 <template>
-  <div class="Review-Record">
+  <div class="record-review">
     <h3 v-show="!ifShowDetail">成果审核</h3>
     <div v-show="!ifShowDetail">
+      <el-form :inline="true" class="demo-form-inline" size="mini">
+        <el-form-item>
+          <el-select
+            v-model="form2Query.collegeId"
+            placeholder="全部学院"
+            style="width:140px"
+          >
+            <el-option label="全部学院" value=""></el-option>
+            <el-option
+              v-for="opt in collegeList"
+              :key="opt.id"
+              :label="opt.collegeName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.sectorId"
+            placeholder="全部部门"
+            style="width:160px"
+          >
+            <el-option label="全部部门" value=""></el-option>
+            <el-option
+              v-for="opt in sectorList"
+              :key="opt.id"
+              :label="opt.sectorName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyName"
+            placeholder="搜索负责人姓名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyUsername"
+            placeholder="搜索教职工号"
+          ></el-input>
+        </el-form-item>
+      </el-form>
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-select
@@ -12,14 +56,14 @@
           >
             <el-option label="全部类型" value=""></el-option>
             <el-option
-              v-for="opt in rankList1"
+              v-for="opt in typeList"
               :key="opt.id"
               :label="opt.typeName"
               :value="opt.id"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form2Query.typeId !=''">
+        <el-form-item v-if="form2Query.typeId != ''">
           <el-select
             v-model="form2Query.rankId"
             placeholder="全部等级"
@@ -27,7 +71,7 @@
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
-              v-for="opt in rankList2"
+              v-for="opt in rankList"
               :key="opt.id"
               :label="opt.rankName"
               :value="opt.id"
@@ -36,19 +80,19 @@
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyAwardNum"
+            v-model="form2Query.keyPaperNum"
             placeholder="搜索成果号"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyAwardName"
+            v-model="form2Query.keyPaperName"
             placeholder="搜索成果名称"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyAwardPlace"
+            v-model="form2Query.keyPaperPlace"
             placeholder="搜索所属单位"
           ></el-input>
         </el-form-item>
@@ -142,10 +186,10 @@ import {
   passRecord,
   notPassRecord,
 } from "../../api";
-import PaperDetail from "../../components/TeacherSide/PaperDetail.vue";
+import PaperDetail from "../../components/PaperDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review-Record",
+  name: "record-review",
   components: { PaperDetail },
   computed: {},
   data() {
@@ -161,6 +205,9 @@ export default {
         { name: "成果名称", value: "paperName", width: "200", ifShow: true },
         { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
         { name: "成果等级", value: "rankName", width: "120", ifShow: true },
+        { name: "负责人姓名", value: "name", width: "120", ifShow: true },
+        { name: "教职工号", value: "username", width: "120", ifShow: false },
+        { name: "所属学院", value: "collegeName", width: "240", ifShow: false },
         { name: "审核状态", value: "reviewName", width: "120", ifShow: true },
         {
           name: "成果上传时间",
@@ -184,15 +231,21 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
+        collegeId: "",
+        sectorId: "",
+        keyUsername: "", //用户id
+        keyName: "", //姓名
         typeId: "", //成果类型
         rankId: "", //成果记录等级
-        keyAwardNum: "", //成果号
-        keyAwardName: "", //成果名
-        keyAwardPlace: "", //成果单位
+        keyPaperNum: "", //成果号
+        keyPaperName: "", //成果名
+        keyPaperPlace: "", //成果单位
       },
       //下拉栏内容列表
-      rankList1: [],
-      rankList2: [],
+      typeList: [],
+      rankList: [],
+      collegeList: [],
+      sectorList: [],
     };
   },
   mounted() {
@@ -207,6 +260,10 @@ export default {
         { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
         { name: "所属单位", value: "paperPlace", width: "200", ifShow: false },
         { name: "成果等级", value: "rankName", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: true },
+        { name: "姓名", value: "name", width: "80", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "240", ifShow: false },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
         { name: "审核状态", value: "reviewName", width: "120", ifShow: false },
         {
@@ -226,7 +283,9 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.rank;
+          this.typeList = obj.type;
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
         })
         .catch((failResponse) => {});
     },
@@ -240,7 +299,7 @@ export default {
         .then((res) => {
           //closeDebug console.log("-----------获取类型列表---------------");
           //closeDebug console.log(res);
-          _this.rankList2 = res;
+          _this.rankList = res;
         })
         .catch((failResponse) => {});
     },
@@ -345,11 +404,14 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
+      params.append("keyUsername", this.form2Query.keyUsername); //用户id
+      params.append("keyName", this.form2Query.keyName); //姓名
       params.append("typeId", this.form2Query.typeId); //成果类型
       params.append("rankId", this.form2Query.rankId); //成果等级
-      params.append("keyPaperNum", this.form2Query.keyAwardNum); //成果名
-      params.append("keyPaperName", this.form2Query.keyAwardName); //成果名
-      params.append("keyPaperPlace", this.form2Query.keyAwardPlace); //期刊名
+      params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
+      params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
       params.append("order", this.orderMode);
       params.append("field", this.orderField);
       getReviewRecordList(params)

@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import { getMyPaperList, getPaperDetail } from "../../api";
-import PaperDetail from "../../components/TeacherSide/PaperDetail.vue";
+import { getMyPaperList, getPaperDetail } from "../api";
+import PaperDetail from "../components/PaperDetail.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Mine-Paper",
@@ -105,6 +105,7 @@ export default {
         { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
         { name: "成果类型", value: "typeName", width: "120", ifShow: true },
         { name: "期刊等级", value: "rankName", width: "120", ifShow: true },
+        { name: "负责人", value: "name", width: "120", ifShow: true },
         {
           name: "成果上传时间",
           value: "createAt",
@@ -140,6 +141,7 @@ export default {
         { name: "期刊", value: "paperPlace", width: "200", ifShow: false },
         { name: "类型", value: "typeName", width: "120", ifShow: false },
         { name: "等级", value: "rankName", width: "120", ifShow: false },
+        { name: "负责人", value: "name", width: "120", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
       ];
     }

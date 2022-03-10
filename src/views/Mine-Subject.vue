@@ -147,8 +147,8 @@ import {
   getPaperSelectList,
   updateSubjectPaper,
   ApplyFinishSubject,
-} from "../../api";
-import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
+} from "../api";
+import SubjectDetail from "../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Mine-Subject",
@@ -173,6 +173,7 @@ export default {
         { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
         { name: "项目类别", value: "rankName", width: "120", ifShow: true },
         { name: "项目级别", value: "levelName", width: "120", ifShow: true },
+        { name: "负责人", value: "name", width: "120", ifShow: true },
         {
           name: "记录上传时间",
           value: "createAt",
@@ -230,6 +231,7 @@ export default {
         { name: "名称", value: "subjectName", width: "auto", ifShow: true },
         { name: "类别", value: "rankName", width: "120", ifShow: false },
         { name: "级别", value: "levelName", width: "120", ifShow: false },
+        { name: "负责人", value: "name", width: "120", ifShow: false },
         {
           name: "上传时间",
           value: "createAt",

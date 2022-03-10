@@ -39,7 +39,7 @@
               <i class="el-icon-help"></i>
               <span slot="title" class="menu-title">审核记录</span>
             </template>
-            <el-menu-item index="/eta/award-review" v-if="roleId !== 7"
+            <el-menu-item index="/eta/review-stu" v-if="roleId !== 7"
               >学生奖项审核</el-menu-item
             >
             <el-menu-item
@@ -49,7 +49,7 @@
             >
             <template v-if="roleId !== 3 && roleId !== 6">
               <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
-              <el-menu-item index="/eta/subject-review">项目审核</el-menu-item>
+              <el-menu-item index="/eta/review-subject">项目审核</el-menu-item>
               <el-menu-item index="/eta/subject-finish">项目结题</el-menu-item>
             </template>
           </el-submenu>
@@ -240,7 +240,7 @@
                   <i class="el-icon-help"></i>
                   <span slot="title" class="menu-title">审核记录</span>
                 </template>
-                <el-menu-item index="/eta/award-review" v-if="roleId !== 7"
+                <el-menu-item index="/eta/review-stu" v-if="roleId !== 7"
                   >学生奖项审核</el-menu-item
                 >
                 <el-menu-item
@@ -252,7 +252,7 @@
                   <el-menu-item index="/eta/record-review"
                     >成果审核</el-menu-item
                   >
-                  <el-menu-item index="/eta/subject-review"
+                  <el-menu-item index="/eta/review-subject"
                     >项目审核</el-menu-item
                   >
                   <el-menu-item index="/eta/subject-finish"

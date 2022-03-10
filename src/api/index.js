@@ -53,7 +53,6 @@ export const getImage = (path) => getImg(`${path}`);
  * 返回值说明:
  * image: 首页轮播图
  * inform: 广播消息
- * l_notice:  公告
  * l_number:  个人奖状数
  * l_document: 总奖项数
  * l_student: 学生奖项数
@@ -80,7 +79,6 @@ export const initHome = () => get(`eta8/home`);
  * 返回值说明:
  * image: 首页轮播图
  * inform: 广播消息
- * l_notice:  公告
  * l_number:  个人奖状数
  * l_document: 总奖项数
  * l_student: 学生奖项数
@@ -159,8 +157,7 @@ export const getMySubjectList = (params) =>
  * 获取个人项目列表（GET）
  * @returns
  */
-export const listPerSubject = () =>
-  get(`eta8/mine/listPerSubject`);
+export const listPerSubject = () => get(`eta8/mine/listPerSubject`);
 
 /**
  * 获取学生个人奖项详情（GET）
@@ -243,6 +240,20 @@ export const QuerySecondList = (params) =>
   get(`eta8/subject/listSecond`, params);
 
 /**
+ * 获取合同类型二级目录列表
+ * @returns
+ */
+export const QueryContractList = (params) =>
+  get(`eta8/subject/listContract`, params);
+
+/**
+ * 获取横向项目分类二级目录列表
+ * @returns
+ */
+export const QuerySecCategoryList = (params) =>
+  get(`eta8/subject/listSecCategory`, params);
+
+/**
  * 获取国民经济列表三级列表
  * @returns
  */
@@ -277,6 +288,36 @@ export const getTypeList = (params) => get(`eta8/query-paper/listType`, params);
  */
 export const getFirstSubjectList = (params) =>
   get(`eta8/subject/listFirstSubject`, params);
+
+/**
+ * 获取项目分类列表（GET）
+ * 需传入的参数
+ * BelongId: 所属学科ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getCategoryList = (params) =>
+  get(`eta8/subject/listCategory`, params);
+
+/**
+ * 获取纵向项目一级学科二级目录列表（GET）
+ * 需传入的参数
+ * TypeId: 一级学科ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getSecTypeList = (params) =>
+  get(`eta8/subject/listSecType`, params);
+
+/**
+ * 获取纵向项目一级学科三级目录列表（GET）
+ * 需传入的参数
+ * SecTypeId: 一级学科二级目录ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getThirdTypeList = (params) =>
+  get(`eta8/subject/listThirdType`, params);
 
 /**
  * 获取教师角色信息（GET）

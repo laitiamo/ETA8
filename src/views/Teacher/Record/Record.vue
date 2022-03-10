@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getTeacherPaperList } from "../api";
+import { getTeacherPaperList } from "../../../api";
 import { mapGetters } from "vuex";
 export default {
   name: "Record",

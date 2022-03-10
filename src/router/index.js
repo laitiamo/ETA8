@@ -32,47 +32,47 @@ const routes = [
         name: "上传奖项",
         component: () => import("../views/Upload"),
       },
-      {
-        path: "record",
-        name: "上传成果",
-        component: () => import("../views/Record"),
-      },
+      //Subject
       {
         path: "subject",
         name: "项目申报",
-        component: () => import("../views/Subject"),
+        component: () => import("../views/Teacher/Subject/Subject"),
       },
       {
         path: "sponsored",
         name: "纵向项目",
-        component: () =>
-          import("../components/TeacherSide/Subject/SponsoredForm"),
+        component: () => import("../views/Teacher/Subject/Sponsored"),
       },
       {
         path: "horizon",
         name: "横向项目",
-        component: () =>
-          import("../components/TeacherSide/Subject/HorizontallForm"),
+        component: () => import("../views/Teacher/Subject/Horizontall"),
       },
       {
         path: "school",
         name: "校级项目",
-        component: () => import("../components/TeacherSide/Subject/SchoolForm"),
+        component: () => import("../views/Teacher/Subject/School"),
+      },
+      //Paper
+      {
+        path: "record",
+        name: "上传成果",
+        component: () => import("../views/Teacher/Record/Record"),
       },
       {
         path: "book",
         name: "著作教材",
-        component: () => import("../components/TeacherSide/Record/BookForm"),
+        component: () => import("../views/Teacher/Record/Book"),
       },
       {
         path: "paper",
         name: "发表论文",
-        component: () => import("../components/TeacherSide/Record/PaperForm"),
+        component: () => import("../views/Teacher/Record/Paper"),
       },
       {
         path: "patent",
         name: "设计专利",
-        component: () => import("../components/TeacherSide/Record/PatentForm"),
+        component: () => import("../views/Teacher/Record/Patent"),
       },
       {
         path: "mine",
@@ -82,12 +82,12 @@ const routes = [
       {
         path: "mine-paper",
         name: "成果记录",
-        component: () => import("../views/TeacherSide/Mine-Paper"),
+        component: () => import("../views/Mine-Paper"),
       },
       {
         path: "mine-subject",
         name: "著作记录",
-        component: () => import("../views/TeacherSide/Mine-Subject"),
+        component: () => import("../views/Mine-Subject"),
       },
       {
         path: "password",
@@ -99,47 +99,47 @@ const routes = [
       {
         path: "query-stu",
         name: "管理学生获奖",
-        component: () => import("../views/QueryStu"),
+        component: () => import("../views/Function/QueryStu"),
       },
       {
         path: "query-tea",
         name: "管理教师获奖",
-        component: () => import("../views/QueryTea"),
+        component: () => import("../views/Function/QueryTea"),
       },
       {
         path: "query-paper",
         name: "管理成果记录",
-        component: () => import("../views/TeacherSide/QueryPaper"),
+        component: () => import("../views/Function/QueryPaper"),
       },
       {
         path: "query-subject",
         name: "管理科研项目",
-        component: () => import("../views/TeacherSide/QuerySubject"),
+        component: () => import("../views/Function/QuerySubject"),
       },
       {
-        path: "award-review",
-        name: "奖项审核",
-        component: () => import("../views/Review"),
+        path: "review-stu",
+        name: "学生奖项审核",
+        component: () => import("../views/Function/Review-Student"),
       },
       {
         path: "review-tea",
         name: "教师奖项审核",
-        component: () => import("../views/TeacherSide/Review-Teacher"),
+        component: () => import("../views/Function/Review-Teacher"),
       },
       {
         path: "record-review",
         name: "成果审核",
-        component: () => import("../views/TeacherSide/Review-Record"),
+        component: () => import("../views/Function/Review-Paper"),
       },
       {
-        path: "subject-review",
+        path: "review-subject",
         name: "项目审核",
-        component: () => import("../views/TeacherSide/Review-Subject"),
+        component: () => import("../views/Function/Review-Subject"),
       },
       {
         path: "subject-finish",
         name: "项目结题",
-        component: () => import("../views/TeacherSide/Finish-Subject"),
+        component: () => import("../views/Function/Finish-Subject"),
       },
       {
         path: "log",
@@ -154,36 +154,36 @@ const routes = [
       {
         path: "manage-stu",
         name: "学生管理",
-        component: () => import("../views/ManageStu"),
+        component: () => import("../views/Function/ManageStu"),
       },
       {
         path: "manage-tea",
         name: "教师管理",
-        component: () => import("../views/ManageTea"),
+        component: () => import("../views/Function/ManageTea"),
       },
       {
         path: "manage-class",
         name: "班级管理",
-        component: () => import("../views/ManageClass"),
+        component: () => import("../views/Function/ManageClass"),
       },
       {
         path: "import-stu",
         name: "学生导入",
-        component: () => import("../views/import/ImportStu"),
+        component: () => import("../views/Function/ImportStu"),
       },
       {
         path: "import-tea",
         name: "教师导入",
-        component: () => import("../views/import/ImportTea"),
+        component: () => import("../views/Function/ImportTea"),
       },
       {
         path: "import-award",
         name: "奖项导入",
-        component: () => import("../views/import/ImportAward"),
+        component: () => import("../views/Function/ImportAward"),
       },
       {
         path: "ok",
-        component: () => import("../components/TeacherSide/Subject/Finish"),
+        component: () => import("../components/Finish"),
       },
     ],
   },

@@ -8,7 +8,7 @@
       justify="center"
     >
       <el-col :md="24" :lg="7">
-        <WelCome
+        <HomeDetail
           :name="name"
           :username="username"
           :role="role"
@@ -32,10 +32,11 @@
             :instructorNum="l_instructor"
             v-if="roleId == 3"
           />
-          <TeacherCounter
-            :stuNum="stuItemNum"
-            :teaNum="teaItemNum"
-            :totalNum="totalItemNum"
+          <RecordCounter
+            :paperNum="teaPaperNum"
+            :bookNum="teaBookNum"
+            :patentNum="teaPatentNum"
+            :subjectNum="teaSubjectNum"
             v-if="roleId == 4"
           />
           <PersonalCounter
@@ -61,10 +62,11 @@
           :instructorNum="l_instructor"
           v-if="roleId == 3"
         />
-        <TeacherCounter
-          :stuNum="stuItemNum"
-          :teaNum="teaItemNum"
-          :totalNum="totalItemNum"
+        <RecordCounter
+          :paperNum="teaPaperNum"
+          :bookNum="teaBookNum"
+          :patentNum="teaPatentNum"
+          :subjectNum="teaSubjectNum"
           v-if="roleId == 4"
         />
         <PersonalCounter
@@ -97,14 +99,13 @@
 <script>
 import { mapGetters } from "vuex";
 import { initDetail } from "../api";
-import RecordCounter from "../components/RecordCounter.vue";
 import Inform from "../components/Inform.vue";
 import NumberCounter from "../components/NumberCounter.vue";
 import PersonalCounter from "../components/PersonalCounter.vue";
 import CounterDetail from "../components/CounterDetail.vue";
-import TeacherCounter from "../components/TeacherCounter.vue";
+import RecordCounter from "../components/RecordCounter.vue";
 import AwardShow from "../components/AwardShow.vue";
-import WelCome from "../components/WelCome.vue";
+import HomeDetail from "../components/HomeDetail.vue";
 export default {
   name: "Home",
   data() {
@@ -137,11 +138,11 @@ export default {
   components: {
     NumberCounter,
     AwardShow,
-    WelCome,
+    HomeDetail,
     Inform,
     CounterDetail,
     PersonalCounter,
-    TeacherCounter,
+    RecordCounter,
     RecordCounter,
   },
   methods: {
@@ -174,7 +175,7 @@ export default {
             this.l_number = obj.l_number; //个人奖状数
             this.l_instructor = obj.l_instructor; //辅导员所管辖班级奖项数
             this.l_unmanage = obj.l_unmanage; //未审核奖项数
-          } 
+          }
         })
         .catch((failResponse) => {});
     },

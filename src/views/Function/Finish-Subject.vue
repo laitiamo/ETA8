@@ -1,7 +1,51 @@
 <template>
   <div class="review">
-    <h3 v-show="!ifShowDetail">项目审核</h3>
+    <h3 v-show="!ifShowDetail">项目结题验收</h3>
     <div v-show="!ifShowDetail">
+      <el-form :inline="true" class="demo-form-inline" size="mini">
+        <el-form-item>
+          <el-select
+            v-model="form2Query.collegeId"
+            placeholder="全部学院"
+            style="width:140px"
+          >
+            <el-option label="全部学院" value=""></el-option>
+            <el-option
+              v-for="opt in collegeList"
+              :key="opt.id"
+              :label="opt.collegeName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.sectorId"
+            placeholder="全部部门"
+            style="width:160px"
+          >
+            <el-option label="全部部门" value=""></el-option>
+            <el-option
+              v-for="opt in sectorList"
+              :key="opt.id"
+              :label="opt.sectorName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyName"
+            placeholder="搜索负责人姓名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyUsername"
+            placeholder="搜索教职工号"
+          ></el-input>
+        </el-form-item>
+      </el-form>
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-select
@@ -11,7 +55,7 @@
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
-              v-for="opt in rankList1"
+              v-for="opt in rankList"
               :key="opt.id"
               :label="opt.rankName"
               :value="opt.id"
@@ -26,7 +70,7 @@
           >
             <el-option label="全部类型" value=""></el-option>
             <el-option
-              v-for="opt in rankList2"
+              v-for="opt in levelList"
               :key="opt.id"
               :label="opt.rankName"
               :value="opt.id"
@@ -119,14 +163,14 @@
         type="danger"
         style="margin:10px"
         @click="handleNotPass()"
-        >驳回</el-button
+        >驳回结题</el-button
       >
       <el-button
         v-show="ifShowDetail"
         type="success"
         style="margin:10px"
         @click="handlePass()"
-        >通过</el-button
+        >允许结题</el-button
       >
     </el-row>
   </div>
@@ -135,12 +179,12 @@
 <script>
 import {
   getSubjectDetail,
-  getReviewSubjectList,
+  getFinishSubjectList,
   initQuerySubject,
-  passSubject,
-  notPassSubject,
+  FinishSubject,
+  notFinishSubject,
 } from "../../api";
-import SubjectDetail from "../../components/TeacherSide/SubjectDetail.vue";
+import SubjectDetail from "../../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Review-Subject",
@@ -169,7 +213,9 @@ export default {
           ifShow: true,
         },
         { name: "项目类别", value: "rankName", width: "160", ifShow: true },
-        { name: "项目级别", value: "levelName", width: "160", ifShow: true },
+        { name: "项目级别", value: "levelName", width: "150", ifShow: true },
+        { name: "负责人姓名", value: "name", width: "120", ifShow: true },
+        { name: "教职工号", value: "username", width: "120", ifShow: false },
         {
           name: "记录上传时间",
           value: "createAt",
@@ -192,6 +238,10 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
+        collegeId: "",
+        sectorId: "",
+        keyUsername: "", //用户id
+        keyName: "", //姓名
         rankId: "", //项目记录等级
         levelId: "", //项目记录级别
         keySubjectNum: "", //项目编号
@@ -199,8 +249,10 @@ export default {
         keySubjectPlace: "", //项目所属单位
       },
       //下拉栏内容列表
-      rankList1: [],
-      rankList2: [],
+      rankList: [],
+      levelList: [],
+      collegeList: [],
+      sectorList: [],
     };
   },
   mounted() {
@@ -221,6 +273,10 @@ export default {
         },
         { name: "项目类别", value: "rankName", width: "120", ifShow: false },
         { name: "项目级别", value: "levelName", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: true },
+        { name: "姓名", value: "name", width: "80", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "240", ifShow: false },
+        { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
         {
           name: "记录上传时间",
           value: "createAt",
@@ -244,11 +300,13 @@ export default {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.rank;
-          this.rankList2 = obj.s_rank;
+          this.rankList = obj.rank;
+          this.levelList = obj.s_rank;
+          this.collegeList = obj.college;
+          this.sectorList = obj.sector;
         })
         .catch((failResponse) => {});
-        this.ifButtonTrue = false;
+      this.ifButtonTrue = false;
     },
     //数据格式化(还没用到)
     formatter(row, column) {
@@ -292,7 +350,7 @@ export default {
       params.append("reviewer", this.reviewer);
       params.append("reviewType", "1");
       let _this = this;
-      passSubject(params)
+      FinishSubject(params)
         .then((res) => {
           //closeDebug console.log("-----------通过奖项---------------");
           if (res.code === 0) {
@@ -319,7 +377,7 @@ export default {
       params.append("reviewer", this.reviewer);
       params.append("reviewType", "2");
       let _this = this;
-      notPassSubject(params)
+      notFinishSubject(params)
         .then((res) => {
           //closeDebug console.log("-----------驳回奖项---------------");
           if (res.code === 0) {
@@ -351,14 +409,18 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
-      params.append("rankId", this.form2Query.rankId); //项目记录等级
+      params.append("collegeId", this.form2Query.collegeId);
+      params.append("sectorId", this.form2Query.sectorId);
+      params.append("keyUsername", this.form2Query.keyUsername); //用户id
+      params.append("keyName", this.form2Query.keyName); //姓名
+      params.append("rankId", this.form2Query.rankId); //获奖等级
       params.append("levelId", this.form2Query.levelId); //项目记录等级
       params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
       params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
       params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
       params.append("order", this.orderMode);
       params.append("field", this.orderField);
-      getReviewSubjectList(params)
+      getFinishSubjectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

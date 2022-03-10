@@ -1,33 +1,78 @@
 <template>
-  <div class="query-paper">
-    <h3 v-show="!ifShowDetail">管理成果记录</h3>
+  <div class="query-stu">
+    <h3 v-show="!ifShowDetail">管理学生获奖</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
           <el-select
-            v-model="form2Query.typeId"
-            placeholder="全部类型"
-            @change="QueryPaper"
-            style="width: 140px"
+            v-model="form2Query.gradeId"
+            placeholder="全部年级"
+            @change="QueryClass"
+            style="width:140px"
           >
-            <el-option label="全部类型" value=""></el-option>
+            <el-option label="全部年级" value=""></el-option>
             <el-option
-              v-for="opt in rankList1"
+              v-for="opt in gradeList"
               :key="opt.id"
-              :label="opt.typeName"
+              :label="opt.gradeName"
               :value="opt.id"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form2Query.typeId !=''">
+        <el-form-item>
+          <el-select
+            v-model="form2Query.majorId"
+            placeholder="全部专业"
+            @change="QueryClass"
+            style="width:160px"
+          >
+            <el-option label="全部专业" value=""></el-option>
+            <el-option
+              v-for="opt in majorList"
+              :key="opt.id"
+              :label="opt.majorName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="form2Query.classId"
+            placeholder=""
+            style="width:180px"
+          >
+            <el-option label="全部班级" value=""></el-option>
+            <el-option
+              v-for="opt in classList"
+              :key="opt.id"
+              :label="opt.className"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyUsername"
+            placeholder="搜索学号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keyName"
+            placeholder="搜索姓名"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :inline="true" class="demo-form-inline" size="mini">
+        <el-form-item>
           <el-select
             v-model="form2Query.rankId"
             placeholder="全部等级"
-            style="width: 140px"
+            style="width:140px"
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
-              v-for="opt in rankList2"
+              v-for="opt in rankList"
               :key="opt.id"
               :label="opt.rankName"
               :value="opt.id"
@@ -37,26 +82,20 @@
         <el-form-item>
           <el-input
             v-model="form2Query.keyAwardName"
-            placeholder="搜索成果名称"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="form2Query.keyAwardPlace"
-            placeholder="搜索所属单位"
+            placeholder="搜索奖项名称"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onQuery">筛选</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onExportXLS"
-            >导出成果记录信息(XLS)</el-button
+          <el-button type="primary" @click="onExportXLS" :loading="XLSloading"
+            >导出获奖信息(XLS)</el-button
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onExportZIP"
-            >导出成果记录图片(ZIP)</el-button
+          <el-button type="primary" @click="onExportZIP" :loading="ZIPloading"
+            >导出获奖图片(ZIP)</el-button
           >
         </el-form-item>
       </el-form>
@@ -67,7 +106,7 @@
           v-model="col.ifShow"
           :key="col.value"
           size="small"
-          style="margin-right: 10px"
+          style="margin-right:10px"
           >{{ col.name }}</el-checkbox
         >
       </div>
@@ -91,7 +130,7 @@
         </template>
         <el-table-column
           label="操作"
-          :width="teaWidth"
+          :width="stuWidth"
           fixed="right"
           align="center"
         >
@@ -99,7 +138,7 @@
             <el-button
               size="mini"
               @click="handleShow(scope.$index, scope.row)"
-              style="margin-right: 10px"
+              style="margin-right:10px"
               >查看</el-button
             >
             <el-popconfirm
@@ -133,13 +172,23 @@
       >
       </el-pagination>
     </div>
-    <PaperDetail
-      :detailData="detailData"
-      :goback="goBack"
-      v-show="ifShowDetail"
-    >
-    </PaperDetail>
+    <StuDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
+    </StuDetail>
+
     <el-row type="flex" justify="center">
+      <el-button
+        @click="onSelect2Show"
+        v-if="roleId === 1"
+        v-show="ifShowDetail"
+        style="margin:10px"
+        type="primary"
+        >设为展示项</el-button
+      >
+      <UpdateAwardButton
+        :id="selectId"
+        v-show="ifShowDetail"
+        v-if="roleId === 1 || roleId === 3"
+      ></UpdateAwardButton>
       <el-popconfirm
         confirm-button-text="确认删除"
         cancel-button-text="不用了"
@@ -153,10 +202,9 @@
       >
         <el-button
           v-show="ifShowDetail"
-          style="margin: 10px"
+          style="margin:10px"
           type="primary"
           slot="reference"
-          v-if="roleId === 1"
           >删除记录</el-button
         >
       </el-popconfirm>
@@ -166,46 +214,44 @@
 
 <script>
 import {
-  getTeaPaperList,
-  getTypeList,
-  getPaperDetail,
-  initQueryPaper,
-  delTeaPaper,
-  exportTeaPaperXLS,
-  exportTeaPaperZIP,
+  getStuAwardList,
+  getStuDetail,
+  getClassList,
+  initQueryStu,
+  delStuAward,
+  exportStuAwardXLS,
+  exportStuAwardZIP,
+  addAwardShow,
 } from "../../api";
-import PaperDetail from "../../components/TeacherSide/PaperDetail.vue";
+import StuDetail from "../../components/StuDetail.vue";
+import UpdateAwardButton from "../../components/UpdateAwardButton.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "QueryPaper",
-  components: { PaperDetail },
+  name: "QueryStu",
+  components: { StuDetail, UpdateAwardButton },
   computed: {},
   data() {
     return {
+      XLSloading: false,
+      ZIPloading: false,
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
       selectId: 0,
       ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
+      ifShowUpdateDialog: false,
       ifShowDetail: false,
-      teaWidth: 150,
+      stuWidth: 150,
       // 数据列
       Columns: [
-        { name: "成果名称", value: "paperName", width: "200", ifShow: true },
-        { name: "所属单位", value: "paperPlace", width: "auto", ifShow: true },
-        { name: "成果等级", value: "rankName", width: "120", ifShow: true },
-        { name: "审核状态", value: "reviewName", width: "120", ifShow: true },
-        {
-          name: "成果上传时间",
-          value: "createAt",
-          width: "200",
-          ifShow: false,
-        },
-        {
-          name: "成果记录时间",
-          value: "paperTime",
-          width: "200",
-          ifShow: true,
-        },
+        { name: "学号", value: "username", width: "120", ifShow: true },
+        { name: "姓名", value: "name", width: "80", ifShow: true },
+        { name: "班级", value: "className", width: "200", ifShow: false },
+        { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
+        { name: "获奖名次", value: "awardPlace", width: "180", ifShow: true },
+        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
+        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
+        { name: "审核时间", value: "reviewAt", width: "200", ifShow: false },
       ],
       detailData: {},
       currentPage: 1,
@@ -216,16 +262,19 @@ export default {
       orderField: "", //排序字段
       //用于筛选的表单
       form2Query: {
+        gradeId: "", //年级
+        majorId: "", //专业
+        classId: "", //班级
         keyUsername: "", //用户id
         keyName: "", //姓名
-        typeId: "", //成果类型
-        rankId: "", //成果记录等级
-        keyAwardName: "", //成果名
-        keyAwardPlace: "", //期刊名
+        rankId: "", //获奖等级
+        keyAwardName: "", //奖项名
       },
       //下拉栏内容列表
-      rankList1: [],
-      rankList2: [],
+      gradeList: [],
+      majorList: [],
+      classList: [],
+      rankList: [],
     };
   },
   watch: {
@@ -241,45 +290,47 @@ export default {
       //closeDebug console.log("触发移动端布局");
       this.ifSmall = true;
       this.paginationLayout = "prev, pager,next, ->, total";
-      this.teaWidth = 80;
+      this.stuWidth = 80;
       this.Columns = [
-        { name: "成果名称", value: "paperName", width: "200", ifShow: true },
-        { name: "所属单位", value: "paperPlace", width: "auto", ifShow: false },
-        { name: "成果等级", value: "rankName", width: "120", ifShow: false },
+        { name: "学号", value: "username", width: "120", ifShow: false },
+        { name: "姓名", value: "name", width: "80", ifShow: true },
+        { name: "班级", value: "className", width: "200", ifShow: false },
+        { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
+        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
+        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
-        { name: "审核状态", value: "reviewName", width: "120", ifShow: false },
-        {
-          name: "成果记录时间",
-          value: "paperTime",
-          width: "200",
-          ifShow: true,
-        },
+        { name: "审核时间", value: "reviewAt", width: "200", ifShow: false },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initQueryPaper()
+      initQueryStu()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
-          this.rankList1 = obj.rank;
+          this.gradeList = obj.grade;
+          this.majorList = obj.major;
+          this.rankList = obj.rank;
         })
         .catch((failResponse) => {});
     },
-    //更新可供筛选的成果列表
-    QueryPaper() {
+    //更新可供筛选的班级列表
+    QueryClass() {
       let _this = this;
-      _this.form2Query.rankId = "";
+      _this.form2Query.classId = "";
+      //closeDebug console.log("选中的筛选值","年级：",this.form2Query.gradeId,"专业",this.form2Query.majorId,"班级",this.form2Query.classId);
       let params = new URLSearchParams();
-      params.append("typeId", this.form2Query.typeId);
-      getTypeList(params)
+      params.append("gradeId", this.form2Query.gradeId);
+      params.append("majorId", this.form2Query.majorId);
+      getClassList(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取类型列表---------------");
+          //closeDebug console.log("-----------获取班级列表---------------");
           //closeDebug console.log(res);
-          _this.rankList2 = res;
+          _this.classList = res;
         })
         .catch((failResponse) => {});
     },
@@ -304,26 +355,27 @@ export default {
       //closeDebug console.log("点击查看", index, row);
       let params = new URLSearchParams();
       params.append("id", row.id);
+      //closeDebug console.log("选择了",row.id)
       this.selectId = row.id;
-      getPaperDetail(params)
+      getStuDetail(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取个人成果详情---------------");
+          //closeDebug console.log("-----------获取个人奖项详情---------------");
           let obj = JSON.parse(res.msg);
-          //closeDebug console.log("个人成果详情", obj);
+          //closeDebug console.log("个人奖项详情", obj);
           this.detailData = obj;
         })
         .catch((failResponse) => {});
       this.ifShowDetail = true;
     },
-    //处理删除成果
+
     handleDel(index, row) {
       //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
       params.append("id", row.id);
       let _this = this;
-      delTeaPaper(params)
+      delStuAward(params)
         .then((res) => {
-          //closeDebug console.log("-----------删除成果---------------");
+          //closeDebug console.log("-----------删除奖项---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -339,20 +391,21 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    //成果详情页面处理删除成果
+    //奖项详情页面处理删除奖项
     handleInDel() {
       //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
       params.append("id", this.selectId);
       let _this = this;
-      delTeaPaper(params)
+      delStuAward(params)
         .then((res) => {
-          //closeDebug console.log("-----------删除成果---------------");
+          //closeDebug console.log("-----------删除奖项---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
               type: "success",
             });
+            _this.goBack();
             _this.onQuery();
           } else {
             _this.$message({
@@ -362,9 +415,8 @@ export default {
           }
         })
         .catch((failResponse) => {});
-      this.goBack();
     },
-    //返回重选成果
+    //返回重选奖项
     goBack() {
       this.ifShowDetail = false;
       this.selectId = 0;
@@ -376,15 +428,16 @@ export default {
       let params = new URLSearchParams();
       params.append("limit", this.pageSize);
       params.append("page", this.currentPage);
+      params.append("gradeId", this.form2Query.gradeId); //年级
+      params.append("majorId", this.form2Query.majorId); //专业
+      params.append("classId", this.form2Query.classId); //班级
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("typeId", this.form2Query.typeId); //成果类型
-      params.append("rankId", this.form2Query.rankId); //成果等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
-      params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
-      params.append("order", this.orderMode);
-      params.append("field", this.orderField);
-      getTeaPaperList(params)
+      params.append("rankId", this.form2Query.rankId); //获奖等级
+      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
+      params.append("order", this.orderMode); //奖项名
+      params.append("field", this.orderField); //奖项名
+      getStuAwardList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);
@@ -406,19 +459,22 @@ export default {
       //closeDebug console.log(this.orderMode, this.orderField);
       this.onQuery();
     },
-    //处理导出教师成果表格文件
+    //处理导出学生奖项表格文件
     onExportXLS() {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      this.XLSloading = true;
+      params.append("gradeId", this.form2Query.gradeId); //年级
+      params.append("majorId", this.form2Query.majorId); //专业
+      params.append("classId", this.form2Query.classId); //班级
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //成果记录等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
-      params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
-      exportTeaPaperXLS(params)
+      params.append("rankId", this.form2Query.rankId); //获奖等级
+      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
+      exportStuAwardXLS(params)
         .then((res) => {
-          //closeDebug console.log("-----------导出教师成果表格文件---------------");
+          //closeDebug console.log("-----------导出学生奖项表格文件---------------");
           //closeDebug console.log(res);
           const blob = new Blob([res.data]);
           var downloadElement = document.createElement("a");
@@ -427,28 +483,32 @@ export default {
           //new一个时间对象
           var nowDate = new Date().toLocaleDateString();
           downloadElement.download = decodeURIComponent(
-            nowDate + "_教师成果.xls"
+            nowDate + "_学生奖项.xls"
           );
           document.body.appendChild(downloadElement);
           downloadElement.click();
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(href);
+          this.XLSloading = false;
         })
         .catch((failResponse) => {});
     },
-    //处理导出教师成果表格文件
+    //处理导出学生奖项表格文件
     onExportZIP() {
       //closeDebug console.log("export ZIP:", this.form2Query);
       //参数绑定「筛选参数」
       let params = new URLSearchParams();
+      this.ZIPloading = true;
+      params.append("gradeId", this.form2Query.gradeId); //年级
+      params.append("majorId", this.form2Query.majorId); //专业
+      params.append("classId", this.form2Query.classId); //班级
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //成果记录等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
-      params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
-      exportTeaPaperZIP(params)
+      params.append("rankId", this.form2Query.rankId); //获奖等级
+      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
+      exportStuAwardZIP(params)
         .then((res) => {
-          //closeDebug console.log("-----------导出教师成果表格文件---------------");
+          //closeDebug console.log("-----------导出学生奖项表格文件---------------");
           //closeDebug console.log(res);
           const blob = new Blob([res.data]);
           var downloadElement = document.createElement("a");
@@ -457,14 +517,44 @@ export default {
           //new一个时间对象
           var nowDate = new Date().toLocaleDateString();
           downloadElement.download = decodeURIComponent(
-            nowDate + "_教师成果图片.zip"
+            nowDate + "_学生奖项图片.zip"
           );
           document.body.appendChild(downloadElement);
           downloadElement.click();
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(href);
+          this.ZIPloading = false;
         })
         .catch((failResponse) => {});
+    },
+    //设置为首页展示项
+    onSelect2Show() {
+      let _this = this;
+      let imageList = this.detailData.imagePaths;
+      for (let it in imageList) {
+        //closeDebug console.log("imageurl", imageList[it]);
+        //closeDebug console.log("imagecontent", this.detailData.award);
+        let params = new URLSearchParams();
+        params.append("imageurl", imageList[it]);
+        params.append("imagecontent", this.detailData.award);
+        addAwardShow(params)
+          .then((res) => {
+            //closeDebug console.log("-----------设置为首页展示项---------------");
+            //closeDebug console.log(res);
+            if (res.code === 0) {
+              _this.$message({
+                message: res.msg,
+                type: "success",
+              });
+            } else {
+              _this.$message({
+                message: res.msg,
+                type: "error",
+              });
+            }
+          })
+          .catch((failResponse) => {});
+      }
     },
   },
 };

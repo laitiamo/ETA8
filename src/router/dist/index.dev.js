@@ -59,7 +59,7 @@ var routes = [{
     name: "上传成果",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Record"));
+        return _interopRequireWildcard(require("../views/Teacher/Record"));
       });
     }
   }, {
@@ -67,7 +67,7 @@ var routes = [{
     name: "项目申报",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Subject"));
+        return _interopRequireWildcard(require("../views/Teacher/Subject"));
       });
     }
   }, {
@@ -75,7 +75,7 @@ var routes = [{
     name: "纵向项目",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../components/TeacherSide/SponsoredForm"));
+        return _interopRequireWildcard(require("../components/Teacher/SponsoredForm"));
       });
     }
   }, {
@@ -83,7 +83,7 @@ var routes = [{
     name: "横向项目",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../components/TeacherSide/HorizontallForm"));
+        return _interopRequireWildcard(require("../components/Teacher/HorizontallForm"));
       });
     }
   }, {
@@ -91,7 +91,7 @@ var routes = [{
     name: "校级项目",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../components/TeacherSide/SchoolForm"));
+        return _interopRequireWildcard(require("../components/Teacher/SchoolForm"));
       });
     }
   }, {
@@ -107,7 +107,7 @@ var routes = [{
     name: "成果记录",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Mine-Paper"));
+        return _interopRequireWildcard(require("../views/Teacher/Mine-Paper"));
       });
     }
   }, {
@@ -115,7 +115,7 @@ var routes = [{
     name: "著作记录",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Mine-Subject"));
+        return _interopRequireWildcard(require("../views/Teacher/Mine-Subject"));
       });
     }
   }, {
@@ -149,7 +149,7 @@ var routes = [{
     name: "管理成果记录",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/QueryPaper"));
+        return _interopRequireWildcard(require("../views/Teacher/QueryPaper"));
       });
     }
   }, {
@@ -157,7 +157,7 @@ var routes = [{
     name: "管理科研项目",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/QuerySubject"));
+        return _interopRequireWildcard(require("../views/Teacher/QuerySubject"));
       });
     }
   }, {
@@ -173,15 +173,15 @@ var routes = [{
     name: "成果审核",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Review-Record"));
+        return _interopRequireWildcard(require("../views/Teacher/record-review"));
       });
     }
   }, {
-    path: "subject-review",
+    path: "review-subject",
     name: "项目审核",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/TeacherSide/Review-Subject"));
+        return _interopRequireWildcard(require("../views/Teacher/Review-Subject"));
       });
     }
   }, {

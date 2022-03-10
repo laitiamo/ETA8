@@ -37,7 +37,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { SubjectSelect } from "../api";
+import { SubjectSelect } from "../../../api";
 export default {
   name: "Subject",
   data() {

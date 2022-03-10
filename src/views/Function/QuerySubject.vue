@@ -1,6 +1,6 @@
 <template>
-  <div class="query-tea">
-    <h3 v-show="!ifShowDetail">管理教师获奖</h3>
+  <div class="query-subject">
+    <h3 v-show="!ifShowDetail">管理科研项目</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
@@ -35,14 +35,14 @@
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyUsername"
-            placeholder="搜索教职工号"
+            v-model="form2Query.keyName"
+            placeholder="搜索负责人姓名"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-input
-            v-model="form2Query.keyName"
-            placeholder="搜索姓名"
+            v-model="form2Query.keyUsername"
+            placeholder="搜索教职工号"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -51,7 +51,7 @@
           <el-select
             v-model="form2Query.rankId"
             placeholder="全部等级"
-            style="width:140px"
+            style="width: 140px"
           >
             <el-option label="全部等级" value=""></el-option>
             <el-option
@@ -63,9 +63,36 @@
           </el-select>
         </el-form-item>
         <el-form-item>
+          <el-select
+            v-model="form2Query.levelId"
+            placeholder="全部类型"
+            style="width: 140px"
+          >
+            <el-option label="全部类型" value=""></el-option>
+            <el-option
+              v-for="opt in levelList"
+              :key="opt.id"
+              :label="opt.rankName"
+              :value="opt.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
           <el-input
-            v-model="form2Query.keyAwardName"
-            placeholder="搜索奖项名称"
+            v-model="form2Query.keySubjectNum"
+            placeholder="搜索项目编号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keySubjectName"
+            placeholder="搜索项目名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input
+            v-model="form2Query.keySubjectPlace"
+            placeholder="搜索所属单位"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -73,12 +100,12 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onExportXLS"
-            >导出获奖信息(XLS)</el-button
+            >导出项目记录信息(XLS)</el-button
           >
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onExportZIP"
-            >导出获奖图片(ZIP)</el-button
+            >导出项目记录图片(ZIP)</el-button
           >
         </el-form-item>
       </el-form>
@@ -89,7 +116,7 @@
           v-model="col.ifShow"
           :key="col.value"
           size="small"
-          style="margin-right:10px"
+          style="margin-right: 10px"
           >{{ col.name }}</el-checkbox
         >
       </div>
@@ -121,7 +148,7 @@
             <el-button
               size="mini"
               @click="handleShow(scope.$index, scope.row)"
-              style="margin-right:10px"
+              style="margin-right: 10px"
               >查看</el-button
             >
             <el-popconfirm
@@ -155,8 +182,12 @@
       >
       </el-pagination>
     </div>
-    <TeaDetail :detailData="detailData" :goback="goBack" v-show="ifShowDetail">
-    </TeaDetail>
+    <SubjectDetail
+      :detailData="detailData"
+      :goback="goBack"
+      v-show="ifShowDetail"
+    >
+    </SubjectDetail>
     <el-row type="flex" justify="center">
       <el-popconfirm
         confirm-button-text="确认删除"
@@ -171,7 +202,7 @@
       >
         <el-button
           v-show="ifShowDetail"
-          style="margin:10px"
+          style="margin: 10px"
           type="primary"
           slot="reference"
           v-if="roleId === 1"
@@ -184,18 +215,18 @@
 
 <script>
 import {
-  getTeaAwardList,
-  getTeaDetail,
-  initQueryTea,
-  delTeaAward,
-  exportTeaAwardXLS,
-  exportTeaAwardZIP,
-} from "../api";
-import TeaDetail from "../components/TeaDetail.vue";
+  getTeaSubjectList,
+  getSubjectDetail,
+  initQuerySubject,
+  delTeaSubject,
+  exportTeaSubjectXLS,
+  exportTeaSubjectZIP,
+} from "../../api";
+import SubjectDetail from "../../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "QueryTea",
-  components: { TeaDetail },
+  name: "QuerySubject",
+  components: { SubjectDetail },
   computed: {},
   data() {
     return {
@@ -207,15 +238,42 @@ export default {
       teaWidth: 150,
       // 数据列
       Columns: [
-        { name: "教职工号", value: "username", width: "120", ifShow: true },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "学院名称", value: "collegeName", width: "120", ifShow: true },
-        { name: "部门名称", value: "sectorName", width: "120", ifShow: true },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: true },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: true },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: true },
+        {
+          name: "项目编号",
+          value: "subjectNum",
+          width: "150",
+          ifShow: true,
+        },
+        { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
+        {
+          name: "所属单位",
+          value: "subjectPlace",
+          width: "180",
+          ifShow: true,
+        },
+        { name: "项目类别", value: "rankName", width: "160", ifShow: true },
+        { name: "项目级别", value: "levelName", width: "150", ifShow: true },
+        { name: "负责人姓名", value: "name", width: "120", ifShow: true },
+        { name: "教职工号", value: "username", width: "120", ifShow: false },
+        { name: "所属学院", value: "collegeName", width: "240", ifShow: false },
+        {
+          name: "记录上传时间",
+          value: "createAt",
+          width: "240",
+          ifShow: true,
+        },
+        {
+          name: "审核状态",
+          value: "reviewName",
+          width: "160",
+          ifShow: true,
+        },
+        {
+          name: "项目发表时间",
+          value: "subjectTime",
+          width: "240",
+          ifShow: true,
+        },
       ],
       detailData: {},
       currentPage: 1,
@@ -230,13 +288,17 @@ export default {
         sectorId: "",
         keyUsername: "", //用户id
         keyName: "", //姓名
-        rankId: "", //获奖等级
-        keyAwardName: "", //奖项名
+        rankId: "", //项目记录等级
+        levelId: "", //项目记录级别
+        keySubjectNum: "", //项目编号
+        keySubjectName: "", //项目名称
+        keySubjectPlace: "", //项目所属单位
       },
       //下拉栏内容列表
+      rankList: [],
+      levelList: [],
       collegeList: [],
       sectorList: [],
-      rankList: [],
     };
   },
   watch: {
@@ -254,28 +316,53 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.teaWidth = 80;
       this.Columns = [
-        { name: "教职工号", value: "username", width: "120", ifShow: false },
-        { name: "姓名", value: "name", width: "80", ifShow: true },
-        { name: "学院名称", value: "collegeName", width: "120", ifShow: false },
+        { name: "项目编号", value: "subjectNum", width: "120", ifShow: false },
+        { name: "项目名称", value: "subjectName", width: "180", ifShow: true },
+        {
+          name: "所属单位",
+          value: "subjectPlace",
+          width: "120",
+          ifShow: false,
+        },
+        { name: "项目类别", value: "rankName", width: "120", ifShow: false },
+        { name: "项目级别", value: "levelName", width: "120", ifShow: false },
+        { name: "教职工号", value: "username", width: "120", ifShow: true },
+        { name: "姓名", value: "name", width: "80", ifShow: false },
+        { name: "学院名称", value: "collegeName", width: "240", ifShow: false },
         { name: "部门名称", value: "sectorName", width: "120", ifShow: false },
-        { name: "奖项等级", value: "rankName", width: "120", ifShow: false },
-        { name: "获奖名次", value: "awardPlace", width: "120", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "", ifShow: true },
-        { name: "获奖时间", value: "awardTime", width: "200", ifShow: false },
+        {
+          name: "记录上传时间",
+          value: "createAt",
+          width: "200",
+          ifShow: false,
+        },
+        {
+          name: "审核状态",
+          value: "reviewName",
+          width: "120",
+          ifShow: true,
+        },
+        {
+          name: "项目发表时间",
+          value: "subjectTime",
+          width: "200",
+          ifShow: false,
+        },
       ];
     }
   },
   methods: {
     //初始化查询参数
     initQueryList() {
-      initQueryTea()
+      initQuerySubject()
         .then((res) => {
           //closeDebug console.log("-----------初始化查询参数---------------");
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
+          this.rankList = obj.rank;
+          this.levelList = obj.s_rank;
           this.collegeList = obj.college;
           this.sectorList = obj.sector;
-          this.rankList = obj.rank;
         })
         .catch((failResponse) => {});
     },
@@ -302,25 +389,25 @@ export default {
       let params = new URLSearchParams();
       params.append("id", row.id);
       this.selectId = row.id;
-      getTeaDetail(params)
+      getSubjectDetail(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取个人奖项详情---------------");
+          //closeDebug console.log("-----------获取个人项目详情---------------");
           let obj = JSON.parse(res.msg);
-          //closeDebug console.log("个人奖项详情", obj);
+          //closeDebug console.log("个人项目详情", obj);
           this.detailData = obj;
         })
         .catch((failResponse) => {});
       this.ifShowDetail = true;
     },
-    //处理删除奖项
+    //处理删除项目
     handleDel(index, row) {
       //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
       params.append("id", row.id);
       let _this = this;
-      delTeaAward(params)
+      delTeaSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------删除奖项---------------");
+          //closeDebug console.log("-----------删除项目---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -336,15 +423,15 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    //奖项详情页面处理删除奖项
+    //项目详情页面处理删除项目
     handleInDel() {
       //closeDebug console.log("点击删除", index, row);
       let params = new URLSearchParams();
       params.append("id", this.selectId);
       let _this = this;
-      delTeaAward(params)
+      delTeaSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------删除奖项---------------");
+          //closeDebug console.log("-----------删除项目---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -361,7 +448,7 @@ export default {
         .catch((failResponse) => {});
       this.goBack();
     },
-    //返回重选奖项
+    //返回重选项目
     goBack() {
       this.ifShowDetail = false;
       this.selectId = 0;
@@ -378,10 +465,13 @@ export default {
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("rankId", this.form2Query.rankId); //获奖等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
-      params.append("order", this.orderMode); //奖项名
-      params.append("field", this.orderField); //奖项名
-      getTeaAwardList(params)
+      params.append("levelId", this.form2Query.levelId); //项目记录等级
+      params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+      params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+      params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+      params.append("order", this.orderMode);
+      params.append("field", this.orderField);
+      getTeaSubjectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);
@@ -403,67 +493,87 @@ export default {
       //closeDebug console.log(this.orderMode, this.orderField);
       this.onQuery();
     },
-    //处理导出教师奖项表格文件
+    //处理导出教师项目表格文件
     onExportXLS() {
       //closeDebug console.log("export XLS:", this.form2Query);
       //参数绑定「筛选参数」
-      let params = new URLSearchParams();
-      params.append("collegeId", this.form2Query.collegeId);
-      params.append("sectorId", this.form2Query.sectorId);
-      params.append("keyUsername", this.form2Query.keyUsername); //用户id
-      params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //获奖等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
-      exportTeaAwardXLS(params)
-        .then((res) => {
-          //closeDebug console.log("-----------导出教师奖项表格文件---------------");
-          //closeDebug console.log(res);
-          const blob = new Blob([res.data]);
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          downloadElement.href = href;
-          //new一个时间对象
-          var nowDate = new Date().toLocaleDateString();
-          downloadElement.download = decodeURIComponent(
-            nowDate + "_教师奖项.xls"
-          );
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(href);
-        })
-        .catch((failResponse) => {});
+      if (this.form2Query.levelId == "") {
+        this.$message({
+          message: "请选择项目类型",
+          type: "warning",
+        });
+      } else {
+        let params = new URLSearchParams();
+        params.append("collegeId", this.form2Query.collegeId);
+        params.append("sectorId", this.form2Query.sectorId);
+        params.append("keyUsername", this.form2Query.keyUsername); //用户id
+        params.append("keyName", this.form2Query.keyName); //姓名
+        params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+        params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+        params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+        params.append("rankId", this.form2Query.rankId); //项目记录等级
+        params.append("levelId", this.form2Query.levelId); //项目记录等级
+        exportTeaSubjectXLS(params)
+          .then((res) => {
+            //closeDebug console.log("-----------导出教师项目表格文件---------------");
+            //closeDebug console.log(res);
+            const blob = new Blob([res.data]);
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
+            //new一个时间对象
+            var nowDate = new Date().toLocaleDateString();
+            downloadElement.download = decodeURIComponent(
+              nowDate + "_教师项目.xls"
+            );
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          })
+          .catch((failResponse) => {});
+      }
     },
-    //处理导出教师奖项表格文件
+    //处理导出教师项目表格文件
     onExportZIP() {
       //closeDebug console.log("export ZIP:", this.form2Query);
       //参数绑定「筛选参数」
-      let params = new URLSearchParams();
-      params.append("collegeId", this.form2Query.collegeId);
-      params.append("sectorId", this.form2Query.sectorId);
-      params.append("keyUsername", this.form2Query.keyUsername); //用户id
-      params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //获奖等级
-      params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
-      exportTeaAwardZIP(params)
-        .then((res) => {
-          //closeDebug console.log("-----------导出教师奖项表格文件---------------");
-          //closeDebug console.log(res);
-          const blob = new Blob([res.data]);
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          downloadElement.href = href;
-          //new一个时间对象
-          var nowDate = new Date().toLocaleDateString();
-          downloadElement.download = decodeURIComponent(
-            nowDate + "_教师奖项图片.zip"
-          );
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(href);
-        })
-        .catch((failResponse) => {});
+      if (this.form2Query.levelId == "") {
+        this.$message({
+          message: "请选择项目类型",
+          type: "warning",
+        });
+      } else {
+        let params = new URLSearchParams();
+        params.append("collegeId", this.form2Query.collegeId);
+        params.append("sectorId", this.form2Query.sectorId);
+        params.append("keyUsername", this.form2Query.keyUsername); //用户id
+        params.append("keyName", this.form2Query.keyName); //姓名
+        params.append("keySubjectNum", this.form2Query.keySubjectNum); //项目编号
+        params.append("keySubjectName", this.form2Query.keySubjectName); //项目名称
+        params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
+        params.append("rankId", this.form2Query.rankId); //项目记录等级
+        params.append("levelId", this.form2Query.levelId); //项目记录等级
+        exportTeaSubjectZIP(params)
+          .then((res) => {
+            //closeDebug console.log("-----------导出教师项目表格文件---------------");
+            //closeDebug console.log(res);
+            const blob = new Blob([res.data]);
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
+            //new一个时间对象
+            var nowDate = new Date().toLocaleDateString();
+            downloadElement.download = decodeURIComponent(
+              nowDate + "_教师项目图片.zip"
+            );
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          })
+          .catch((failResponse) => {});
+      }
     },
   },
 };
