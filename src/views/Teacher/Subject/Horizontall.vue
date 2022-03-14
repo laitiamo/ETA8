@@ -1225,7 +1225,7 @@ export default {
     this.initHorizon2();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化横向项目等级列表
     initHorizon() {
       let _this = this;
       //初始化项目类别列表

@@ -1482,7 +1482,7 @@ export default {
     this.initSponsored2();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化纵向项目等级列表
     initSponsored() {
       let _this = this;
       //初始化项目类别列表

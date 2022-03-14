@@ -599,7 +599,7 @@ export default {
       params.append("id", this.detailData.id); //年级
       exportTeaSubjectPDF(params)
         .then((res) => {
-          //closeDebug console.log("-----------导出学生奖项表格文件---------------");
+          //closeDebug console.log("-----------导出教师项目文件---------------");
           //closeDebug console.log(res);
           const blob = new Blob([res.data]);
           var downloadElement = document.createElement("a");

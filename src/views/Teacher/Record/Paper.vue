@@ -132,7 +132,7 @@
       <el-form-item label="期刊类型" prop="rankId">
         <el-select
           v-model="FormData.rankId"
-          placeholder="请选择奖项等级"
+          placeholder="请选择期刊类型"
           style="display: block"
         >
           <template v-for="rankEach in PaperList">
@@ -221,7 +221,7 @@ export default {
       paperType: "发表论文",
       submitButton: false,
       fileList: [], //已上传的文件列表
-      PaperList: [], //奖项等级的列表「从后端取得」
+      PaperList: [], //成果等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       SubjectList: [],
       //表单数据
@@ -283,7 +283,7 @@ export default {
     this.initRankList();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化成果等级列表
     initRankList() {
       let params = new URLSearchParams();
       params.append("typeId", 1);

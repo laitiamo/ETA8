@@ -301,7 +301,7 @@ export default {
           let obj = JSON.parse(res.msg);
           //closeDebug console.log(obj);
           this.rankList = obj.rank;
-          this.levelList = obj.s_rank;
+          this.levelList = obj.level;
           this.collegeList = obj.college;
           this.sectorList = obj.sector;
         })
@@ -333,26 +333,26 @@ export default {
       //console.log(this.reviewId, this.reviewer);
       getSubjectDetail(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取个人奖项详情---------------");
+          //closeDebug console.log("-----------获取个人项目详情---------------");
           let obj = JSON.parse(res.msg);
-          //closeDebug console.log("个人奖项详情", obj);
+          //closeDebug console.log("个人项目详情", obj);
           this.detailData = obj;
         })
         .catch((failResponse) => {});
       this.ifShowDetail = true;
       this.ifButtonTrue = true;
     },
-    //处理通过奖项
+    //处理允许结项
     handlePass() {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "1");
+      params.append("reviewType", "5");
       let _this = this;
       FinishSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------通过奖项---------------");
+          //closeDebug console.log("-----------允许结题---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -369,17 +369,17 @@ export default {
         .catch((failResponse) => {});
       this.goBack();
     },
-    //处理驳回奖项
+    //处理驳回项目
     handleNotPass() {
-      //closeDebug console.log("点击驳回");
+      //closeDebug console.log("点击驳回结题");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "2");
+      params.append("reviewType", "6");
       let _this = this;
       notFinishSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------驳回奖项---------------");
+          //closeDebug console.log("-----------驳回项目结题---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -396,7 +396,7 @@ export default {
         .catch((failResponse) => {});
       this.goBack();
     },
-    //返回重选奖项
+    //返回重选项目
     goBack() {
       this.ifShowDetail = false;
       this.reviewId = 0;

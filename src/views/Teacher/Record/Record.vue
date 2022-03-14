@@ -1,7 +1,7 @@
 <template>
   <div class="record">
     <h3>上传成果</h3>
-    <!---奖项列表部分，选中奖项后隐藏--->
+    <!---成果列表部分，选中成果后隐藏--->
     <el-table
       :data="tableData"
       border
@@ -33,7 +33,7 @@
     >
     </el-pagination>
 
-    <!---提交表单部分，选中奖项后链接跳转--->
+    <!---提交表单部分，选中成果后链接跳转--->
   </div>
 </template>
 
@@ -92,7 +92,7 @@ export default {
       //closeDebug console.log(`当前页: ${val}`);
       this.getTableData();
     },
-    //处理选中，隐藏奖项列表，显示提交表单
+    //处理选中，隐藏成果列表，显示提交表单
     handleEdit(index, row) {
       //closeDebug console.log("选中了", index, row);\
       switch (row.id) {

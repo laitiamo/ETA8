@@ -114,8 +114,8 @@ export default {
         { name: "日志编号", value: "id", width: "110", ifShow: true },
         { name: "获奖者姓名", value: "name", width: "130", ifShow: true },
         { name: "获奖者班级", value: "className", width: "180", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "奖项级别", value: "rankName", width: "120", ifShow: false },
+        { name: "记录名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "记录级别", value: "rankName", width: "120", ifShow: false },
         { name: "审核状态", value: "reviewType", width: "180", ifShow: true },
         { name: "审核人", value: "reviewerName", width: "200", ifShow: true },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
@@ -154,8 +154,8 @@ export default {
         { name: "日志编号", value: "id", width: "90", ifShow: false },
         { name: "获奖者姓名", value: "name", width: "80", ifShow: true },
         { name: "获奖者班级", value: "className", width: "180", ifShow: false },
-        { name: "奖项名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "奖项级别", value: "rankName", width: "120", ifShow: false },
+        { name: "记录名称", value: "awardName", width: "auto", ifShow: true },
+        { name: "记录级别", value: "rankName", width: "120", ifShow: false },
         { name: "审核状态", value: "reviewType", width: "180", ifShow: true },
         { name: "操作人", value: "reviewerName", width: "200", ifShow: true },
         { name: "上传时间", value: "createAt", width: "200", ifShow: false },
@@ -217,7 +217,7 @@ export default {
       let _this = this;
       delLog(params)
         .then((res) => {
-          //closeDebug console.log("-----------删除奖项---------------");
+          //closeDebug console.log("-----------删除记录---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,

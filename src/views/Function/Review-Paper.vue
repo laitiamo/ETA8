@@ -328,26 +328,26 @@ export default {
       //console.log(this.reviewId, this.reviewer);
       getPaperDetail(params)
         .then((res) => {
-          //closeDebug console.log("-----------获取个人奖项详情---------------");
+          //closeDebug console.log("-----------获取个人成果详情---------------");
           let obj = JSON.parse(res.msg);
-          //closeDebug console.log("个人奖项详情", obj);
+          //closeDebug console.log("个人成果详情", obj);
           this.detailData = obj;
         })
         .catch((failResponse) => {});
       this.ifShowDetail = true;
       this.ifButtonTrue = true;
     },
-    //处理通过奖项
+    //处理通过成果
     handlePass() {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "3");
+      params.append("reviewType", "1");
       let _this = this;
       passRecord(params)
         .then((res) => {
-          //closeDebug console.log("-----------通过奖项---------------");
+          //closeDebug console.log("-----------通过成果---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -364,17 +364,17 @@ export default {
         .catch((failResponse) => {});
       this.goBack();
     },
-    //处理驳回奖项
+    //处理驳回成果
     handleNotPass() {
       //closeDebug console.log("点击驳回");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       params.append("reviewer", this.reviewer);
-      params.append("reviewType", "4");
+      params.append("reviewType", "2");
       let _this = this;
       notPassRecord(params)
         .then((res) => {
-          //closeDebug console.log("-----------驳回奖项---------------");
+          //closeDebug console.log("-----------驳回成果---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -391,7 +391,7 @@ export default {
         .catch((failResponse) => {});
       this.goBack();
     },
-    //返回重选奖项
+    //返回重选成果
     goBack() {
       this.ifShowDetail = false;
       this.reviewId = 0;

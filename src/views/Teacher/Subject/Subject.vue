@@ -1,6 +1,6 @@
 <template>
   <div class="Subject">
-    <!---奖项列表部分，选中奖项后隐藏--->
+    <!---项目列表部分，选中项目后隐藏--->
     <h3>项目申报</h3>
     <el-table
       :data="tableData"
@@ -90,7 +90,7 @@ export default {
       //closeDebug console.log(`当前页: ${val}`);
       this.getTableData();
     },
-    //处理选中，隐藏奖项列表，显示提交表单
+    //处理选中，隐藏项目列表，显示提交表单
     handleEdit(index, row) {
       //closeDebug console.log("选中了", index, row);\
       this.rankIdSelected = row.id;

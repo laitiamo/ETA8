@@ -943,7 +943,7 @@ export default {
     this.initSchool2();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化校级项目等级列表
     initSchool() {
       let _this = this;
       //初始化项目类别列表

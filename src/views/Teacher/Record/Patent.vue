@@ -205,7 +205,7 @@ export default {
       paperType: "设计专利",
       submitButton: false,
       fileList: [], //已上传的文件列表
-      PatentList: [], //奖项等级的列表「从后端取得」
+      PatentList: [], //专利等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       //表单数据
       FormData: {
@@ -262,7 +262,7 @@ export default {
     this.initRankList();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化专利等级列表
     initRankList() {
       let _this = this;
       let params = new URLSearchParams();

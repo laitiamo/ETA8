@@ -222,7 +222,7 @@ export default {
       paperType: "著作教材",
       submitButton: false,
       fileList: [], //已上传的文件列表
-      BookList: [], //奖项等级的列表「从后端取得」
+      BookList: [], //著作等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
       SubjectList: [],
       //表单数据
@@ -282,7 +282,7 @@ export default {
     this.initRankList();
   },
   methods: {
-    //初始化奖项等级列表
+    //初始化著作等级列表
     initRankList() {
       let _this = this;
       let params = new URLSearchParams();
