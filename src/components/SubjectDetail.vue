@@ -41,9 +41,6 @@
           >项目类型：{{ detailData.rank }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >项目批准经费（万）：{{ detailData.fund }}</el-col
-        >
-        <el-col class="detail-info" :span="12" :xs="24"
           >项目级别：{{ detailData.level }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
@@ -58,6 +55,11 @@
         <el-divider content-position="left"
           ><span class="div-font">预计经费</span></el-divider
         >
+        <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >项目批准经费（万）：{{ detailData.fund }}</el-col
+          >
+        </el-row>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24"
             >办公、图文制作、邮费（万）：{{ detailData.DocumentFund }}</el-col
@@ -120,9 +122,6 @@
           <el-col class="detail-info" :span="12" :xs="24">
             技术开发费（万）：{{ detailData.DevelopFund }}
           </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            其他支出（万）：{{ detailData.OtherFund }}
-          </el-col>
         </el-row>
         <el-divider content-position="left"
           ><span class="div-font">合同预算</span></el-divider
@@ -136,6 +135,9 @@
           </el-col>
           <el-col class="detail-info" :span="12" :xs="24">
             劳务费（万）：{{ detailData.ServiceFund }}
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            其他支出（万）：{{ detailData.OtherFund }}
           </el-col>
         </el-row>
         <el-divider content-position="left"
@@ -267,9 +269,21 @@
       </template>
       <template v-if="detailData.levelId == 1">
         <el-divider content-position="left"
-          ><span class="div-font">预计经费</span></el-divider
+          ><span class="div-font">项目经费详情</span></el-divider
         >
         <el-row :gutter="20">
+          <el-col class="detail-info" :span="12" :xs="24"
+            >硬件费用（万）：{{ detailData.HardwareFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >留校经费（万）：{{ detailData.StaySchoolFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >外拨费用（万）：{{ detailData.OutboundFund }}</el-col
+          >
+          <el-col class="detail-info" :span="12" :xs="24"
+            >批准经费（万）：{{ detailData.fund }}</el-col
+          >
           <el-col class="detail-info" :span="12" :xs="24"
             >资料费（万）：{{ detailData.DocumentFund }}</el-col
           >
@@ -299,15 +313,6 @@
           >
           <el-col class="detail-info" :span="12" :xs="24"
             >管理费（万）：{{ detailData.PatentFund }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >硬件费用（万）：{{ detailData.HardwareFund }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >留校经费（万）：{{ detailData.StaySchoolFund }}</el-col
-          >
-          <el-col class="detail-info" :span="12" :xs="24"
-            >外拨费用（万）：{{ detailData.OutboundFund }}</el-col
           >
         </el-row>
 

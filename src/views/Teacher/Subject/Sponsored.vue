@@ -315,18 +315,49 @@
         <h3>项目经费</h3>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="项目获批经费（万）" prop="SubjectFund">
+            <el-form-item label="硬件费用（万）" prop="HardwareFund">
               <el-input
                 type="text"
-                v-model="FormData.SubjectFund"
-                style="width:70%;"
+                v-model="FormData.HardwareFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="留校经费（万）" prop="StaySchoolFund">
+              <el-input
+                type="text"
+                v-model="FormData.StaySchoolFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="外拨费用（万）" prop="OutboundFund">
+              <el-input
+                type="text"
+                v-model="FormData.OutboundFund"
+                style="width:40%;"
+                placeholder="请输入项目经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="detail-info" :span="12" :xs="24">
+            <el-form-item label="自动生成-项目获批经费（万）" prop="AllFund">
+              <el-input
+                type="text"
+                v-model="AllFund"
+                style="width:40%;"
+                readonly
                 placeholder="请输入项目经费"
               ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-divider></el-divider>
-        <h4>预计经费</h4>
+        <h4>留校经费分配</h4>
         <el-row :gutter="20">
           <el-col class="detail-info" :span="12" :xs="24">
             <el-form-item label="资料费（万）" prop="DocumentFund">
@@ -341,6 +372,7 @@
                 v-model="Function1"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input>
             </el-form-item>
           </el-col>
@@ -357,6 +389,7 @@
                 v-model="Function2"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input>
             </el-form-item>
           </el-col>
@@ -373,6 +406,7 @@
                 v-model="Function3"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -389,6 +423,7 @@
                 v-model="Function4"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -407,6 +442,7 @@
                 v-model="Function5"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input>
             </el-form-item>
           </el-col>
@@ -423,6 +459,7 @@
                 v-model="Function6"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input>
             </el-form-item>
           </el-col>
@@ -439,6 +476,7 @@
                 v-model="Function7"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -455,6 +493,7 @@
                 v-model="Function8"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -471,6 +510,7 @@
                 v-model="Function9"
                 style="width:15%;"
                 placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -487,54 +527,7 @@
                 v-model="Function10"
                 style="width:15%;"
                 placeholder="经费比重"
-              ></el-input
-            ></el-form-item>
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="硬件费用（万）" prop="HardwareFund">
-              <el-input
-                type="text"
-                v-model="FormData.HardwareFund"
-                style="width:40%;"
-                placeholder="请输入项目经费"
-              ></el-input>
-              <el-input
-                type="text"
-                v-model="Function11"
-                style="width:15%;"
-                placeholder="经费比重"
-              ></el-input
-            ></el-form-item>
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="留校经费（万）" prop="StaySchoolFund">
-              <el-input
-                type="text"
-                v-model="FormData.StaySchoolFund"
-                style="width:40%;"
-                placeholder="请输入项目经费"
-              ></el-input>
-              <el-input
-                type="text"
-                v-model="Function12"
-                style="width:15%;"
-                placeholder="经费比重"
-              ></el-input
-            ></el-form-item>
-          </el-col>
-          <el-col class="detail-info" :span="12" :xs="24">
-            <el-form-item label="外拨费用（万）" prop="OutboundFund">
-              <el-input
-                type="text"
-                v-model="FormData.OutboundFund"
-                style="width:40%;"
-                placeholder="请输入项目经费"
-              ></el-input>
-              <el-input
-                type="text"
-                v-model="Function13"
-                style="width:15%;"
-                placeholder="经费比重"
+                readonly
               ></el-input
             ></el-form-item>
           </el-col>
@@ -1121,7 +1114,6 @@ export default {
         SecCategoryId: "", //项目类别二级目录
 
         //项目经费
-        SubjectFund: "",
         DocumentFund: "",
         DataFund: "",
         TravelFund: "",
@@ -1211,9 +1203,6 @@ export default {
         ],
 
         //项目经费
-        SubjectFund: [
-          { required: true, message: "请输入项目经费", trigger: "blur" },
-        ],
         DocumentFund: [
           { required: false, message: "请输入项目经费", trigger: "blur" },
         ],
@@ -1410,94 +1399,81 @@ export default {
   computed: {
     Function1: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum2 = parseFloat(this.FormData.DocumentFund) || 0;
       sum = sum2 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function2: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum2 = parseFloat(this.FormData.DataFund) || 0;
       sum = sum2 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function3: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum3 = parseFloat(this.FormData.TravelFund) || 0;
       sum = sum3 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function4: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum4 = parseFloat(this.FormData.MeetingFund) || 0;
       sum = sum4 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function5: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum5 = parseFloat(this.FormData.InternationalFund) || 0;
       sum = sum5 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function6: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum6 = parseFloat(this.FormData.DeviceFund) || 0;
       sum = sum6 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function7: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum7 = parseFloat(this.FormData.ConsultFund) || 0;
       sum = sum7 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function8: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum8 = parseFloat(this.FormData.LaborFund) || 0;
       sum = sum8 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function9: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum9 = parseFloat(this.FormData.MaterialFund) || 0;
       sum = sum9 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function10: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
       let sum10 = parseFloat(this.FormData.PatentFund) || 0;
       sum = sum10 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
-    Function11: function() {
+    AllFund: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum11 = parseFloat(this.FormData.HardwareFund) || 0;
-      sum = sum11 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
-    },
-    Function12: function() {
-      let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum12 = parseFloat(this.FormData.StaySchoolFund) || 0;
-      sum = sum12 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
-    },
-    Function13: function() {
-      let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum13 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum13 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      let sum1 = parseFloat(this.FormData.StaySchoolFund) || 0;
+      let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
+      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
+      sum = sum1 + sum2 + sum3;
+      return sum.toFixed(2) || 0;
     },
     ...mapGetters(["name", "username", "role", "college", "t_sector"]),
   },
@@ -1541,9 +1517,9 @@ export default {
         .catch((failResponse) => {});
     },
     //更新可供筛选的一级学科二级目录列表
-    getSecType(){
+    getSecType() {
       let _this = this;
-      _this.FormData.SecTypeId = '';
+      _this.FormData.SecTypeId = "";
       let params = new URLSearchParams();
       params.append("TypeId", this.FormData.TypeId);
       getSecTypeList(params)
@@ -1552,9 +1528,9 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    getThirdType(){
+    getThirdType() {
       let _this = this;
-      _this.FormData.ThirdTypeId = '';
+      _this.FormData.ThirdTypeId = "";
       let params = new URLSearchParams();
       params.append("SecTypeId", this.FormData.SecTypeId);
       getThirdTypeList(params)
@@ -1698,7 +1674,7 @@ export default {
           }
 
           //项目经费
-          data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("SubjectFund", this.AllFund);
           data2upload.append("DocumentFund", this.FormData.DocumentFund);
           data2upload.append("DataFund", this.FormData.DataFund);
           data2upload.append("TravelFund", this.FormData.TravelFund);

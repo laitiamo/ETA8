@@ -227,78 +227,113 @@
         size="medium"
         class="demo-FormData"
       >
-        <h3>项目经费</h3>
-        <el-form-item label="项目申请经费（万）" prop="SubjectFund">
-          <el-input
-            type="text"
-            v-model="FormData.SubjectFund"
-            style="width:70%;"
-            placeholder="请输入项目申请经费"
-          ></el-input>
-        </el-form-item>
+        <h3>项目预计经费</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="软件经费（万）" prop="SoftwareFund">
+              <el-input
+                type="text"
+                v-model="FormData.SoftwareFund"
+                style="width:40%;"
+                placeholder="请输入项目软件经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="设备经费（万）" prop="HardwareFund"
+              ><el-input
+                type="text"
+                v-model="FormData.HardwareFund"
+                style="width:40%;"
+                placeholder="请输入项目设备经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="外协经费（万）" prop="OutboundFund">
+              <el-input
+                type="text"
+                v-model="FormData.OutboundFund"
+                style="width:40%;"
+                placeholder="请输入外协经费"
+              ></el-input
+            ></el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="技术开发费（万）" prop="DevelopFund">
+              <el-input
+                type="text"
+                v-model="DevelopFund"
+                style="width:40%;"
+                placeholder="请输入技术开发费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-divider></el-divider>
-        <h4>预计经费</h4>
-        <el-form-item label="项目软件经费（万）" prop="SoftwareFund">
-          <el-input
-            type="text"
-            v-model="FormData.SoftwareFund"
-            style="width:40%;"
-            placeholder="请输入项目软件经费"
-          ></el-input>
-          <el-input
-            type="text"
-            v-model="Function1"
-            style="width:15%;"
-            placeholder="经费比重"
-            readonly
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="项目设备经费（万）" prop="HardwareFund"
-          ><el-input
-            type="text"
-            v-model="FormData.HardwareFund"
-            style="width:40%;"
-            placeholder="请输入项目设备经费"
-          ></el-input>
-          <el-input
-            type="text"
-            v-model="Function2"
-            style="width:15%;"
-            placeholder="经费比重"
-            readonly
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="外协经费（万）" prop="OutboundFund">
-          <el-input
-            type="text"
-            v-model="FormData.OutboundFund"
-            style="width:40%;"
-            placeholder="请输入外协经费"
-          ></el-input>
-          <el-input
-            type="text"
-            v-model="Function3"
-            style="width:15%;"
-            placeholder="经费比重"
-            readonly
-          ></el-input
-        ></el-form-item>
-        <el-form-item label="技术开发费（万）" prop="DevelopFund">
-          <el-input
-            type="text"
-            v-model="DevelopFund"
-            style="width:40%;"
-            placeholder="请输入技术开发费"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="合同经费（万）" prop="DevelopFund">
-          <el-input
-            v-model="DevelopFund"
-            style="width:40%;"
-            placeholder="请输入合同经费"
-          ></el-input>
-        </el-form-item>
-
+        <h3>合同预算</h3>
+        <el-row :gutter="20">
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="合同经费（万）" prop="DevelopFund">
+              <el-input
+                v-model="DevelopFund"
+                style="width:40%;"
+                placeholder="请输入合同经费"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="课题组/校内人员费（万）" prop="ResearchFund">
+              <el-input
+                type="text"
+                v-model="FormData.ResearchFund"
+                style="width:40%;"
+                placeholder="请输入课题组/校内人员费"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function1"
+                style="width:15%;"
+                placeholder="经费比重"
+                readonly
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="劳务费（学生/临聘） （万）" prop="ServiceFund">
+              <el-input
+                type="text"
+                v-model="FormData.ServiceFund"
+                style="width:40%;"
+                placeholder="请输入劳务费（学生/临聘）"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function2"
+                style="width:15%;"
+                placeholder="经费比重"
+                readonly
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col class="subject-info" :span="12" :xs="24">
+            <el-form-item label="其他支出（万）" prop="OtherFund"
+              ><el-input
+                type="text"
+                v-model="FormData.OtherFund"
+                style="width:40%;"
+                placeholder="请输入其他支出"
+              ></el-input>
+              <el-input
+                type="text"
+                v-model="Function3"
+                style="width:15%;"
+                placeholder="经费比重"
+                readonly
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-divider></el-divider>
         <h3>项目描述</h3>
         <el-row :gutter="20">
@@ -528,31 +563,6 @@
         size="medium"
         class="demo-FormData"
       >
-        <h3>合同预算</h3>
-        <el-row :gutter="20">
-          <el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="课题组/校内人员费（万）" prop="ResearchFund">
-              <el-input
-                type="text"
-                v-model="FormData.ResearchFund"
-                placeholder="请输入课题组/校内人员费"
-              ></el-input> </el-form-item></el-col
-          ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="劳务费（学生/临聘） （万）" prop="ServiceFund">
-              <el-input
-                type="text"
-                v-model="FormData.ServiceFund"
-                placeholder="请输入劳务费（学生/临聘）"
-              ></el-input></el-form-item></el-col
-          ><el-col class="subject-info" :span="12" :xs="24">
-            <el-form-item label="其他支出（万）" prop="OtherFund"
-              ><el-input
-                type="text"
-                v-model="FormData.OtherFund"
-                placeholder="请输入其他支出"
-              ></el-input></el-form-item
-          ></el-col>
-        </el-row>
         <el-divider></el-divider>
         <h3>技术市场信息</h3>
         <el-row :gutter="20">
@@ -892,7 +902,6 @@ import {
   initHorizon,
   uploadHorizon,
   getSourceList,
-  QuerySecondList,
   QueryContractList,
   QueryCityList,
   QueryCountyList,
@@ -945,7 +954,6 @@ export default {
         SubjectNum: "",
 
         //项目经费
-        SubjectFund: "",
         HardwareFund: "",
         SoftwareFund: "",
         OutboundFund: "",
@@ -1011,9 +1019,6 @@ export default {
         ],
 
         //项目经费
-        SubjectFund: [
-          { required: true, message: "请输入项目申请经费", trigger: "blur" },
-        ],
         SoftwareFund: [
           { required: false, message: "请输入项目软件经费", trigger: "blur" },
         ],
@@ -1186,24 +1191,24 @@ export default {
   computed: {
     Function1: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum2 = parseFloat(this.FormData.SoftwareFund) || 0;
+      let sum1 = parseFloat(this.DevelopFund) || 0;
+      let sum2 = parseFloat(this.FormData.ResearchFund) || 0;
       sum = sum2 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function2: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum2 = parseFloat(this.FormData.HardwareFund) || 0;
+      let sum1 = parseFloat(this.DevelopFund) || 0;
+      let sum2 = parseFloat(this.FormData.DocumentFund) || 0;
       sum = sum2 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     Function3: function() {
       let sum = 0;
-      let sum1 = parseFloat(this.FormData.SubjectFund) || 0;
-      let sum3 = parseFloat(this.FormData.OutboundFund) || 0;
-      sum = sum3 / sum1 || 0;
-      return (sum * 100).toFixed(2) || 0;
+      let sum1 = parseFloat(this.DevelopFund) || 0;
+      let sum2 = parseFloat(this.FormData.ServiceFund) || 0;
+      sum = sum2 / sum1 || 0;
+      return (sum * 100).toFixed(2) + "%" || 0;
     },
     DevelopFund: function() {
       let sum = 0;
@@ -1330,25 +1335,6 @@ export default {
     back(formName) {
       this.active--;
     },
-    //核查经费
-    check(formName) {
-      if (this.FormData.SubjectFund > this.allScore) {
-        this.$message({
-          message: "经费核查通过",
-          type: "success",
-        });
-      } else if (this.FormData.SubjectFund < this.allScore) {
-        this.$message({
-          message: "经费不足，请检查该板块",
-          type: "error",
-        });
-      } else {
-        this.$message({
-          message: "填写为空，请重新填写",
-          type: "success",
-        });
-      }
-    },
     //处理表单提交事件
     submitForm(formName) {
       let _this = this;
@@ -1372,13 +1358,13 @@ export default {
           data2upload.append("SubjectName", this.FormData.SubjectName);
           data2upload.append("SubjectType", this.SubjectType);
           data2upload.append("LevelId", this.LevelId); //项目的等级id（横向纵向）
-          data2upload.append("RankId",4); //需求分析要求横向项目等级默认为校级
+          data2upload.append("RankId", 4); //需求分析要求横向项目等级默认为校级
           for (let i = 0; i < this.FormData.domains.length; i++) {
             data2upload.append("userids[]", this.FormData.domains[i].value);
           }
 
           //项目经费
-          data2upload.append("SubjectFund", this.FormData.SubjectFund);
+          data2upload.append("SubjectFund", 0);
           data2upload.append("HardwareFund", this.FormData.HardwareFund);
           data2upload.append("SoftwareFund", this.FormData.SoftwareFund);
           data2upload.append("OutboundFund", this.FormData.OutboundFund);
