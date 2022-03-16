@@ -429,7 +429,6 @@ export default {
             this.$store.commit("initUserInfo", {
               roleId: obj.l_roleId, //角色
               name: obj.l_name, //用户姓名
-              reviewer: obj.l_name, //审阅人姓名
               username: obj.l_username, //用户编号
               role: obj.l_role, //用户角色
               college: obj.l_college, //学院

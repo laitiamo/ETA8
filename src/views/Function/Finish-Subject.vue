@@ -330,7 +330,6 @@ export default {
       let params = new URLSearchParams();
       params.append("id", row.id);
       this.reviewId = row.id;
-      //console.log(this.reviewId, this.reviewer);
       getSubjectDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人项目详情---------------");
@@ -347,8 +346,6 @@ export default {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "5");
       let _this = this;
       FinishSubject(params)
         .then((res) => {
@@ -374,8 +371,6 @@ export default {
       //closeDebug console.log("点击驳回结题");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "6");
       let _this = this;
       notFinishSubject(params)
         .then((res) => {
@@ -445,7 +440,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["reviewer", "roleId"]),
+    ...mapGetters(["roleId"]),
   },
 };
 </script>

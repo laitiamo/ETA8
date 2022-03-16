@@ -90,7 +90,7 @@
           />
         </template>
         <el-divider direction="vertical" content-position="center" />
-        <AwardShow :roleId="roleId ? roleId : 5" />
+        <AwardShow :roleId="roleId ? roleId : 5" v-if="roleId !== 4 && roleId !== 7"/>
       </el-col>
     </el-row>
   </div>

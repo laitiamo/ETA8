@@ -10,7 +10,6 @@ const store = new Vuex.Store({
     username: "", //用户编号
     role: "", //用户角色
     roleId: "", //角色ID  [1:系统管理员 2:院系领导 3:辅导员 4:任课教师 5:学生 6:学生助理]
-    reviewer:"",//审核人
     //如果是学生的话还有以下参数
     grade: "", //年级
     major: "", //专业
@@ -53,7 +52,6 @@ const store = new Vuex.Store({
     username: (state) => state.username, //用户编号
     role: (state) => state.role, //用户角色
     roleId: (state) => state.roleId, //角色ID  [1:系统管理员 2:院系领导 3:辅导员 4:任课教师 5:学生 6:学生助理]
-    reviewer: (state) => state.name,//审核人
     //如果是学生的话还有以下参数
     grade: (state) => state.grade, //年级
     major: (state) => state.major, //专业

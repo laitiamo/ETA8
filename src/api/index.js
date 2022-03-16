@@ -559,6 +559,17 @@ export const delStuAward = (params) => get(`eta8/query-stu/del`, params);
 export const updateAwardImg = (data) =>
   postFile(`eta8/query-stu/updateImg`, data);
 
+/**
+ * 上传中期检查报告（POST）
+ * 需传入的参数
+ * id: 项目ID
+ * file: (二进制)
+ * @param {FormData} data
+ * @returns
+ */
+export const uploadMidSubject = (data) =>
+  postFile(`eta8/query-subject/uploadMidSubject`, data);
+
 // =====================================================================> 管理操作日志
 /**
  * 初始化查询参数（GET）

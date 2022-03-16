@@ -122,6 +122,15 @@
         <el-button
           v-show="ifShowDetail"
           v-if="detailData.reviewId === 4"
+          @click="onMidSubmit"
+          style="margin:10px 20px 0 0"
+          >中期检查</el-button
+        >
+      </el-col>
+      <el-col :span="2" :xs="6">
+        <el-button
+          v-show="ifShowDetail"
+          v-if="detailData.reviewId === 4"
           @click="onSelectPaper"
           style="margin:10px 20px 0 0"
           >上传成果</el-button
@@ -162,6 +171,7 @@ export default {
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowDetail: false,
       ifShowDialog: false,
+      ifShowMidDialog: false,
       detailData: {},
       currentPage: 1,
       pageSize: 10,
@@ -276,6 +286,10 @@ export default {
     onSelectPaper() {
       this.ifShowDialog = true;
       this.getPaperData();
+    },
+    //展示上传成果页
+    onMidSubmit() {
+      this.ifShowMidDialog = true;
     },
     handleSizeChange(val) {
       this.pageSize = val;

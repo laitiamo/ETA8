@@ -296,7 +296,6 @@ export default {
       let params = new URLSearchParams();
       params.append("id", row.id);
       this.reviewId = row.id;
-      //console.log(this.reviewId, this.reviewer);
       getStuDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人奖项详情---------------");
@@ -313,8 +312,6 @@ export default {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "1");
       let _this = this;
       passAward(params)
         .then((res) => {
@@ -340,8 +337,6 @@ export default {
       //closeDebug console.log("点击驳回");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
-      params.append("reviewer", this.reviewer);
-      params.append("reviewType", "2");
       let _this = this;
       notPassAward(params)
         .then((res) => {
@@ -409,7 +404,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["reviewer", "roleId"]),
+    ...mapGetters(["roleId"]),
   },
 };
 </script>

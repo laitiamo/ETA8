@@ -1016,7 +1016,7 @@ export default {
     //更新可供筛选的社会经济二级目录列表
     QuerySociety() {
       let _this = this;
-      _this.FormData.SocSecondId = "";
+      _this.FormData.SocietyId = "";
       let params = new URLSearchParams();
       params.append("FirstId", this.FormData.SocFirstId);
       QuerySecondList(params)

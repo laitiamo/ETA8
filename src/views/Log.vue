@@ -99,7 +99,6 @@ import { mapGetters } from "vuex";
 export default {
   name: "Log",
   components: {},
-  computed: {},
   data() {
     return {
       windowWidth: document.documentElement.clientWidth, //实时屏幕宽度
@@ -112,14 +111,9 @@ export default {
       // 数据列
       Columns: [
         { name: "日志编号", value: "id", width: "110", ifShow: true },
-        { name: "获奖者姓名", value: "name", width: "130", ifShow: true },
-        { name: "获奖者班级", value: "className", width: "180", ifShow: false },
-        { name: "记录名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "记录级别", value: "rankName", width: "120", ifShow: false },
+        { name: "记录名称", value: "reviewName", width: "auto", ifShow: true },
         { name: "审核状态", value: "reviewType", width: "180", ifShow: true },
-        { name: "审核人", value: "reviewerName", width: "200", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
-        { name: "操作时间", value: "reviewAt", width: "200", ifShow: true },
+        { name: "审核员", value: "reviewer", width: "200", ifShow: true },
       ],
       detailData: {},
       currentPage: 1,
@@ -151,15 +145,10 @@ export default {
       this.paginationLayout = "prev, pager,next, ->, total";
       this.stuWidth = 80;
       this.Columns = [
-        { name: "日志编号", value: "id", width: "90", ifShow: false },
-        { name: "获奖者姓名", value: "name", width: "80", ifShow: true },
-        { name: "获奖者班级", value: "className", width: "180", ifShow: false },
-        { name: "记录名称", value: "awardName", width: "auto", ifShow: true },
-        { name: "记录级别", value: "rankName", width: "120", ifShow: false },
+        { name: "日志编号", value: "id", width: "110", ifShow: false },
+        { name: "记录名称", value: "reviewName", width: "auto", ifShow: true },
         { name: "审核状态", value: "reviewType", width: "180", ifShow: true },
-        { name: "操作人", value: "reviewerName", width: "200", ifShow: true },
-        { name: "上传时间", value: "createAt", width: "200", ifShow: false },
-        { name: "操作时间", value: "reviewAt", width: "200", ifShow: false },
+        { name: "审核员", value: "reviewer", width: "200", ifShow: false },
       ];
     }
   },
