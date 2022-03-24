@@ -31,34 +31,39 @@
           >
             <template slot-scope="scope">
               <i
-                class="el-icon-success"
-                style="color: #67c23a; margin-right: 4px"
-                v-if="scope.row[col.value] == '已审核'"
-              ></i>
-              <i
-                class="el-icon-success"
-                style="color: #67c23a; margin-right: 4px"
-                v-if="scope.row[col.value] == '已结项'"
-              ></i>
-              <i
                 class="el-icon-question"
                 style="color: #e6a23c; margin-right: 4px"
-                v-if="scope.row[col.value] == '未审核'"
-              ></i>
-              <i
-                class="el-icon-question"
-                style="color: #e6a23c; margin-right: 4px"
-                v-if="scope.row[col.value] == '未结项'"
-              ></i>
-              <i
-                class="el-icon-question"
-                style="color: #e6a23c; margin-right: 4px"
-                v-if="scope.row[col.value] == '等待结项'"
+                v-if="scope.row[col.value] == '等待审核'"
               ></i>
               <i
                 class="el-icon-warning"
                 style="color: #f56c6c; margin-right: 4px"
-                v-if="scope.row[col.value] == '未通过'"
+                v-if="scope.row[col.value] == '终止'"
+              ></i>
+              <i
+                class="el-icon-question"
+                style="color: #67c23a; margin-right: 4px"
+                v-if="scope.row[col.value] == '在研'"
+              ></i>
+              <i
+                class="el-icon-question"
+                style="color: #e6a23c; margin-right: 4px"
+                v-if="scope.row[col.value] == '申请变更'"
+              ></i>
+              <i
+                class="el-icon-question"
+                style="color: #e6a23c; margin-right: 4px"
+                v-if="scope.row[col.value] == '申请中期检查'"
+              ></i>
+              <i
+                class="el-icon-question"
+                style="color: #e6a23c; margin-right: 4px"
+                v-if="scope.row[col.value] == '申请结题'"
+              ></i>
+              <i
+                class="el-icon-success"
+                style="color: #67c23a; margin-right: 4px"
+                v-if="scope.row[col.value] == '已结题'"
               ></i>
               <span>{{ scope.row[col.value] }}</span>
             </template>
@@ -91,77 +96,27 @@
       v-show="ifShowDetail"
     >
     </SubjectDetail>
-    <el-dialog title="成果选择" :visible.sync="ifShowDialog" width="90%">
-      <el-table :data="PaperData" style="margin-top:10px">
-        <template v-for="col in PaperColumns">
-          <el-table-column
-            v-if="col.ifShow"
-            :prop="col.value"
-            :width="col.width"
-            :label="col.name"
-            sortable="custom"
-            :key="col.value"
-            show-overflow-tooltip
-          >
-          </el-table-column>
-        </template>
-        <el-table-column label="操作" width="80" fixed="right" align="center">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleSelect(scope.$index, scope.row)"
-              style="margin-right: 10px"
-              >选择</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-    <el-row :gutter="16" type="flex" class="row-bg" justify="center">
-      <el-col :span="2" :xs="6">
-        <el-button
+    <template v-if="detailData.reviewId === 3">
+      <el-row class="row-bg" justify="center" style="margin-top:15px;">
+        <SubjectExtraButton
+          :id="selectId"
           v-show="ifShowDetail"
-          v-if="detailData.reviewId === 4"
-          @click="onMidSubmit"
-          style="margin:10px 20px 0 0"
-          >中期检查</el-button
-        >
-      </el-col>
-      <el-col :span="2" :xs="6">
-        <el-button
-          v-show="ifShowDetail"
-          v-if="detailData.reviewId === 4"
-          @click="onSelectPaper"
-          style="margin:10px 20px 0 0"
-          >上传成果</el-button
-        >
-      </el-col>
-      <el-col :span="2" :xs="6">
-        <el-button
-          v-show="ifShowDetail"
-          v-if="detailData.reviewId === 4"
-          @click="handleFinish"
-          style="margin:10px 0 0 20px"
-          >申请结题</el-button
-        >
-      </el-col>
-    </el-row>
+          :detailData="detailData"
+          :goback="goBack"
+        ></SubjectExtraButton>
+      </el-row>
+    </template>
   </div>
 </template>
 
 <script>
-import {
-  getMySubjectList,
-  getSubjectDetail,
-  getPaperSelectList,
-  updateSubjectPaper,
-  ApplyFinishSubject,
-} from "../api";
+import { getMySubjectList, getSubjectDetail } from "../api";
 import SubjectDetail from "../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
+import SubjectExtraButton from "../components/SubjectExtraButton.vue";
 export default {
   name: "Mine-Subject",
-  components: { SubjectDetail },
+  components: { SubjectDetail, SubjectExtraButton },
   computed: {
     ...mapGetters(["roleId"]),
   },
@@ -170,20 +125,18 @@ export default {
       ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowDetail: false,
-      ifShowDialog: false,
-      ifShowMidDialog: false,
       detailData: {},
+      selectId: 0,
       currentPage: 1,
       pageSize: 10,
       tableData: [{}],
-      PaperData: [{}],
+
       // 数据列
       Columns: [
         { name: "审核状态", value: "reviewName", width: "130", ifShow: true },
         { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
         { name: "项目类别", value: "rankName", width: "120", ifShow: true },
         { name: "项目级别", value: "levelName", width: "120", ifShow: true },
-        { name: "负责人", value: "name", width: "120", ifShow: true },
         {
           name: "记录上传时间",
           value: "createAt",
@@ -193,29 +146,6 @@ export default {
         {
           name: "项目发表时间",
           value: "subjectTime",
-          width: "200",
-          ifShow: true,
-        },
-      ],
-      PaperColumns: [
-        { name: "成果类型", value: "typeName", width: "130", ifShow: true },
-        { name: "成果名称", value: "paperName", width: "auto", ifShow: true },
-        { name: "成果单位", value: "paperPlace", width: "auto", ifShow: true },
-        {
-          name: "成果审核状态",
-          value: "reviewName",
-          width: "auto",
-          ifShow: true,
-        },
-        {
-          name: "记录上传时间",
-          value: "createAt",
-          width: "200",
-          ifShow: true,
-        },
-        {
-          name: "记录审核时间",
-          value: "reviewAt",
           width: "200",
           ifShow: true,
         },
@@ -241,7 +171,6 @@ export default {
         { name: "名称", value: "subjectName", width: "auto", ifShow: true },
         { name: "类别", value: "rankName", width: "120", ifShow: false },
         { name: "级别", value: "levelName", width: "120", ifShow: false },
-        { name: "负责人", value: "name", width: "120", ifShow: false },
         {
           name: "上传时间",
           value: "createAt",
@@ -266,30 +195,9 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    getPaperData() {
-      let _this = this;
-      //参数绑定「分页大小、页码」
-      let params = new URLSearchParams();
-      getPaperSelectList(params)
-        .then((res) => {
-          //closeDebug console.log("-----------获取个人成果列表---------------");
-          //closeDebug console.log(res.data);
-          (_this.PaperData = res), (_this.dataCount = res.count);
-        })
-        .catch((failResponse) => {});
-    },
     //数据格式化
     formatter(row, column) {
       return row.address;
-    },
-    //展示上传成果页
-    onSelectPaper() {
-      this.ifShowDialog = true;
-      this.getPaperData();
-    },
-    //展示上传成果页
-    onMidSubmit() {
-      this.ifShowMidDialog = true;
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -304,6 +212,7 @@ export default {
       //closeDebug console.log("点击查看", index, row);
       let params = new URLSearchParams();
       params.append("id", row.id);
+      this.selectId = row.id;
       getSubjectDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取教师奖项详情---------------");
@@ -315,58 +224,10 @@ export default {
 
       this.ifShowDetail = true;
     },
-    handleSelect(index, row) {
-      let _this = this;
-      //closeDebug console.log("点击查看", index, row);
-      let params = new URLSearchParams();
-      params.append("SubjectId", this.detailData.id);
-      params.append("PaperId", row.id);
-      updateSubjectPaper(params)
-        .then((res) => {
-          //closeDebug console.log("-----------删除奖项---------------");
-          if (res.code === 0) {
-            _this.ifShowDialog = false;
-            _this.$message({
-              message: res.msg,
-              type: "success",
-            });
-            _this.getTableData();
-          } else {
-            _this.$message({
-              message: res.msg,
-              type: "error",
-            });
-          }
-        })
-        .catch((failResponse) => {});
-    },
-    handleFinish(index) {
-      let _this = this;
-      //closeDebug console.log("点击查看", index, row);
-      let params = new URLSearchParams();
-      params.append("SubjectId", this.detailData.id);
-      ApplyFinishSubject(params)
-        .then((res) => {
-          //closeDebug console.log("-----------删除奖项---------------");
-          if (res.code === 0) {
-            _this.$message({
-              message: res.msg,
-              type: "success",
-            });
-            _this.goBack();
-            _this.getTableData();
-          } else {
-            _this.$message({
-              message: res.msg,
-              type: "error",
-            });
-          }
-        })
-        .catch((failResponse) => {});
-    },
     //返回重选奖项
     goBack() {
       this.ifShowDetail = false;
+      this.selectId = 0;
     },
   },
 };

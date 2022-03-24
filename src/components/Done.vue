@@ -2,7 +2,7 @@
   <el-card class="success-box">
     <div class="success-page">
       <img :class="size" src="../assets/img/success.jpg" />
-      <div class="success-desc">上传成功！等待管理员审核中...</div>
+      <div class="success-desc">上传成功！等待审核中...</div>
       <div class="success-handle">
         <el-row :gutter="20">
           <el-col class="subject-info" :span="12" :xs="24">
@@ -13,7 +13,7 @@
             </router-link>
           </el-col>
           <el-col class="subject-info" :span="12" :xs="24">
-            <router-link to="/eta/subject">
+            <router-link to="/eta/home">
               <el-button type="primary" size="large">返回列表</el-button>
             </router-link>
           </el-col>

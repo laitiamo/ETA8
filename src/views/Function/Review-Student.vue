@@ -169,7 +169,7 @@
 
 <script>
 import {
-  getReviewAwardList,
+  getReviewStudentAwardList,
   getStuDetail,
   getClassList,
   initReview,
@@ -379,7 +379,7 @@ export default {
       params.append("keyAwardName", this.form2Query.keyAwardName); //奖项名
       params.append("order", this.orderMode); //奖项名
       params.append("field", this.orderField); //奖项名
-      getReviewAwardList(params)
+      getReviewStudentAwardList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

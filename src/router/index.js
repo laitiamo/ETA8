@@ -55,7 +55,7 @@ const routes = [
       },
       //Paper
       {
-        path: "record",
+        path: "Record",
         name: "上传成果",
         component: () => import("../views/Teacher/Record/Record"),
       },
@@ -74,6 +74,7 @@ const routes = [
         name: "设计专利",
         component: () => import("../views/Teacher/Record/Patent"),
       },
+
       {
         path: "mine",
         name: "获奖记录",
@@ -127,18 +128,28 @@ const routes = [
         component: () => import("../views/Function/Review-Teacher"),
       },
       {
-        path: "record-review",
+        path: "paper-review",
         name: "成果审核",
         component: () => import("../views/Function/Review-Paper"),
       },
       {
         path: "review-subject",
-        name: "项目审核",
+        name: "立项审核",
         component: () => import("../views/Function/Review-Subject"),
       },
       {
+        path: "subject-edit",
+        name: "项目变更审核",
+        component: () => import("../views/Function/Edit-Subject"),
+      },
+      {
+        path: "mid-subject",
+        name: "立项审核",
+        component: () => import("../views/Function/Mid-Subject"),
+      },
+      {
         path: "subject-finish",
-        name: "项目结题",
+        name: "结题验收",
         component: () => import("../views/Function/Finish-Subject"),
       },
       {
@@ -183,7 +194,7 @@ const routes = [
       },
       {
         path: "ok",
-        component: () => import("../components/Finish"),
+        component: () => import("../components/Done"),
       },
     ],
   },

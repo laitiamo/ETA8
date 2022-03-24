@@ -12,10 +12,10 @@
       <el-form-item label="记录类型" class="no-padding">
         <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
-      <el-form-item label="专利号" prop="paperNum">
+      <el-form-item label="申请号" prop="paperNum">
         <el-input
           v-model="FormData.paperNum"
-          placeholder="请输入专利号"
+          placeholder="请输入申请号"
         ></el-input>
       </el-form-item>
       <el-form-item label="专利名称" prop="paperName">
@@ -113,7 +113,7 @@
         <el-button @click="addDomain">新增</el-button>
         <el-button @click.prevent="removeDomain(domain)">删除</el-button>
       </el-form-item>
-      <el-form-item label="发表时间" prop="paperTime">
+      <el-form-item label="申请时间" prop="paperTime">
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -144,10 +144,25 @@
           </template>
         </el-select>
       </el-form-item>
+      <el-form-item label="归属项目（非必填）" prop="SubjectId">
+        <el-select
+          v-model="FormData.SubjectId"
+          placeholder="请选择归属项目"
+          style="display: block"
+        >
+          <template v-for="rankEach in SubjectList">
+            <el-option
+              :label="rankEach.subjectName"
+              :value="rankEach.id"
+              :key="rankEach.id"
+            ></el-option>
+          </template>
+        </el-select>
+      </el-form-item>
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="证书图片" required prop="paperPicList">
+      <el-form-item label="证书附件" required prop="PaperFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -157,11 +172,11 @@
           :on-remove="handleRemove"
           :on-exceed="handleExceed"
           :on-change="handleChange"
-          :file-list="fileList"
+          :file-list="FileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
           :limit="5"
-          accept="image/jpeg,image/png"
+          accept=".pdf"
         >
           <el-button size="small">上传图片</el-button>
           <div slot="tip" class="el-upload__tip">
@@ -207,6 +222,7 @@ export default {
       fileList: [], //已上传的文件列表
       PatentList: [], //专利等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
+      SubjectList: [], //个人项目列表「从后端取得」
       //表单数据
       FormData: {
         domains: [
@@ -221,9 +237,10 @@ export default {
         paperNum: "",
         paperName: "",
         rankId: "",
+        SubjectId: "",
         paperTime: "",
         paperPlace: "",
-        paperPicList: [],
+        PaperFileList: [],
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
@@ -247,10 +264,13 @@ export default {
           { required: true, message: "请选择日期", trigger: "change" },
         ],
         paperPlace: [
-          { required: true, message: "请输入专利号", trigger: "blur" },
+          { required: false, message: "请输入申请号", trigger: "blur" },
           { min: 2, message: "长度需大于两个字符", trigger: "blur" },
         ],
-        paperPicList: [
+        SubjectId: [
+          { required: false, message: "请选择归属项目", trigger: "change" },
+        ],
+        PaperFileList: [
           { required: true, message: "请选择专利图片", trigger: "blur" },
         ],
       },
@@ -281,6 +301,12 @@ export default {
           this.TeacherList = obj2.teacher;
         })
         .catch((failResponse) => {});
+      listPerSubject()
+        .then((res) => {
+          //closeDebug console.log("SubjectList初始化", obj);
+          this.SubjectList = res;
+        })
+        .catch((failResponse) => {});
     },
     //处理表单提交事件
     submitForm(formName) {
@@ -299,13 +325,14 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.paperPicList;
+          let filesList = this.FormData.PaperFileList;
           data2upload.append("typeId", this.typeId);
           data2upload.append("paperType", this.paperType);
           data2upload.append("paperNum", this.FormData.paperNum);
           data2upload.append("paperName", this.FormData.paperName);
           data2upload.append("paperTime", this.FormData.paperTime);
           data2upload.append("paperPlace", this.FormData.paperPlace);
+          data2upload.append("SubjectId", this.FormData.SubjectId);
           data2upload.append("rankId", this.FormData.rankId);
           //循环加入多文件
           for (let i = 0; i < filesList.length; i++) {
@@ -326,7 +353,9 @@ export default {
                   type: "success",
                 });
                 _this.cancelUpload("FormData");
-                _this.goback();
+                _this.$router.push({
+                  path: "/eta/ok",
+                });
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;
@@ -401,7 +430,7 @@ export default {
     //处理已上传图片与表单内容的同步
     handleChange(file, fileList) {
       //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.paperPicList = fileList;
+      this.FormData.PaperFileList = fileList;
     },
     //处理已上传的图片的删除
     handleRemove(file, fileList) {

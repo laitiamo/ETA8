@@ -1,5 +1,5 @@
 <template>
-  <div class="record-review">
+  <div class="paper-review">
     <h3 v-show="!ifShowDetail">成果审核</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
@@ -51,7 +51,6 @@
           <el-select
             v-model="form2Query.typeId"
             placeholder="全部类型"
-            @change="QueryPaper"
             style="width: 140px"
           >
             <el-option label="全部类型" value=""></el-option>
@@ -59,21 +58,6 @@
               v-for="opt in typeList"
               :key="opt.id"
               :label="opt.typeName"
-              :value="opt.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="form2Query.typeId != ''">
-          <el-select
-            v-model="form2Query.rankId"
-            placeholder="全部等级"
-            style="width: 140px"
-          >
-            <el-option label="全部等级" value=""></el-option>
-            <el-option
-              v-for="opt in rankList"
-              :key="opt.id"
-              :label="opt.rankName"
               :value="opt.id"
             ></el-option>
           </el-select>
@@ -179,17 +163,17 @@
 
 <script>
 import {
-  getReviewRecordList,
-  getTypeList,
+  getReviewPaperList,
+  getPaperList,
   getPaperDetail,
   initQueryPaper,
-  passRecord,
-  notPassRecord,
+  passPaper,
+  notPassPaper,
 } from "../../api";
 import PaperDetail from "../../components/PaperDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "record-review",
+  name: "paper-review",
   components: { PaperDetail },
   computed: {},
   data() {
@@ -236,14 +220,12 @@ export default {
         keyUsername: "", //用户id
         keyName: "", //姓名
         typeId: "", //成果类型
-        rankId: "", //成果记录等级
         keyPaperNum: "", //成果号
         keyPaperName: "", //成果名
         keyPaperPlace: "", //成果单位
       },
       //下拉栏内容列表
       typeList: [],
-      rankList: [],
       collegeList: [],
       sectorList: [],
     };
@@ -289,20 +271,6 @@ export default {
         })
         .catch((failResponse) => {});
     },
-    //更新可供筛选的成果列表
-    QueryPaper() {
-      let _this = this;
-      _this.form2Query.rankId = "";
-      let params = new URLSearchParams();
-      params.append("typeId", this.form2Query.typeId);
-      getTypeList(params)
-        .then((res) => {
-          //closeDebug console.log("-----------获取类型列表---------------");
-          //closeDebug console.log(res);
-          _this.rankList = res;
-        })
-        .catch((failResponse) => {});
-    },
     //数据格式化(还没用到)
     formatter(row, column) {
       return row.address;
@@ -342,7 +310,7 @@ export default {
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       let _this = this;
-      passRecord(params)
+      passPaper(params)
         .then((res) => {
           //closeDebug console.log("-----------通过成果---------------");
           if (res.code === 0) {
@@ -367,7 +335,7 @@ export default {
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       let _this = this;
-      notPassRecord(params)
+      notPassPaper(params)
         .then((res) => {
           //closeDebug console.log("-----------驳回成果---------------");
           if (res.code === 0) {
@@ -404,12 +372,11 @@ export default {
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("typeId", this.form2Query.typeId); //成果类型
-      params.append("rankId", this.form2Query.rankId); //成果等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
       params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
       params.append("order", this.orderMode);
       params.append("field", this.orderField);
-      getReviewRecordList(params)
+      getReviewPaperList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

@@ -55,11 +55,11 @@ var routes = [{
       });
     }
   }, {
-    path: "record",
+    path: "Paper",
     name: "上传成果",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/Teacher/Record"));
+        return _interopRequireWildcard(require("../views/Teacher/Paper"));
       });
     }
   }, {
@@ -169,11 +169,11 @@ var routes = [{
       });
     }
   }, {
-    path: "record-review",
+    path: "paper-review",
     name: "成果审核",
     component: function component() {
       return Promise.resolve().then(function () {
-        return _interopRequireWildcard(require("../views/Teacher/record-review"));
+        return _interopRequireWildcard(require("../views/Teacher/paper-review"));
       });
     }
   }, {

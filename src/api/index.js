@@ -53,14 +53,6 @@ export const getImage = (path) => getImg(`${path}`);
  * 返回值说明:
  * image: 首页轮播图
  * inform: 广播消息
- * l_number:  个人奖状数
- * l_document: 总奖项数
- * l_student: 学生奖项数
- * l_teacher: 教师奖项数
- * l_international,//学生国际奖人数
- * l_nation,//学生国奖数
- * l_province,//学生省奖数
- * l_school,//学生校奖数
  * l_name: 用户姓名
  * l_username: 用户编号
  * l_role: 用户角色
@@ -87,14 +79,6 @@ export const initHome = () => get(`eta8/home`);
  * l_nation,//学生国奖数
  * l_province,//学生省奖数
  * l_school,//学生校奖数
- * l_name: 用户姓名
- * l_username: 用户编号
- * l_role: 用户角色
- * l_roleId: 角色ID  [1:系统管理员 2:院系领导 3:辅导员 4:任课教师 5:学生]
- * 如果是学生的话还有以下参数
- * l_grade: 年级
- * l_major: 专业
- * l_class: 班级
  * @returns
  */
 export const initDetail = () => get(`eta8/home/detail`);
@@ -109,55 +93,6 @@ export const initDetail = () => get(`eta8/home/detail`);
  * @returns
  */
 export const getMyAwardList = (params) => get(`eta8/mine/list`, params);
-
-/**
- * 获取个人成果列表（GET）
- * 需传入的参数
- * limit：每页的记录条数
- * page：当前页码
- * @param {URLSearchParams} params
- * @returns
- */
-export const getMyPaperList = (params) => get(`eta8/mine/listPaper`, params);
-
-/**
- * 获取个人成果列表（GET）
- * 需传入的参数
- * limit：每页的记录条数
- * page：当前页码
- * @param {URLSearchParams} params
- * @returns
- */
-export const getPaperSelectList = (params) =>
-  get(`eta8/mine/listPerPaper`, params);
-
-/**
- * 获取项目已绑定的成果列表（GET）
- * 需传入的参数
- * limit: 每页的记录条数
- * page: 当前页码
- * @param {URLSearchParams} params
- * @returns
- */
-export const getSubjectPaperList = (params) =>
-  get(`eta8/detail-subject/paperlist`, params);
-
-/**
- * 获取个人项目列表（GET）
- * 需传入的参数
- * limit：每页的记录条数
- * page：当前页码
- * @param {URLSearchParams} params
- * @returns
- */
-export const getMySubjectList = (params) =>
-  get(`eta8/mine/listsubject`, params);
-
-/**
- * 获取个人项目列表（GET）
- * @returns
- */
-export const listPerSubject = () => get(`eta8/mine/listPerSubject`);
 
 /**
  * 获取学生个人奖项详情（GET）
@@ -177,6 +112,17 @@ export const getStuDetail = (params) => get(`eta8/detail-stu`, params);
  */
 export const getTeaDetail = (params) => get(`eta8/detail-tea`, params);
 
+// =====================================================================> 成果记录页 API
+/**
+ * 获取个人成果列表（GET）
+ * 需传入的参数
+ * limit：每页的记录条数
+ * page：当前页码
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getMyPaperList = (params) => get(`eta8/mine/listPaper`, params);
+
 /**
  * 获取教师成果详情（GET）
  * 需传入的参数
@@ -185,6 +131,45 @@ export const getTeaDetail = (params) => get(`eta8/detail-tea`, params);
  * @returns
  */
 export const getPaperDetail = (params) => get(`eta8/detail-paper`, params);
+
+/**
+ * 导出教师项目文件（GET）
+ * 需传入的参数
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const exportTeaPaperPDF = (params) =>
+  getFile(`eta8/detail-paper/exportPDF`, params);
+
+// =====================================================================> 项目记录页 API
+/**
+ * 获取个人项目列表（GET）
+ * 需传入的参数
+ * limit：每页的记录条数
+ * page：当前页码
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getMySubjectList = (params) =>
+  get(`eta8/mine/listsubject`, params);
+
+/**
+ * 获取项目已绑定的成果列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getSubjectPaperList = (params) =>
+  get(`eta8/detail-subject/paperlist`, params);
+
+/**
+ * 更新项目成果列表（删除）
+ * @returns
+ */
+export const deleteSubjectPaper = (params) =>
+  get(`eta8/detail-subject/deletePaper`, params);
 
 /**
  * 获取教师项目详情（GET）
@@ -203,13 +188,6 @@ export const updateSubjectPaper = (params) =>
   get(`eta8/detail-subject/updatePaper`, params);
 
 /**
- * 更新项目成果列表（删除）
- * @returns
- */
-export const deleteSubjectPaper = (params) =>
-  get(`eta8/detail-subject/deletePaper`, params);
-
-/**
  * 申请结题
  * @returns
  */
@@ -223,7 +201,7 @@ export const ApplyFinishSubject = (params) =>
  * @returns
  */
 export const exportTeaSubjectPDF = (params) =>
-  getFile(`eta8/query-subject/exportPDF`, params);
+  getFile(`eta8/detail-subject/exportPDF`, params);
 
 // =====================================================================> 奖项上传页 API
 /**
@@ -233,18 +211,77 @@ export const exportTeaSubjectPDF = (params) =>
 export const getRankList = () => get(`eta8/upload`);
 
 /**
- * 获取国民经济和社会服务行业二级目录列表
+ * 上传奖项（POST）
+ * 需传入的参数
+ * awardId: 奖项ID
+ * awardName: 奖项名
+ * rankId: 奖项等级ID
+ * awardTime: 2021-02-04 时间
+ * awardPlace: 获奖级别
+ * file: (二进制)
+ * @param {FormData} data
  * @returns
  */
-export const QuerySecondList = (params) =>
-  get(`eta8/subject/listSecond`, params);
+export const uploadAward = (data) => postFile(`eta8/upload/upload`, data);
 
 /**
- * 获取合同类型二级目录列表
+ * 获取项目分类列表（GET）
+ * 需传入的参数
+ * BelongId: 所属学科ID
+ * @param {URLSearchParams} params
  * @returns
  */
-export const QueryContractList = (params) =>
-  get(`eta8/subject/listContract`, params);
+export const getCategoryList = (params) =>
+  get(`eta8/subject/listCategory`, params);
+
+/**
+ * 获取教师角色信息（GET）
+ * 需传入的参数
+ * userId: 所属学科ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getTeacherDetail = (params) => get(`eta8/subject/getRole`, params);
+
+// =====================================================================> 项目上传页 API
+/**
+ * 获取科研项目基础信息列表
+ * @returns
+ */
+export const initSubject = () => get(`eta8/subject`);
+
+/**
+ * 获取项目资源列表
+ * @returns
+ */
+export const getSourceList = (params) => get(`eta8/subject/listSource`, params);
+
+/**
+ * 获取教师详细信息列表
+ * @returns
+ */
+export const getTeacherList = () => get(`eta8/paper/listTeacher`);
+
+/**
+ * 获取成果等级列表
+ * @returns
+ */
+export const getPaperList = (params) => get(`eta8/paper/listType`, params);
+
+// =====================================================================> 横向目录页 API
+/**
+ * 初始化横向项目
+ * @returns
+ */
+export const initHorizon = () => get(`eta8/subject/initHorizon`);
+
+/**
+ * 上传横向项目（POST）
+ * @param {FormData} data
+ * @returns
+ */
+export const uploadHorizon = (data) =>
+  postFile(`eta8/subject/uploadHorizon`, data);
 
 /**
  * 获取横向项目分类二级目录列表
@@ -254,11 +291,25 @@ export const QuerySecCategoryList = (params) =>
   get(`eta8/subject/listSecCategory`, params);
 
 /**
+ * 获取国民经济和社会服务行业二级目录列表
+ * @returns
+ */
+export const QuerySecondList = (params) =>
+  get(`eta8/subject/listSecond`, params);
+
+/**
  * 获取国民经济列表三级列表
  * @returns
  */
 export const QueryEconomicList = (params) =>
   get(`eta8/subject/listEconomic`, params);
+
+/**
+ * 获取合同类型二级目录列表
+ * @returns
+ */
+export const QueryContractList = (params) =>
+  get(`eta8/subject/listContract`, params);
 
 /**
  * 获取买方地市
@@ -273,31 +324,12 @@ export const QueryCityList = (params) => get(`eta8/subject/listCity`, params);
 export const QueryCountyList = (params) =>
   get(`eta8/subject/listCounty`, params);
 
+// =====================================================================> 纵向目录页 API
 /**
- * 获取成果等级列表
+ * 初始化纵向项目
  * @returns
  */
-export const getTypeList = (params) => get(`eta8/query-paper/listType`, params);
-
-/**
- * 获取一级学科列表（GET）
- * 需传入的参数
- * BelongId: 所属学科ID
- * @param {URLSearchParams} params
- * @returns
- */
-export const getFirstSubjectList = (params) =>
-  get(`eta8/subject/listFirstSubject`, params);
-
-/**
- * 获取项目分类列表（GET）
- * 需传入的参数
- * BelongId: 所属学科ID
- * @param {URLSearchParams} params
- * @returns
- */
-export const getCategoryList = (params) =>
-  get(`eta8/subject/listCategory`, params);
+export const initSponsored = () => get(`eta8/subject/initSponsored`);
 
 /**
  * 获取纵向项目一级学科二级目录列表（GET）
@@ -320,55 +352,37 @@ export const getThirdTypeList = (params) =>
   get(`eta8/subject/listThirdType`, params);
 
 /**
- * 获取教师角色信息（GET）
+ * 上传纵向项目（POST）
+ * @param {FormData} data
+ * @returns
+ */
+export const uploadSponsored = (data) =>
+  postFile(`eta8/subject/uploadSponsored`, data);
+
+/**
+ * 获取一级学科列表（GET）
  * 需传入的参数
- * userId: 所属学科ID
+ * BelongId: 所属学科ID
  * @param {URLSearchParams} params
  * @returns
  */
-export const getTeacherDetail = (params) => get(`eta8/subject/getRole`, params);
+export const getFirstSubjectList = (params) =>
+  get(`eta8/subject/listFirstSubject`, params);
 
+// =====================================================================> 校级目录页 API
 /**
- * 获取项目资源列表
- * @returns
- */
-export const getSourceList = (params) => get(`eta8/subject/listSource`, params);
-
-/**
- * 获取科研项目基础信息列表
- * @returns
- */
-export const initSubject = () => get(`eta8/subject`);
-
-/**
- * 获取校级项目列表
+ * 初始化校级项目
  * @returns
  */
 export const initSchool = () => get(`eta8/subject/initSchool`);
 
 /**
- * 获取横向项目列表
+ * 上传校级项目（POST）
+ * @param {FormData} data
  * @returns
  */
-export const initHorizon = () => get(`eta8/subject/initHorizon`);
-
-/**
- * 获取纵向项目列表
- * @returns
- */
-export const initSponsored = () => get(`eta8/subject/initSponsored`);
-
-/**
- * 获取成果等级列表
- * @returns
- */
-export const getPaperList = (params) => get(`eta8/record/listType`, params);
-
-/**
- * 获取教师列表
- * @returns
- */
-export const getTeacherList = () => get(`eta8/record/listTeacher`);
+export const uploadSchool = (data) =>
+  postFile(`eta8/subject/uploadSchool`, data);
 
 /**
  * 获取可上传奖项列表（GET）
@@ -389,7 +403,13 @@ export const getAwardList = (params) => get(`eta8/upload/listAward`, params);
  * @returns
  */
 export const getTeacherPaperList = (params) =>
-  get(`eta8/record/listPaper`, params);
+  get(`eta8/paper/listPaper`, params);
+
+/**
+ * 获取个人项目列表（GET）
+ * @returns
+ */
+export const listPerSubject = () => get(`eta8/paper/listPerSubject`);
 
 /**
  * 获取可上传项目列表（GET）
@@ -402,50 +422,38 @@ export const getTeacherPaperList = (params) =>
 export const SubjectSelect = (params) =>
   get(`eta8/subject/listSubject`, params);
 
+// =====================================================================> 成果上传页 API
 /**
  * 上传成果（POST）
  * @param {FormData} data
  * @returns
  */
-export const uploadPaper = (data) => postFile(`eta8/record/uploadpaper`, data);
+export const uploadPaper = (data) => postFile(`eta8/paper/uploadpaper`, data);
 
 /**
- * 上传校级项目（POST）
- * @param {FormData} data
+ * 获取个人成果列表（GET）
  * @returns
  */
-export const uploadSchool = (data) =>
-  postFile(`eta8/subject/uploadSchool`, data);
+export const getPaperSelectList = () => get(`eta8/detail-subject/listPerPaper`);
 
 /**
- * 上传横向项目（POST）
- * @param {FormData} data
- * @returns
- */
-export const uploadHorizon = (data) =>
-  postFile(`eta8/subject/uploadHorizon`, data);
-
-/**
- * 上传横向项目（POST）
- * @param {FormData} data
- * @returns
- */
-export const uploadSponsored = (data) =>
-  postFile(`eta8/subject/uploadSponsored`, data);
-
-/**
- * 上传奖项（POST）
+ * 上传中期检查报告（POST）
  * 需传入的参数
- * awardId: 奖项ID
- * awardName: 奖项名
- * rankId: 奖项等级ID
- * awardTime: 2021-02-04 时间
- * awardPlace: 获奖级别
+ * id: 项目ID
  * file: (二进制)
  * @param {FormData} data
  * @returns
  */
-export const uploadAward = (data) => postFile(`eta8/upload/upload`, data);
+export const uploadMidSubject = (data) =>
+  postFile(`eta8/detail-subject/uploadMidSubject`, data);
+
+/**
+ * 申请项目变更
+ * @param {FormData} data
+ * @returns
+ */
+export const ApplyEdit = (data) =>
+  postFile(`eta8/detail-subject/applyEdit`, data);
 
 // =====================================================================> 系统设置页 API
 /**
@@ -537,7 +545,7 @@ export const getClassList = (params) => get(`eta8/query-stu/listClass`, params);
  * @param {URLSearchParams} params
  * @returns
  */
-export const delMineAward = (params) => get(`eta8/mine/del`, params);
+export const delMineAward = (params) => get(`eta8/mine/delAward`, params);
 
 /**
  * 删除学生奖项（GET）
@@ -558,17 +566,6 @@ export const delStuAward = (params) => get(`eta8/query-stu/del`, params);
  */
 export const updateAwardImg = (data) =>
   postFile(`eta8/query-stu/updateImg`, data);
-
-/**
- * 上传中期检查报告（POST）
- * 需传入的参数
- * id: 项目ID
- * file: (二进制)
- * @param {FormData} data
- * @returns
- */
-export const uploadMidSubject = (data) =>
-  postFile(`eta8/query-subject/uploadMidSubject`, data);
 
 // =====================================================================> 管理操作日志
 /**
@@ -593,18 +590,6 @@ export const getLogList = (params) => get(`eta8/log/list`, params);
  */
 export const delLog = (params) => get(`eta8/log/delete`, params);
 
-// =====================================================================> 管理班级 API
-/**
- * 获取班级列表（GET）
- * 需传入的参数
- * gradeId：年级ID
- * majorId：专业ID
- * @param {URLSearchParams} params
- * @returns
- */
-export const getNewClassList = (params) =>
-  get(`eta8/class-management/listClass`, params);
-
 // =====================================================================> 管理教师获奖 API
 /**
  * 初始化查询参数（GET）
@@ -613,6 +598,20 @@ export const getNewClassList = (params) =>
  * @returns
  */
 export const initQueryTea = () => get(`eta8/query-tea`);
+
+/**
+ * 获取教师奖项列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 教职工号（可选）
+ * keyName: 姓名（可选）
+ * keyAwardName: 奖项名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getTeaAwardList = (params) => get(`eta8/query-tea/list`, params);
 
 // =====================================================================> 管理教师成果 API
 /**
@@ -643,28 +642,6 @@ export const getTeaPaperList = (params) => get(`eta8/query-paper/list`, params);
  * @returns
  */
 export const initQuerySubject = () => get(`eta8/query-subject`);
-
-/**
- * 初始化查询参数（GET）
- * 返回的参数有
- * rank：项目列表
- * @returns
- */
-export const getSubjectList = () => get(`eta8/mine/getSubjectList`);
-
-/**
- * 获取教师奖项列表（GET）
- * 需传入的参数
- * limit: 每页的记录条数
- * page: 当前页码
- * rankId: 获奖等级id（可选）
- * keyUsername: 教职工号（可选）
- * keyName: 姓名（可选）
- * keyAwardName: 奖项名（可选）
- * @param {URLSearchParams} params
- * @returns
- */
-export const getTeaAwardList = (params) => get(`eta8/query-tea/list`, params);
 
 /**
  * 获取教师项目列表（GET）
@@ -795,17 +772,17 @@ export const delTeaSubject = (params) => get(`eta8/query-subject/del`, params);
  * rank：奖项列表
  * @returns
  */
-export const initReview = () => get(`eta8/review`);
+export const initReview = () => get(`eta8/award-review`);
 
 /**
  * 初始化查询参数（GET）
  * 返回的参数有
  * @returns
  */
-export const initRecordReview = () => get(`eta8/record-review`);
+export const initPaperReview = () => get(`eta8/paper-review`);
 
 /**
- * 获取未审核的奖项列表（GET）
+ * 获取未审核的学生奖项列表（GET）
  * 需传入的参数
  * limit: 每页的记录条数
  * page: 当前页码
@@ -819,7 +796,8 @@ export const initRecordReview = () => get(`eta8/record-review`);
  * @param {URLSearchParams} params
  * @returns
  */
-export const getReviewAwardList = (params) => get(`eta8/review/list`, params);
+export const getReviewStudentAwardList = (params) =>
+  get(`eta8/award-review/listStu`, params);
 
 /**
  * 获取未审核的教师奖项列表（GET）
@@ -836,7 +814,26 @@ export const getReviewAwardList = (params) => get(`eta8/review/list`, params);
  * @returns
  */
 export const getReviewTeacherAwardList = (params) =>
-  get(`eta8/review/listTea`, params);
+  get(`eta8/award-review/listTea`, params);
+
+/**
+ * 审核通过学生奖项（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const passAward = (params) => get(`eta8/award-review/pass`, params);
+
+/**
+ * 审核驳回学生奖项（GET）
+ * 需传入的参数
+ * id：奖项id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const notPassAward = (params) =>
+  get(`eta8/award-review/notPass`, params);
 
 /**
  * 获取未审核的成果列表（GET）
@@ -850,8 +847,8 @@ export const getReviewTeacherAwardList = (params) =>
  * @param {URLSearchParams} params
  * @returns
  */
-export const getReviewRecordList = (params) =>
-  get(`eta8/record-review/listPaper`, params);
+export const getReviewPaperList = (params) =>
+  get(`eta8/paper-review/listPaper`, params);
 
 /**
  * 获取未审核的项目列表（GET）
@@ -869,6 +866,21 @@ export const getReviewSubjectList = (params) =>
   get(`eta8/subject-review/listSubject`, params);
 
 /**
+ * 获取未审核的中期检查项目列表（GET）
+ * 需传入的参数
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 项目等级id（可选）
+ * keyUsername: 教职工号（可选）
+ * keyName: 姓名（可选）
+ * keySubjectName: 项目名（可选）
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getReviewMidSubjectList = (params) =>
+  get(`eta8/subject-mid/listSubject`, params);
+
+/**
  * 获取未结题的项目列表（GET）
  * 需传入的参数
  * limit: 每页的记录条数
@@ -884,23 +896,21 @@ export const getFinishSubjectList = (params) =>
   get(`eta8/subject-finish/listSubject`, params);
 
 /**
- * 审核通过学生奖项（GET）
+ * 获取申请变更的项目列表（GET）
  * 需传入的参数
- * id：奖项id
+ * limit: 每页的记录条数
+ * page: 当前页码
+ * rankId: 获奖等级id（可选）
+ * keyUsername: 教职工号（可选）
+ * keyName: 姓名（可选）
+ * keySubjectName:项目名（可选）
  * @param {URLSearchParams} params
  * @returns
  */
-export const passAward = (params) => get(`eta8/review/pass`, params);
+export const getEditSubjectList = (params) =>
+  get(`eta8/subject-edit/listSubject`, params);
 
-/**
- * 审核驳回学生奖项（GET）
- * 需传入的参数
- * id：奖项id
- * @param {URLSearchParams} params
- * @returns
- */
-export const notPassAward = (params) => get(`eta8/review/notPass`, params);
-
+// =====================================================================> 成果审核页 API
 /**
  * 审核通过教师成果（GET）
  * 需传入的参数
@@ -908,8 +918,7 @@ export const notPassAward = (params) => get(`eta8/review/notPass`, params);
  * @param {URLSearchParams} params
  * @returns
  */
-export const passRecord = (params) =>
-  get(`eta8/record-review/passPaper`, params);
+export const passPaper = (params) => get(`eta8/paper-review/passPaper`, params);
 
 /**
  * 审核驳回教师成果（GET）
@@ -918,11 +927,12 @@ export const passRecord = (params) =>
  * @param {URLSearchParams} params
  * @returns
  */
-export const notPassRecord = (params) =>
-  get(`eta8/record-review/notPassPaper`, params);
+export const notPassPaper = (params) =>
+  get(`eta8/paper-review/notPassPaper`, params);
 
+// =====================================================================> 项目立项页 API
 /**
- * 审核通过项目（GET）
+ * 审核通过立项（GET）
  * 需传入的参数
  * id：项目id
  * @param {URLSearchParams} params
@@ -932,7 +942,7 @@ export const passSubject = (params) =>
   get(`eta8/subject-review/passSubject`, params);
 
 /**
- * 审核驳回项目（GET）
+ * 审核驳回立项（GET）
  * 需传入的参数
  * id：项目id
  * @param {URLSearchParams} params
@@ -941,6 +951,48 @@ export const passSubject = (params) =>
 export const notPassSubject = (params) =>
   get(`eta8/subject-review/notPassSubject`, params);
 
+// =====================================================================> 中期检查页 API
+/**
+ * 审核通过项目（GET）
+ * 需传入的参数
+ * id：项目id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const passMidSubject = (params) =>
+  get(`eta8/subject-mid/passSubject`, params);
+
+/**
+ * 审核驳回项目（GET）
+ * 需传入的参数
+ * id：项目id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const notPassMidSubject = (params) =>
+  get(`eta8/subject-mid/notPassSubject`, params);
+
+  /**
+ * 审核通过教师项目结题（GET）
+ * 需传入的参数
+ * id：项目id
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const passEditSubject = (params) =>
+get(`eta8/subject-edit/passSubject`, params);
+
+/**
+* 审核驳回项目结题（GET）
+* 需传入的参数
+* id：项目id
+* @param {URLSearchParams} params
+* @returns
+*/
+export const notPassEditSubject = (params) =>
+get(`eta8/subject-edit/notPassSubject`, params);
+
+// =====================================================================> 审核结题页 API
 /**
  * 审核通过教师项目结题（GET）
  * 需传入的参数
@@ -1062,7 +1114,7 @@ export const delAward = (params) => post(`eta8/award/delete`, params);
  * @param {URLSearchParams} params
  * @returns
  */
-export const addAward = (params) => post(`eta8/award-add/add`, params);
+export const addAward = (params) => post(`eta8/award/add`, params);
 
 // =====================================================================> 学生信息管理 API
 /**
@@ -1201,7 +1253,18 @@ export const updateTea = (params) =>
 export const setRole = (params) =>
   post(`eta8/teacher-management/setRole`, params);
 
-// =====================================================================> 班级信息管理 API
+// =====================================================================> 管理班级 API
+/**
+ * 获取班级列表（GET）
+ * 需传入的参数
+ * gradeId：年级ID
+ * majorId：专业ID
+ * @param {URLSearchParams} params
+ * @returns
+ */
+export const getNewClassList = (params) =>
+  get(`eta8/class-management/listClass`, params);
+
 /**
  * 获取辅导员班级列表（GET）
  * 需传入的参数

@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "RecordCounter",
+  name: "PaperCounter",
   props: {
     paperNum: Number,
     bookNum: Number,

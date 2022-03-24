@@ -32,7 +32,7 @@
             :instructorNum="l_instructor"
             v-if="roleId == 3"
           />
-          <RecordCounter
+          <PaperCounter
             :paperNum="teaPaperNum"
             :bookNum="teaBookNum"
             :patentNum="teaPatentNum"
@@ -62,7 +62,7 @@
           :instructorNum="l_instructor"
           v-if="roleId == 3"
         />
-        <RecordCounter
+        <PaperCounter
           :paperNum="teaPaperNum"
           :bookNum="teaBookNum"
           :patentNum="teaPatentNum"
@@ -76,7 +76,7 @@
           v-if="roleId == 5 || roleId == 6"
         />
         <template v-if="roleId == 1 || roleId == 2">
-          <RecordCounter
+          <PaperCounter
             :paperNum="teaPaperNum"
             :bookNum="teaBookNum"
             :patentNum="teaPatentNum"
@@ -89,8 +89,19 @@
             :schoolNum="stuSchoolNum"
           />
         </template>
+        <template v-if="roleId == 7 || roleId == 8">
+          <PaperCounter
+            :paperNum="teaPaperNum"
+            :bookNum="teaBookNum"
+            :patentNum="teaPatentNum"
+            :subjectNum="teaSubjectNum"
+          />
+        </template>
         <el-divider direction="vertical" content-position="center" />
-        <AwardShow :roleId="roleId ? roleId : 5" v-if="roleId !== 4 && roleId !== 7"/>
+        <AwardShow
+          :roleId="roleId ? roleId : 5"
+          v-if="roleId !== 4 && roleId !== 7 && roleId !== 8"
+        />
       </el-col>
     </el-row>
   </div>
@@ -103,7 +114,7 @@ import Inform from "../components/Inform.vue";
 import NumberCounter from "../components/NumberCounter.vue";
 import PersonalCounter from "../components/PersonalCounter.vue";
 import CounterDetail from "../components/CounterDetail.vue";
-import RecordCounter from "../components/RecordCounter.vue";
+import PaperCounter from "../components/PaperCounter.vue";
 import AwardShow from "../components/AwardShow.vue";
 import HomeDetail from "../components/HomeDetail.vue";
 export default {
@@ -142,8 +153,8 @@ export default {
     Inform,
     CounterDetail,
     PersonalCounter,
-    RecordCounter,
-    RecordCounter,
+    PaperCounter,
+    PaperCounter,
   },
   methods: {
     init() {

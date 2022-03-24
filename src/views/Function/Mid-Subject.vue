@@ -1,6 +1,6 @@
 <template>
   <div class="review">
-    <h3 v-show="!ifShowDetail">结题验收</h3>
+    <h3 v-show="!ifShowDetail">中期检查</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
@@ -163,14 +163,14 @@
         type="danger"
         style="margin:10px"
         @click="handleNotPass()"
-        >驳回结题</el-button
+        >驳回</el-button
       >
       <el-button
         v-show="ifShowDetail"
         type="success"
         style="margin:10px"
         @click="handlePass()"
-        >允许结题</el-button
+        >通过</el-button
       >
     </el-row>
   </div>
@@ -179,15 +179,15 @@
 <script>
 import {
   getSubjectDetail,
-  getFinishSubjectList,
+  getReviewMidSubjectList,
   initQuerySubject,
-  FinishSubject,
-  notFinishSubject,
+  passMidSubject,
+  notPassMidSubject,
 } from "../../api";
 import SubjectDetail from "../../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review-Subject",
+  name: "Mid-Subject",
   components: { SubjectDetail },
   computed: {},
   data() {
@@ -202,20 +202,21 @@ export default {
         {
           name: "项目编号",
           value: "subjectNum",
-          width: "180",
+          width: "150",
           ifShow: true,
         },
         { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
         {
           name: "所属单位",
           value: "subjectPlace",
-          width: "240",
+          width: "180",
           ifShow: true,
         },
         { name: "项目类别", value: "rankName", width: "160", ifShow: true },
         { name: "项目级别", value: "levelName", width: "150", ifShow: true },
         { name: "负责人姓名", value: "name", width: "120", ifShow: true },
         { name: "教职工号", value: "username", width: "120", ifShow: false },
+        { name: "所属学院", value: "collegeName", width: "240", ifShow: false },
         {
           name: "记录上传时间",
           value: "createAt",
@@ -264,7 +265,7 @@ export default {
       this.ifSmall = true;
       this.Columns = [
         { name: "项目编号", value: "subjectNum", width: "120", ifShow: false },
-        { name: "项目名称", value: "subjectName", width: "auto", ifShow: true },
+        { name: "项目名称", value: "subjectName", width: "180", ifShow: true },
         {
           name: "所属单位",
           value: "subjectPlace",
@@ -282,6 +283,12 @@ export default {
           value: "createAt",
           width: "200",
           ifShow: false,
+        },
+        {
+          name: "审核状态",
+          value: "reviewName",
+          width: "120",
+          ifShow: true,
         },
         {
           name: "项目发表时间",
@@ -341,15 +348,15 @@ export default {
       this.ifShowDetail = true;
       this.ifButtonTrue = true;
     },
-    //处理允许结项
+    //处理通过项目
     handlePass() {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       let _this = this;
-      FinishSubject(params)
+      passMidSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------允许结题---------------");
+          //closeDebug console.log("-----------通过项目---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -368,13 +375,13 @@ export default {
     },
     //处理驳回项目
     handleNotPass() {
-      //closeDebug console.log("点击驳回结题");
+      //closeDebug console.log("点击驳回");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
       let _this = this;
-      notFinishSubject(params)
+      notPassMidSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------驳回项目结题---------------");
+          //closeDebug console.log("-----------驳回项目---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -415,7 +422,7 @@ export default {
       params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
       params.append("order", this.orderMode);
       params.append("field", this.orderField);
-      getFinishSubjectList(params)
+      getReviewMidSubjectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

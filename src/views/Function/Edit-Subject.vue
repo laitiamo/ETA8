@@ -1,6 +1,6 @@
 <template>
   <div class="review">
-    <h3 v-show="!ifShowDetail">结题验收</h3>
+    <h3 v-show="!ifShowDetail">变更审核</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>
@@ -163,14 +163,14 @@
         type="danger"
         style="margin:10px"
         @click="handleNotPass()"
-        >驳回结题</el-button
+        >驳回变更</el-button
       >
       <el-button
         v-show="ifShowDetail"
         type="success"
         style="margin:10px"
         @click="handlePass()"
-        >允许结题</el-button
+        >允许变更</el-button
       >
     </el-row>
   </div>
@@ -179,20 +179,21 @@
 <script>
 import {
   getSubjectDetail,
-  getFinishSubjectList,
+  getEditSubjectList,
   initQuerySubject,
-  FinishSubject,
-  notFinishSubject,
+  passEditSubject,
+  notPassEditSubject,
 } from "../../api";
 import SubjectDetail from "../../components/SubjectDetail.vue";
 import { mapGetters } from "vuex";
 export default {
-  name: "Review-Subject",
+  name: "Edit-Subject",
   components: { SubjectDetail },
   computed: {},
   data() {
     return {
       reviewId: 0,
+      SubjectId: 0,
       ifSmall: false,
       ifButtonTrue: true,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
@@ -328,8 +329,9 @@ export default {
     handleShow(index, row) {
       //closeDebug console.log("点击查看", index, row);
       let params = new URLSearchParams();
-      params.append("id", row.id);
       this.reviewId = row.id;
+      this.SubjectId = row.SubjectId;
+      params.append("id", row.SubjectId);
       getSubjectDetail(params)
         .then((res) => {
           //closeDebug console.log("-----------获取个人项目详情---------------");
@@ -346,10 +348,11 @@ export default {
       //closeDebug console.log("点击通过");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
+      params.append("SubjectId", this.SubjectId);
       let _this = this;
-      FinishSubject(params)
+      passEditSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------允许结题---------------");
+          //closeDebug console.log("-----------允许变更---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -368,13 +371,14 @@ export default {
     },
     //处理驳回项目
     handleNotPass() {
-      //closeDebug console.log("点击驳回结题");
+      //closeDebug console.log("点击驳回变更");
       let params = new URLSearchParams();
       params.append("id", this.reviewId);
+      params.append("SubjectId", this.SubjectId);
       let _this = this;
-      notFinishSubject(params)
+      notPassEditSubject(params)
         .then((res) => {
-          //closeDebug console.log("-----------驳回项目结题---------------");
+          //closeDebug console.log("-----------驳回项目变更---------------");
           if (res.code === 0) {
             _this.$message({
               message: res.msg,
@@ -395,6 +399,7 @@ export default {
     goBack() {
       this.ifShowDetail = false;
       this.reviewId = 0;
+      this.SubjectId = 0;
       this.ifButtonTrue = false;
     },
     //处理数据筛选
@@ -415,7 +420,7 @@ export default {
       params.append("keySubjectPlace", this.form2Query.keySubjectPlace); //所属单位
       params.append("order", this.orderMode);
       params.append("field", this.orderField);
-      getFinishSubjectList(params)
+      getEditSubjectList(params)
         .then((res) => {
           //closeDebug console.log("-----------获取筛选后的表格数据---------------");
           //closeDebug console.log(res.data);

@@ -99,11 +99,7 @@ export default {
       if (roleId === 5 || roleId === 6) {
         rolename = `同学`;
       } else if (
-        roleId === 1 ||
-        roleId === 2 ||
-        roleId === 3 ||
-        roleId === 4 ||
-        roleId === 7
+        roleId !== 5 && roleId !== 6
       ) {
         rolename = `老师`;
       } else {

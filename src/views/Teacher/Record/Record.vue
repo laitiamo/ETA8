@@ -1,5 +1,5 @@
 <template>
-  <div class="record">
+  <div class="Paper">
     <h3>上传成果</h3>
     <!---成果列表部分，选中成果后隐藏--->
     <el-table
@@ -41,7 +41,7 @@
 import { getTeacherPaperList } from "../../../api";
 import { mapGetters } from "vuex";
 export default {
-  name: "Record",
+  name: "Paper",
   data() {
     return {
       ifSmall: false,
@@ -115,7 +115,7 @@ export default {
 </script>
 
 <style>
-.record > .el-button {
+.Paper > .el-button {
   margin-top: 1em;
   margin-bottom: 1em;
 }

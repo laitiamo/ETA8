@@ -12,10 +12,10 @@
       <el-form-item label="著作类型" class="no-padding">
         <el-input v-model="paperType" readonly></el-input>
       </el-form-item>
-      <el-form-item label="著作号" prop="paperNum">
+      <el-form-item label="书号" prop="paperNum">
         <el-input
           v-model="FormData.paperNum"
-          placeholder="请输入著作号"
+          placeholder="请输入书号"
         ></el-input>
       </el-form-item>
 
@@ -114,7 +114,7 @@
         <el-button @click="addDomain">新增</el-button>
         <el-button @click.prevent="removeDomain(domain)">删除</el-button>
       </el-form-item>
-      <el-form-item label="发表时间" prop="paperTime">
+      <el-form-item label="出版时间" prop="paperTime">
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -130,10 +130,10 @@
           placeholder="请输入出版社名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="书本类型" prop="rankId">
+      <el-form-item label="类型" prop="rankId">
         <el-select
           v-model="FormData.rankId"
-          placeholder="请选择书类"
+          placeholder="请选择类型"
           style="display: block"
         >
           <template v-for="rankEach in BookList">
@@ -163,7 +163,7 @@
       <el-dialog :visible.sync="dialogVisible" width="90%">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
-      <el-form-item label="出版社图片" required prop="paperPicList">
+      <el-form-item label="著作附件" required prop="PaperFileList">
         <el-upload
           class="img-upload"
           ref="upload"
@@ -173,15 +173,15 @@
           :on-remove="handleRemove"
           :on-exceed="handleExceed"
           :on-change="handleChange"
-          :file-list="fileList"
+          :file-list="FileList"
           :multiple="true"
-          list-type="picture"
+          list-type="text"
           :limit="5"
-          accept="image/jpeg,image/png"
+          accept=".pdf"
         >
-          <el-button size="small">上传图片</el-button>
+          <el-button size="small">上传附件</el-button>
           <div slot="tip" class="el-upload__tip">
-            只能上传 jpg/png 格式文件，且总大小不超过10MB，最多上传5张
+            只能上传 PDF 格式文件，且总大小不超过100MB，最多上传5份
           </div>
         </el-upload>
       </el-form-item>
@@ -221,10 +221,10 @@ export default {
       paperId: 12,
       paperType: "著作教材",
       submitButton: false,
-      fileList: [], //已上传的文件列表
+      FileList: [], //已上传的文件列表
       BookList: [], //著作等级的列表「从后端取得」
       TeacherList: [], //教师列表「从后端取得」
-      SubjectList: [],
+      SubjectList: [],//个人项目列表「从后端取得」
       //表单数据
       FormData: {
         domains: [
@@ -242,12 +242,12 @@ export default {
         SubjectId: "",
         paperTime: "",
         paperPlace: "",
-        paperPicList: [],
+        PaperFileList: [],
       },
       //<el-form-item>标签的prop值的校验规则
       rules: {
         paperNum: [
-          { required: true, message: "请输入论文编号", trigger: "blur" },
+          { required: true, message: "请输入书号", trigger: "blur" },
           {
             min: 1,
             max: 20,
@@ -259,9 +259,9 @@ export default {
           { required: true, message: "请输入著作名称", trigger: "blur" },
           { min: 2, message: "长度在 2 到 20 个字符", trigger: "blur" },
         ],
-        rankId: [{ required: true, message: "请选择书类", trigger: "change" }],
+        rankId: [{ required: true, message: "请选择类型", trigger: "change" }],
         paperTime: [
-          { required: true, message: "请选择日期", trigger: "change" },
+          { required: true, message: "请选择出版时间", trigger: "change" },
         ],
         paperPlace: [
           { required: true, message: "请输入出版社名称", trigger: "blur" },
@@ -270,8 +270,8 @@ export default {
         SubjectId: [
           { required: false, message: "请选择归属项目", trigger: "change" },
         ],
-        paperPicList: [
-          { required: true, message: "请选择著作图片", trigger: "blur" },
+        PaperFileList: [
+          { required: true, message: "请选择著作文件", trigger: "blur" },
         ],
       },
       dialogImageUrl: "", //图片预览的url
@@ -286,7 +286,7 @@ export default {
     initRankList() {
       let _this = this;
       let params = new URLSearchParams();
-      params.append("typeId", 2);
+      params.append("typeId", this.typeId);
       getPaperList(params)
         .then((res) => {
           //closeDebug console.log("Ranklist初始化", obj);
@@ -325,7 +325,7 @@ export default {
         if (valid) {
           let data2upload = new FormData();
           //获取实际input组件的文件
-          let filesList = this.FormData.paperPicList;
+          let filesList = this.FormData.PaperFileList;
           data2upload.append("typeId", this.typeId);
           data2upload.append("paperType", this.paperType);
           data2upload.append("paperNum", this.FormData.paperNum);
@@ -353,7 +353,9 @@ export default {
                   type: "success",
                 });
                 _this.cancelUpload("FormData");
-                _this.goback();
+                _this.$router.push({
+                  path: "/eta/ok",
+                });
               } else {
                 _this.$message.closeAll();
                 _this.submitButton = false;
@@ -429,13 +431,13 @@ export default {
       this.$refs.upload.clearFiles();
     },
     //处理已上传图片与表单内容的同步
-    handleChange(file, fileList) {
-      //closeDebug console.log("添加图片后", file, fileList);
-      this.FormData.paperPicList = fileList;
+    handleChange(file, FileList) {
+      //closeDebug console.log("添加图片后", file, FileList);
+      this.FormData.PaperFileList = FileList;
     },
     //处理已上传的图片的删除
-    handleRemove(file, fileList) {
-      //closeDebug console.log("删除图片后", file, fileList);
+    handleRemove(file, FileList) {
+      //closeDebug console.log("删除图片后", file, FileList);
     },
     //处理已上传的图片的点击预览
     handlePreview(file) {
@@ -444,8 +446,8 @@ export default {
       this.dialogVisible = true;
     },
     //处理上传图片超过限制
-    handleExceed(files, fileList) {
-      //closeDebug console.log("数量超出限制时", files, fileList);
+    handleExceed(files, FileList) {
+      //closeDebug console.log("数量超出限制时", files, FileList);
       this.$message({
         message: "已达到图片数量上限",
         type: "error",

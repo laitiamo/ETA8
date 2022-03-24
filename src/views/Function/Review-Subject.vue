@@ -1,6 +1,6 @@
 <template>
   <div class="review">
-    <h3 v-show="!ifShowDetail">项目审核</h3>
+    <h3 v-show="!ifShowDetail">立项审核</h3>
     <div v-show="!ifShowDetail">
       <el-form :inline="true" class="demo-form-inline" size="mini">
         <el-form-item>

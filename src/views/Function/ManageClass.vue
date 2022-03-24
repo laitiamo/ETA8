@@ -55,13 +55,6 @@
           placeholder="搜索辅导员"
         ></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-input
-          v-model="form2Query.keyUsername"
-          placeholder="搜索学生助理"
-          :disabled=true
-        ></el-input>
-      </el-form-item>
     </el-form>
     <el-form :inline="true" class="demo-form-inline" size="mini">
       <el-form-item>
@@ -116,16 +109,6 @@
         >
         </el-table-column>
       </template>
-      <el-table-column label="操作" width="80" fixed="right" align="center">
-        <template slot-scope="scope">
-          <el-button 
-          size="mini" 
-          @click="select2Change(scope.$index, scope.row)"
-          :disabled=true
-            >编辑</el-button
-          >
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination
       class="pagination"
@@ -139,42 +122,6 @@
       :total="dataCount"
     >
     </el-pagination>
-    <el-dialog
-      title="修改用户信息"
-      :visible.sync="ifShowUpdateDialog"
-      width="80%"
-    >
-      <h4>在输入栏按下回车进行提交修改</h4>
-      <el-form label-position="left" label-width="50px">
-        <el-form-item label="年级">
-          <el-input
-            v-model="selectClass.gradeId"
-            @focus="focusField"
-            @change="handleChange"
-            name="gradeId"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="专业">
-          <el-input
-            v-model="selectClass.majorName"
-            @focus="focusField"
-            @change="handleChange"
-            name="majorName"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="班级">
-          <el-input
-            v-model="selectClass.classNo"
-            @focus="focusField"
-            @change="handleChange"
-            name="classNo"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <el-button type="primary" @click="onSetRole" style="width: 100%"
-        >设置</el-button
-      >
-    </el-dialog>
   </div>
 </template>
 
@@ -192,7 +139,7 @@ export default {
   data() {
     return {
       visible: false,
-      ifSmall:false,
+      ifSmall: false,
       paginationLayout: "prev, pager,next, jumper, ->, total, sizes",
       ifShowUpdateDialog: false, //修改弹窗
       selectClass: {}, //选中的班级
@@ -205,7 +152,7 @@ export default {
         { name: "年级", value: "gradeName", width: "100", ifShow: true },
         { name: "专业", value: "majorName", width: "200", ifShow: true },
         { name: "班号", value: "classNo", width: "80", ifShow: true },
-        { name: "班级全称", value: "className", width: "auto", ifShow: true },      
+        { name: "班级全称", value: "className", width: "auto", ifShow: true },
       ],
       currentPage: 1,
       pageSize: 10,
@@ -218,8 +165,7 @@ export default {
         gradeId: "", //年级
         majorId: "", //专业
         classId: "", //班级
-        keyUsername: "", //辅导员姓名
-        keyName: "", //学生助理姓名
+        keyName: "", //辅导员姓名
       },
       //下拉栏内容列表
       gradeList: [],
@@ -236,17 +182,22 @@ export default {
     this.onQuery();
     if (document.documentElement.clientWidth < 720) {
       //closeDebug console.log("触发移动端布局");
-      this.ifSmall = true
+      this.ifSmall = true;
       this.paginationLayout = "prev, pager,next, ->, total";
-      this.Columns=[
+      this.Columns = [
         { name: "编号", value: "id", width: "80", ifShow: false },
-        { name: "教师编号", value: "instructorId", width: "auto", ifShow: false },
+        {
+          name: "教师编号",
+          value: "instructorId",
+          width: "auto",
+          ifShow: false,
+        },
         { name: "辅导员", value: "teaName", width: "auto", ifShow: true },
         { name: "年级", value: "gradeName", width: "120", ifShow: false },
         { name: "专业", value: "majorName", width: "150", ifShow: false },
         { name: "班号", value: "classNo", width: "80", ifShow: false },
         { name: "班级全称", value: "className", width: "auto", ifShow: true },
-      ]
+      ];
     }
   },
   methods: {
@@ -295,20 +246,11 @@ export default {
       //closeDebug console.log(`当前页: ${val}`);
       this.onQuery();
     },
-    //处理修改信息
-    select2Change(index, row) {
-      //closeDebug console.log("点击编辑", index, row);
-      this.selectClass = row;
-      this.oldRoleId = row.roleId;
-      this.newRoleId = row.roleId;
-      this.ifShowUpdateDialog = true;
-    },
-    //处理解除绑定
+    //处理解绑班级
     handleDel() {
       let params = new URLSearchParams();
       for (let cls in this.multipleSelection) {
-        params.append("classIds[]", this.multipleSelection[cls].classId);
-        params.append("instructorIds[]", this.multipleSelection[cls].instructorId);
+        params.append("ids[]", this.multipleSelection[cls].id);
       }
       let _this = this;
       delClass(params)
@@ -339,7 +281,6 @@ export default {
       params.append("gradeId", this.form2Query.gradeId); //年级
       params.append("majorId", this.form2Query.majorId); //专业
       params.append("classId", this.form2Query.classId); //班级
-      params.append("keyUsername", this.form2Query.keyUsername); //学生助理姓名
       params.append("keyName", this.form2Query.keyName); //辅导员姓名
       params.append("order", this.orderMode); //排序方式
       params.append("field", this.orderField); //排序字段

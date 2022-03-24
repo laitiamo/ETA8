@@ -42,15 +42,9 @@
             <el-menu-item index="/eta/review-stu" v-if="roleId !== 7"
               >学生奖项审核</el-menu-item
             >
-            <el-menu-item
-              index="/eta/review-tea"
-              v-if="roleId === 1 || roleId === 7"
-              >教师奖项审核</el-menu-item
-            >
             <template v-if="roleId !== 3 && roleId !== 6">
-              <el-menu-item index="/eta/record-review">成果审核</el-menu-item>
-              <el-menu-item index="/eta/review-subject">项目审核</el-menu-item>
-              <el-menu-item index="/eta/subject-finish">项目结题</el-menu-item>
+              <el-menu-item index="/eta/review-tea">教师奖项审核</el-menu-item>
+              <el-menu-item index="/eta/paper-review">成果审核</el-menu-item>
             </template>
           </el-submenu>
         </template>
@@ -66,53 +60,83 @@
           </template>
         </el-submenu>
         <template
-          v-if="roleId == 1 || roleId == 2 || roleId == 3 || roleId === 7"
+          v-if="
+            roleId == 1 ||
+              roleId == 2 ||
+              roleId == 3 ||
+              roleId === 7 ||
+              roleId === 8
+          "
         >
           <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-s-help"></i>
               <span slot="title" class="menu-title">记录管理</span>
             </template>
-            <el-menu-item index="/eta/query-stu" v-if="roleId !== 7"
-              >管理学生获奖</el-menu-item
+            <el-menu-item
+              index="/eta/query-stu"
+              v-if="roleId !== 7 && roleId !== 8"
+            >
+              管理学生获奖</el-menu-item
             >
             <template v-if="roleId !== 3">
               <el-menu-item index="/eta/query-tea">管理教师获奖</el-menu-item>
               <el-menu-item index="/eta/query-paper">管理成果记录</el-menu-item>
-              <el-menu-item index="/eta/query-subject"
-                >管理科研项目</el-menu-item
-              >
             </template>
           </el-submenu>
         </template>
         <template
-          v-if="roleId == 1 || roleId == 2 || roleId == 3 || roleId === 7"
+          v-if="roleId === 1 || roleId === 2 || roleId === 7 || roleId === 8"
         >
           <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-s-management"></i>
+              <span slot="title" class="menu-title">项目管理</span>
+            </template>
+            <template v-if="roleId !== 2 && roleId !== 8">
+              <el-menu-item index="/eta/review-subject">立项审核</el-menu-item>
+              <el-menu-item index="/eta/mid-subject">中期检查</el-menu-item>
+              <el-menu-item index="/eta/subject-edit">变更审核</el-menu-item>
+              <el-menu-item index="/eta/subject-finish">结题验收</el-menu-item>
+            </template>
+            <el-menu-item index="/eta/query-subject">管理科研项目</el-menu-item>
+          </el-submenu>
+        </template>
+        <template
+          v-if="
+            roleId == 1 ||
+              roleId == 3 ||
+              roleId === 7 ||
+              roleId === 8
+          "
+        >
+          <el-submenu index="7">
             <template slot="title">
               <i class="el-icon-receiving"></i>
               <span slot="title" class="menu-title">数据管理</span>
             </template>
             <el-menu-item
-              v-if="roleId !== 2 && roleId !== 7"
+              v-if="roleId !== 7 && roleId !== 8"
               index="/eta/manage-stu"
               >学生管理</el-menu-item
             >
             <el-menu-item
-              v-if="roleId == 1 || roleId === 7"
+              v-if="roleId == 1 || roleId == 8"
               index="/eta/manage-tea"
               >教师管理</el-menu-item
             >
             <el-menu-item v-if="roleId == 1" index="/eta/manage-class"
               >班级管理</el-menu-item
             >
-            <el-menu-item v-if="roleId !== 2" index="/eta/award"
+            <el-menu-item
+              v-if="roleId !== 2 && roleId !== 7 && roleId !== 8"
+              index="/eta/award"
               >奖项管理</el-menu-item
             >
           </el-submenu>
         </template>
         <template v-if="roleId == 1 || roleId == 3 || roleId == 7">
-          <el-submenu index="7">
+          <el-submenu index="8">
             <template slot="title">
               <i class="el-icon-upload2"></i>
               <span slot="title" class="menu-title">数据导入</span>
@@ -126,13 +150,16 @@
             <el-menu-item index="/eta/import-award">奖项导入</el-menu-item>
           </el-submenu>
         </template>
-        <el-submenu index="8">
+        <el-submenu index="9">
           <template slot="title">
             <i class="el-icon-setting"></i>
             <span slot="title" class="menu-title">系统设置</span>
           </template>
-          <el-menu-item index="/eta/log" v-if="roleId == 1 || roleId == 7"
-            >操作日志</el-menu-item
+          <el-menu-item
+            index="/eta/log"
+            v-if="roleId == 1 || roleId == 7 || roleId == 8"
+          >
+            操作日志</el-menu-item
           >
           <el-menu-item index="/eta/password">修改密码</el-menu-item>
         </el-submenu>
@@ -243,20 +270,12 @@
                 <el-menu-item index="/eta/review-stu" v-if="roleId !== 7"
                   >学生奖项审核</el-menu-item
                 >
-                <el-menu-item
-                  index="/eta/review-tea"
-                  v-if="roleId === 1 || roleId === 7"
-                  >教师奖项审核</el-menu-item
-                >
                 <template v-if="roleId !== 3 && roleId !== 6">
-                  <el-menu-item index="/eta/record-review"
+                  <el-menu-item index="/eta/review-tea"
+                    >教师奖项审核</el-menu-item
+                  >
+                  <el-menu-item index="/eta/paper-review"
                     >成果审核</el-menu-item
-                  >
-                  <el-menu-item index="/eta/review-subject"
-                    >项目审核</el-menu-item
-                  >
-                  <el-menu-item index="/eta/subject-finish"
-                    >项目结题</el-menu-item
                   >
                 </template>
               </el-submenu>
@@ -290,16 +309,32 @@
                   <el-menu-item index="/eta/query-paper"
                     >管理成果记录</el-menu-item
                   >
-                  <el-menu-item index="/eta/query-subject"
-                    >管理科研项目</el-menu-item
-                  >
                 </template>
+              </el-submenu>
+            </template>
+            <template v-if="roleId === 1 || roleId === 7">
+              <el-submenu index="6">
+                <template slot="title">
+                  <i class="el-icon-s-management"></i>
+                  <span slot="title" class="menu-title">项目管理</span>
+                </template>
+                <el-menu-item index="/eta/review-subject"
+                  >立项审核</el-menu-item
+                >
+                <el-menu-item index="/eta/mid-subject">中期检查</el-menu-item>
+                <el-menu-item index="/eta/subject-edit">变更审核</el-menu-item>
+                <el-menu-item index="/eta/subject-finish"
+                  >结题验收</el-menu-item
+                >
+                <el-menu-item index="/eta/query-subject"
+                  >管理科研项目</el-menu-item
+                >
               </el-submenu>
             </template>
             <template
               v-if="roleId == 1 || roleId == 2 || roleId == 3 || roleId === 7"
             >
-              <el-submenu index="6">
+              <el-submenu index="7">
                 <template slot="title">
                   <i class="el-icon-receiving"></i>
                   <span slot="title" class="menu-title">数据管理</span>
@@ -323,7 +358,7 @@
               </el-submenu>
             </template>
             <template v-if="roleId == 1 || roleId == 3 || roleId == 7">
-              <el-submenu index="7">
+              <el-submenu index="8">
                 <template slot="title">
                   <i class="el-icon-upload2"></i>
                   <span slot="title" class="menu-title">数据导入</span>
@@ -337,7 +372,7 @@
                 <el-menu-item index="/eta/import-award">奖项导入</el-menu-item>
               </el-submenu>
             </template>
-            <el-submenu index="8">
+            <el-submenu index="9">
               <template slot="title">
                 <i class="el-icon-setting"></i>
                 <span slot="title" class="menu-title">系统设置</span>

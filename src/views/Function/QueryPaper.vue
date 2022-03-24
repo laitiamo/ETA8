@@ -51,7 +51,6 @@
           <el-select
             v-model="form2Query.typeId"
             placeholder="全部类型"
-            @change="QueryPaper"
             style="width: 140px"
           >
             <el-option label="全部类型" value=""></el-option>
@@ -59,21 +58,6 @@
               v-for="opt in typeList"
               :key="opt.id"
               :label="opt.typeName"
-              :value="opt.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="form2Query.typeId != ''">
-          <el-select
-            v-model="form2Query.rankId"
-            placeholder="全部等级"
-            style="width: 140px"
-          >
-            <el-option label="全部等级" value=""></el-option>
-            <el-option
-              v-for="opt in rankList"
-              :key="opt.id"
-              :label="opt.rankName"
               :value="opt.id"
             ></el-option>
           </el-select>
@@ -211,7 +195,6 @@
 <script>
 import {
   getTeaPaperList,
-  getTypeList,
   getPaperDetail,
   initQueryPaper,
   delTeaPaper,
@@ -268,13 +251,11 @@ export default {
         keyUsername: "", //用户id
         keyName: "", //姓名
         typeId: "", //成果类型
-        rankId: "", //成果记录等级
         keyAwardName: "", //成果名
         keyAwardPlace: "", //期刊名
       },
       //下拉栏内容列表
       typeList: [],
-      rankList: [],
       collegeList: [],
       sectorList: [],
     };
@@ -323,20 +304,6 @@ export default {
           this.typeList = obj.type;
           this.collegeList = obj.college;
           this.sectorList = obj.sector;
-        })
-        .catch((failResponse) => {});
-    },
-    //更新可供筛选的成果列表
-    QueryPaper() {
-      let _this = this;
-      _this.form2Query.rankId = "";
-      let params = new URLSearchParams();
-      params.append("typeId", this.form2Query.typeId);
-      getTypeList(params)
-        .then((res) => {
-          //closeDebug console.log("-----------获取类型列表---------------");
-          //closeDebug console.log(res);
-          _this.rankList = res;
         })
         .catch((failResponse) => {});
     },
@@ -438,7 +405,6 @@ export default {
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
       params.append("typeId", this.form2Query.typeId); //成果类型
-      params.append("rankId", this.form2Query.rankId); //成果等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
       params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
       params.append("order", this.orderMode);
@@ -474,7 +440,7 @@ export default {
       params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //成果记录等级
+      params.append("typeId", this.form2Query.typeId); //成果等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
       params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
       exportTeaPaperXLS(params)
@@ -506,7 +472,7 @@ export default {
       params.append("sectorId", this.form2Query.sectorId);
       params.append("keyUsername", this.form2Query.keyUsername); //用户id
       params.append("keyName", this.form2Query.keyName); //姓名
-      params.append("rankId", this.form2Query.rankId); //成果记录等级
+      params.append("typeId", this.form2Query.typeId); //成果等级
       params.append("keyAwardName", this.form2Query.keyAwardName); //成果名
       params.append("keyAwardPlace", this.form2Query.keyAwardPlace); //期刊名
       exportTeaPaperZIP(params)

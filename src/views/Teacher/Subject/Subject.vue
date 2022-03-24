@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style>
-.record > .el-button {
+.Paper > .el-button {
   margin-top: 1em;
   margin-bottom: 1em;
 }

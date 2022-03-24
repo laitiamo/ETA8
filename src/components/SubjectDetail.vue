@@ -49,6 +49,9 @@
         <el-col class="detail-info" :span="12" :xs="24"
           >成果形式：{{ detailData.SubjectPaper }}</el-col
         >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >中期检查：{{ detailData.midReviewName }}</el-col
+        >
       </el-row>
 
       <template v-if="detailData.levelId == 3">
@@ -436,16 +439,29 @@
 
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24"
-          >上传时间：{{ detailData.createAt }}</el-col
+          >是否申请项目变更：{{ detailData.edit }}</el-col
+        >
+        <el-col
+          class="detail-info"
+          :span="12"
+          :xs="24"
+          v-if="detailData.edit !== '未申请变更'"
+          >项目变更申请时间：{{ detailData.editApplyAt }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >计划结项时间：{{ detailData.finishAt }}</el-col
+          >项目上传时间：{{ detailData.createAt }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >审核状态：{{ detailData.review }}</el-col
+          >项目计划结项时间：{{ detailData.finishAt }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24" v-if="detailData.reviewId === 6 || detailData.reviewId === 7"
+          >项目结项时间：{{ detailData.FinishApplyAt }}</el-col
         >
         <el-col class="detail-info" :span="12" :xs="24"
-          >审核时间：{{ detailData.reviewAt }}</el-col
+          >项目状态：{{ detailData.review }}</el-col
+        >
+        <el-col class="detail-info" :span="12" :xs="24"
+          >最近一次审核时间：{{ detailData.reviewAt }}</el-col
         >
       </el-row>
       <el-dialog title="已上传成果" :visible.sync="ifShowDialog" width="90%">
@@ -467,7 +483,7 @@
             width="80"
             fixed="right"
             align="center"
-            v-if="detailData.reviewId !== 5 && detailData.reviewId !== 6"
+            v-if="detailData.reviewId !== 1 && detailData.reviewId !== 2"
           >
             <template slot-scope="scope">
               <el-button
@@ -485,7 +501,7 @@
       >
       <el-row :gutter="20">
         <el-col class="detail-info" :span="12" :xs="24">
-          <el-button type="primary" @click="onExportFile" :loading="loading"
+          <el-button type="primary" @click="onExportFile" 
             >导出附件</el-button
           ></el-col
         >
@@ -493,7 +509,7 @@
           <el-button
             type="primary"
             @click="onSelectPaper"
-            v-if="detailData.reviewId !== 1 && detailData.reviewId !== 3"
+            v-if="detailData.reviewId !== 1 && detailData.reviewId !== 2"
             >查看成果</el-button
           >
         </el-col>
@@ -555,6 +571,7 @@ export default {
       this.ifShowDialog = true;
       this.getPaperList();
     },
+    //处理项目与成果解绑
     handleDelete(index, row) {
       let _this = this;
       let params = new URLSearchParams();
@@ -577,6 +594,7 @@ export default {
         })
         .catch((failResponse) => {});
     },
+    //获取已绑定成果列表
     getPaperList() {
       let _this = this;
       //参数绑定「分页大小、页码」
@@ -596,7 +614,7 @@ export default {
       //参数绑定「筛选参数」
       this.loading = true;
       let params = new URLSearchParams();
-      params.append("id", this.detailData.id); //年级
+      params.append("id", this.detailData.id); //项目id
       exportTeaSubjectPDF(params)
         .then((res) => {
           //closeDebug console.log("-----------导出教师项目文件---------------");
